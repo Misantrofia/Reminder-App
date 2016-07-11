@@ -10,19 +10,53 @@
         <!--Reminder Controller-->
         <scene sceneID="Laf-Y1-Cgg">
             <objects>
-                <tableViewController id="PcV-bd-CUg" userLabel="Reminder Controller" sceneMemberID="viewController">
+                <tableViewController id="PcV-bd-CUg" userLabel="Reminder Controller" customClass="CDReminderTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="lpn-fa-Rbz">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="9U7-fv-OQf">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="AddCell" id="etT-ee-efC" customClass="CDAddReminderCell">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9U7-fv-OQf" id="zjb-cq-4Zm">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="etT-ee-efC" id="phh-o7-2Vm">
+                                    <rect key="frame" x="0.0" y="0.0" width="553" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Pluse-128" translatesAutoresizingMaskIntoConstraints="NO" id="MxZ-RS-1cF">
+                                            <rect key="frame" x="19" y="7" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="Hsb-U0-NxE"/>
+                                                <constraint firstAttribute="height" constant="30" id="bJP-fj-HvP"/>
+                                            </constraints>
+                                        </imageView>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="T28-1u-WLY">
+                                            <rect key="frame" x="64" y="7" width="489" height="43"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="MxZ-RS-1cF" firstAttribute="centerY" secondItem="phh-o7-2Vm" secondAttribute="centerY" id="3As-Zk-AMb"/>
+                                        <constraint firstItem="T28-1u-WLY" firstAttribute="top" secondItem="phh-o7-2Vm" secondAttribute="topMargin" constant="-1" id="SBT-nI-HhL"/>
+                                        <constraint firstItem="T28-1u-WLY" firstAttribute="leading" secondItem="MxZ-RS-1cF" secondAttribute="trailing" constant="15" id="Tbj-rx-zM8"/>
+                                        <constraint firstItem="MxZ-RS-1cF" firstAttribute="leading" secondItem="phh-o7-2Vm" secondAttribute="leadingMargin" constant="11" id="XEf-rc-9CJ"/>
+                                        <constraint firstItem="T28-1u-WLY" firstAttribute="height" secondItem="phh-o7-2Vm" secondAttribute="height" id="tJc-ab-O56"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="T28-1u-WLY" secondAttribute="trailing" constant="40" id="xKh-lM-LaH"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="xKh-lM-LaH"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="T28-1u-WLY" secondAttribute="trailing" constant="47" id="zAu-m2-oWh"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="textView" destination="T28-1u-WLY" id="3xq-pN-veI"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -58,7 +92,7 @@
                                             <rect key="frame" x="50" y="12" width="32" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Items" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XTZ-iF-X2A">
@@ -107,10 +141,10 @@
             </objects>
             <point key="canvasLocation" x="624" y="-16"/>
         </scene>
-        <!--Sign Up View Controller-->
+        <!--View Controller-->
         <scene sceneID="9d3-3y-tx1">
             <objects>
-                <viewController id="3l3-Ou-Jsn" customClass="CDSignUpViewController" sceneMemberID="viewController">
+                <viewController id="3l3-Ou-Jsn" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="e77-q7-UD1"/>
                         <viewControllerLayoutGuide type="bottom" id="HVo-gj-mkx"/>
@@ -142,17 +176,15 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7TD-jP-DZq">
                                 <rect key="frame" x="235" y="361" width="131" height="54"/>
-                                <state key="normal" title="Save" backgroundImage="Image">
+                                <state key="normal" title="Save" backgroundImage="Button">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="loginTapped:" destination="mAm-7M-nkQ" eventType="touchUpInside" id="F1Z-Am-q3F"/>
-                                    <action selector="saveTapped:" destination="3l3-Ou-Jsn" eventType="touchUpInside" id="5xb-my-8Nf"/>
-                                    <segue destination="zJX-HD-Lum" kind="show" id="c2j-r6-8Px"/>
+                                    <segue destination="zJX-HD-Lum" kind="show" id="3qc-JP-hNi"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="7TD-jP-DZq" firstAttribute="top" secondItem="fjC-2o-DLU" secondAttribute="bottom" constant="106" id="0Kb-D0-q8D"/>
                             <constraint firstItem="7TD-jP-DZq" firstAttribute="centerX" secondItem="8bd-Jn-q5t" secondAttribute="centerX" id="4Vi-oe-l50"/>
@@ -175,7 +207,7 @@
         <!--Login Controller-->
         <scene sceneID="wP7-VQ-Ru0">
             <objects>
-                <viewController id="mAm-7M-nkQ" userLabel="Login Controller" customClass="CDLoginViewController" sceneMemberID="viewController">
+                <viewController id="mAm-7M-nkQ" userLabel="Login Controller" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w6f-De-bnS"/>
                         <viewControllerLayoutGuide type="bottom" id="9Sz-AT-QPy"/>
@@ -214,10 +246,9 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kzx-OF-KOa">
                                 <rect key="frame" x="235" y="349" width="131" height="54"/>
-                                <state key="normal" title="Login" backgroundImage="Image"/>
+                                <state key="normal" title="Login" backgroundImage="Button"/>
                                 <connections>
-                                    <action selector="loginTapped:" destination="mAm-7M-nkQ" eventType="touchUpInside" id="dSw-gz-BL4"/>
-                                    <segue destination="zJX-HD-Lum" kind="show" id="pQm-nn-f29"/>
+                                    <segue destination="zJX-HD-Lum" kind="show" id="scQ-W0-Aa5"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ou4-LB-2cV">
@@ -264,9 +295,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <connections>
-                        <outlet property="loginButton" destination="Kzx-OF-KOa" id="UNt-YY-P2g"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H0q-7S-Q77" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -290,11 +318,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Image" width="131" height="54"/>
+        <image name="Button" width="131" height="54"/>
+        <image name="Pluse-128" width="128" height="128"/>
         <image name="bullet_black" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="c2j-r6-8Px"/>
+        <segue reference="3qc-JP-hNi"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.1843137255" green="0.40000000000000002" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>
