@@ -1,5 +1,5 @@
 //
-//  CDReminder.h
+//  TopicReminder.h
 //  ReminderApp-OBJC
 //
 //  Created by Catalin David on 11/07/16.
@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class CDReminder;
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface CDReminder : NSManagedObject
+@interface CDTopic : NSManagedObject
 
 // Insert code here to declare functionality of your managed object subclass
 
@@ -19,4 +21,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#import "CDReminder+CoreDataProperties.h"
+#import "CDTopic+CoreDataProperties.h"

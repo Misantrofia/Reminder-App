@@ -8,7 +8,7 @@
 
 #import "CDTopicTableViewController.h"
 #import "AppDelegate.h"
-#import "CDReminder.h"
+#import "CDTopic.h"
 
 #pragma mark - Class extension
 
@@ -84,9 +84,8 @@
 
 - (void) saveTask:(NSString *)topicName {
 	
-	CDReminder *object = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
-	object.taskName = topicName;
-	object.taskHoure = topicName;
+	CDTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:@"Topic" inManagedObjectContext:self.managedContext];
+	topic.title = topicName;
 	
 }
 
@@ -95,8 +94,8 @@
 - (NSFetchedResultsController *)fetchedResultsController {
 
 	if (_fetchedResultsController == nil) {
-		NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Reminder"];
-		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"taskName"
+		NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Topic"];
+		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"title"
 															   ascending:YES];
 		
 		fetch.sortDescriptors = @[sort];
@@ -134,9 +133,8 @@
 			break;
 		case NSFetchedResultsChangeUpdate: {
 			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-			CDReminder *reminderItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-			cell.textLabel.text = reminderItem.taskName;
-			cell.detailTextLabel.text = reminderItem.taskHoure;
+			CDTopic *topicItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			cell.textLabel.text = topicItem.title;
 		}
 			break;
 		case NSFetchedResultsChangeMove:
@@ -176,10 +174,9 @@
 	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SimpleReminderCell"];
 	
 	if (cell) {
-		CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-		cell.textLabel.text = reminder.taskName;
-		cell.detailTextLabel.text = reminder.taskHoure;
+		cell.textLabel.text = topic.title;
 	}
 	
 	return cell;
@@ -197,8 +194,8 @@
 forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		[self.managedContext deleteObject:reminderToDelete];
+		CDTopic *topicToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		[self.managedContext deleteObject:topicToDelete];
 		
 		NSError *error;
 		if (![self.managedContext save:&error]) {

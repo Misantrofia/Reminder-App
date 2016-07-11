@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B64B93761D2D47F500CA5138 /* CDReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B93731D2D47F500CA5138 /* CDReminder.m */; };
-		B64B93771D2D47F500CA5138 /* CDReminder+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B93751D2D47F500CA5138 /* CDReminder+CoreDataProperties.m */; };
 		B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */; };
 		B64B937E1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B64B937C1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld */; };
+		B65226511D33879100588A87 /* CDReminder+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B652264E1D33879100588A87 /* CDReminder+CoreDataProperties.m */; };
+		B65226521D33879100588A87 /* CDReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = B65226501D33879100588A87 /* CDReminder.m */; };
+		B65226571D3387B800588A87 /* CDTopic+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B65226541D3387B800588A87 /* CDTopic+CoreDataProperties.m */; };
+		B65226581D3387B800588A87 /* CDTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = B65226561D3387B800588A87 /* CDTopic.m */; };
 		B655766F1D26B0940075805E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B655766E1D26B0940075805E /* main.m */; };
 		B65576721D26B0940075805E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B65576711D26B0940075805E /* AppDelegate.m */; };
 		B65576781D26B0940075805E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B65576761D26B0940075805E /* Main.storyboard */; };
@@ -19,13 +21,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B64B93721D2D47F500CA5138 /* CDReminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDReminder.h; path = Classes/Model/CDReminder.h; sourceTree = "<group>"; };
-		B64B93731D2D47F500CA5138 /* CDReminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDReminder.m; path = Classes/Model/CDReminder.m; sourceTree = "<group>"; };
-		B64B93741D2D47F500CA5138 /* CDReminder+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDReminder+CoreDataProperties.h"; path = "Classes/Model/CDReminder+CoreDataProperties.h"; sourceTree = "<group>"; };
-		B64B93751D2D47F500CA5138 /* CDReminder+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDReminder+CoreDataProperties.m"; path = "Classes/Model/CDReminder+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDTopicTableViewController.h; path = Classes/Controller/CDTopicTableViewController.h; sourceTree = "<group>"; };
 		B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDTopicTableViewController.m; path = Classes/Controller/CDTopicTableViewController.m; sourceTree = "<group>"; };
 		B64B937D1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ReminderApp_OBJC.xcdatamodel; sourceTree = "<group>"; };
+		B652264D1D33879100588A87 /* CDReminder+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDReminder+CoreDataProperties.h"; path = "Classes/Model/CDReminder+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B652264E1D33879100588A87 /* CDReminder+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDReminder+CoreDataProperties.m"; path = "Classes/Model/CDReminder+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B652264F1D33879100588A87 /* CDReminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDReminder.h; path = Classes/Model/CDReminder.h; sourceTree = "<group>"; };
+		B65226501D33879100588A87 /* CDReminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDReminder.m; path = Classes/Model/CDReminder.m; sourceTree = "<group>"; };
+		B65226531D3387B800588A87 /* CDTopic+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDTopic+CoreDataProperties.h"; path = "Classes/Model/CDTopic+CoreDataProperties.h"; sourceTree = "<group>"; };
+		B65226541D3387B800588A87 /* CDTopic+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDTopic+CoreDataProperties.m"; path = "Classes/Model/CDTopic+CoreDataProperties.m"; sourceTree = "<group>"; };
+		B65226551D3387B800588A87 /* CDTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDTopic.h; path = Classes/Model/CDTopic.h; sourceTree = "<group>"; };
+		B65226561D3387B800588A87 /* CDTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDTopic.m; path = Classes/Model/CDTopic.m; sourceTree = "<group>"; };
 		B655766A1D26B0940075805E /* ReminderApp-OBJC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ReminderApp-OBJC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B655766E1D26B0940075805E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B65576701D26B0940075805E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -108,10 +114,14 @@
 		B656C81B1D2A4F7B0042F5E7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B64B93721D2D47F500CA5138 /* CDReminder.h */,
-				B64B93731D2D47F500CA5138 /* CDReminder.m */,
-				B64B93741D2D47F500CA5138 /* CDReminder+CoreDataProperties.h */,
-				B64B93751D2D47F500CA5138 /* CDReminder+CoreDataProperties.m */,
+				B652264D1D33879100588A87 /* CDReminder+CoreDataProperties.h */,
+				B652264E1D33879100588A87 /* CDReminder+CoreDataProperties.m */,
+				B652264F1D33879100588A87 /* CDReminder.h */,
+				B65226501D33879100588A87 /* CDReminder.m */,
+				B65226531D3387B800588A87 /* CDTopic+CoreDataProperties.h */,
+				B65226541D3387B800588A87 /* CDTopic+CoreDataProperties.m */,
+				B65226551D3387B800588A87 /* CDTopic.h */,
+				B65226561D3387B800588A87 /* CDTopic.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -119,8 +129,6 @@
 		B656C81C1D2A4F900042F5E7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B64B93781D2D47FD00CA5138 /* CDReminderTableViewController.h */,
-				B64B93791D2D47FD00CA5138 /* CDReminderTableViewController.m */,
 				B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */,
 				B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */,
 				B6E6435C1D2FD7D4003F6E2D /* CDLoginViewController.h */,
@@ -203,14 +211,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B64B93771D2D47F500CA5138 /* CDReminder+CoreDataProperties.m in Sources */,
+				B65226571D3387B800588A87 /* CDTopic+CoreDataProperties.m in Sources */,
 				B65576721D26B0940075805E /* AppDelegate.m in Sources */,
 				B655766F1D26B0940075805E /* main.m in Sources */,
 				B64B93761D2D47F500CA5138 /* CDReminder.m in Sources */,
-				B64B937A1D2D47FD00CA5138 /* CDReminderTableViewController.m in Sources */,
+				B65226581D3387B800588A87 /* CDTopic.m in Sources */,
 				B6E6435E1D2FD7D4003F6E2D /* CDLoginViewController.m in Sources */,
 				B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */,
+				B65226521D33879100588A87 /* CDReminder.m in Sources */,
 				B6E643611D2FECED003F6E2D /* CDSignUpViewController.m in Sources */,
+				B65226511D33879100588A87 /* CDReminder+CoreDataProperties.m in Sources */,
 				B64B937E1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
