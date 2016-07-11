@@ -1,5 +1,5 @@
 //
-//  CDReminder+CoreDataProperties.m
+//  TopicReminder+CoreDataProperties.m
 //  ReminderApp-OBJC
 //
 //  Created by Catalin David on 11/07/16.
@@ -9,12 +9,12 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "CDReminder+CoreDataProperties.h"
+#import "CDTopic+CoreDataProperties.h"
 
-@implementation CDReminder (CoreDataProperties)
+@implementation CDTopic (CoreDataProperties)
 
-@dynamic taskDate;
-@dynamic taskName;
-@dynamic topic;
+@dynamic title;
+@dynamic numberOfItems;
+@dynamic reminders;
 
 @end
