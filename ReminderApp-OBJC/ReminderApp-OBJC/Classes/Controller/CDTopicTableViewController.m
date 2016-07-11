@@ -6,13 +6,13 @@
 //  Copyright © 2016 Catalin David. All rights reserved.
 //
 
-#import "CDReminderTableViewController.h"
+#import "CDTopicTableViewController.h"
 #import "AppDelegate.h"
 #import "CDReminder.h"
 
 #pragma mark - Class extension
 
-@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate>
+@interface CDTopicTableViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *editButton;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -22,14 +22,14 @@
 
 #pragma mark - Class implementation
 
-@implementation CDReminderTableViewController
+@implementation CDTopicTableViewController
 
 - (void)viewDidLoad {
 	
 	[super viewDidLoad];
 	
 	self.editButton.title = @"Edit";
-	self.title = @"Reminder";
+	self.title = @"Topics";
 	
 	self.managedContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
 	
@@ -56,8 +56,8 @@
 
 - (IBAction)addTapped:(id)sender {
 	
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"New Reminder"
-																   message:@"Add a new task with format \n \t ' Name - hh:mm'"
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"New Topic"
+																   message:@"Add a new topic'"
 															preferredStyle:UIAlertControllerStyleAlert];
 	
 	UIAlertAction *saveAction = [UIAlertAction actionWithTitle:@"Save"
@@ -65,12 +65,7 @@
 													   handler:^(UIAlertAction	*action) {
 														   
 														   NSString *textField = alert.textFields.firstObject.text;
-														   NSArray<NSString *> *result = [textField componentsSeparatedByString:@"-"];
-														   
-														   if (result.count > 1) {
-															   [self saveTask:result[0] taskHoure:result[1]];
-														   }
-														   
+														   [self saveTask:textField];
 													   } ];
 	
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
@@ -87,11 +82,11 @@
 
 #pragma mark - Helper func for addTapped
 
-- (void) saveTask:(NSString *)taskName taskHoure:(NSString *)taskHoure {
+- (void) saveTask:(NSString *)topicName {
 	
 	CDReminder *object = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
-	object.taskName = taskName;
-	object.taskHoure = taskHoure;
+	object.taskName = topicName;
+	object.taskHoure = topicName;
 	
 }
 
@@ -213,47 +208,47 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Edit Reminder"
-																   message:@"Edit with format \n \t 'Name - hh:mm'"
-															preferredStyle:UIAlertControllerStyleAlert];
-	
-	UIAlertAction *updateAction = [UIAlertAction actionWithTitle:@"Update"
-														   style:UIAlertActionStyleDefault
-														 handler:^(UIAlertAction *action) {
-															 
-															 NSString *inputText = alert.textFields.firstObject.text;
-															 NSArray *components = [inputText componentsSeparatedByString:@"-"];
-															 
-															CDReminder *objectToUpdate = [self.fetchedResultsController objectAtIndexPath:indexPath];
-															 if (components.count > 1) {
-																objectToUpdate.taskName = [components objectAtIndex:0];
-																objectToUpdate.taskHoure = [components objectAtIndex:1];
-															 } else {
-																 NSLog(@"IndexOutOfBounds");
-															 }
-														 
-															 NSError *error;
-															 if (![self.managedContext save:&error]) {
-															 	NSLog(@"An error occured %@", error);
-															 }
-				
-															 [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-															 
-														 }];
-	
-	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-														   style:UIAlertActionStyleDefault
-														 handler:nil];
-	
-	[alert addTextFieldWithConfigurationHandler:nil];
-	
-	[alert addAction:updateAction];
-	[alert addAction:cancelAction];
-	
-	[self presentViewController:alert animated:YES completion:nil];
-	
-}
-
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//	
+//	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Edit Reminder"
+//																   message:@"Edit with format \n \t 'Name - hh:mm'"
+//															preferredStyle:UIAlertControllerStyleAlert];
+//	
+//	UIAlertAction *updateAction = [UIAlertAction actionWithTitle:@"Update"
+//														   style:UIAlertActionStyleDefault
+//														 handler:^(UIAlertAction *action) {
+//															 
+//															 NSString *inputText = alert.textFields.firstObject.text;
+//															 NSArray *components = [inputText componentsSeparatedByString:@"-"];
+//															 
+//															CDReminder *objectToUpdate = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//															 if (components.count > 1) {
+//																objectToUpdate.taskName = [components objectAtIndex:0];
+//																objectToUpdate.taskHoure = [components objectAtIndex:1];
+//															 } else {
+//																 NSLog(@"IndexOutOfBounds");
+//															 }
+//														 
+//															 NSError *error;
+//															 if (![self.managedContext save:&error]) {
+//															 	NSLog(@"An error occured %@", error);
+//															 }
+//				
+//															 [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+//															 
+//														 }];
+//	
+//	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+//														   style:UIAlertActionStyleDefault
+//														 handler:nil];
+//	
+//	[alert addTextFieldWithConfigurationHandler:nil];
+//	
+//	[alert addAction:updateAction];
+//	[alert addAction:cancelAction];
+//	
+//	[self presentViewController:alert animated:YES completion:nil];
+//	
+//}
+//
 @end

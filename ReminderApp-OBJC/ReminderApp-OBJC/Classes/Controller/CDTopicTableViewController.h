@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CDReminderTableViewController : UITableViewController
+@interface CDTopicTableViewController : UITableViewController
 
 
 @end
