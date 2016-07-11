@@ -8,7 +8,6 @@
 
 #import "CDReminderTableViewController.h"
 #import "CDAddReminderCell.h"
-#import "CDReminderCell.h"
 
 @interface CDReminderTableViewController ()
 
@@ -17,6 +16,7 @@
 @implementation CDReminderTableViewController
 
 - (void)viewDidLoad {
+	
     [super viewDidLoad];
     
    }
@@ -24,17 +24,27 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+	
+	return 1;
+	
 }
 
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+	
+	return 1;
+	
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
     CDAddReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
     
     return cell;
+	
 }
+
+
 
 @end

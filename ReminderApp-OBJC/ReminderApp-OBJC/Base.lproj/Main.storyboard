@@ -51,6 +51,7 @@
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="T28-1u-WLY" secondAttribute="trailing" constant="47" id="zAu-m2-oWh"/>
                                 </constraints>
