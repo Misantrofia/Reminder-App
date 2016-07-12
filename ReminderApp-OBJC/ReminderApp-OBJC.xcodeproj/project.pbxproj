@@ -19,9 +19,10 @@
 		B655767D1D26B0940075805E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B655767C1D26B0940075805E /* Assets.xcassets */; };
 		B65576801D26B0940075805E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B655767E1D26B0940075805E /* LaunchScreen.storyboard */; };
 		B6A4CD131D33E3BC0049B994 /* CDAddReminderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A4CD121D33E3BC0049B994 /* CDAddReminderCell.m */; };
-		B6A4CD191D33E4CF0049B994 /* CDReminderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A4CD181D33E4CF0049B994 /* CDReminderTableViewController.m */; };
 		B6A4CD1E1D33EFDE0049B994 /* CDUser+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A4CD1B1D33EFDE0049B994 /* CDUser+CoreDataProperties.m */; };
 		B6A4CD1F1D33EFDE0049B994 /* CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A4CD1D1D33EFDE0049B994 /* CDUser.m */; };
+		B6AAB4D31D34FA2900D76E5F /* CDReminderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB4D11D34FA2900D76E5F /* CDReminderTableViewController.m */; };
+		B6AAB4D61D353F9300D76E5F /* CDReminderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB4D51D353F9300D76E5F /* CDReminderCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,12 +47,14 @@
 		B65576811D26B0940075805E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6A4CD111D33E3BC0049B994 /* CDAddReminderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDAddReminderCell.h; path = Classes/ReminderCell/CDAddReminderCell.h; sourceTree = "<group>"; };
 		B6A4CD121D33E3BC0049B994 /* CDAddReminderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDAddReminderCell.m; path = Classes/ReminderCell/CDAddReminderCell.m; sourceTree = "<group>"; };
-		B6A4CD171D33E4CF0049B994 /* CDReminderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDReminderTableViewController.h; path = Classes/Controller/CDReminderTableViewController.h; sourceTree = "<group>"; };
-		B6A4CD181D33E4CF0049B994 /* CDReminderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDReminderTableViewController.m; path = Classes/Controller/CDReminderTableViewController.m; sourceTree = "<group>"; };
 		B6A4CD1A1D33EFDE0049B994 /* CDUser+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDUser+CoreDataProperties.h"; path = "Classes/Model/CDUser+CoreDataProperties.h"; sourceTree = "<group>"; };
 		B6A4CD1B1D33EFDE0049B994 /* CDUser+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDUser+CoreDataProperties.m"; path = "Classes/Model/CDUser+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B6A4CD1C1D33EFDE0049B994 /* CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDUser.h; path = Classes/Model/CDUser.h; sourceTree = "<group>"; };
 		B6A4CD1D1D33EFDE0049B994 /* CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDUser.m; path = Classes/Model/CDUser.m; sourceTree = "<group>"; };
+		B6AAB4D11D34FA2900D76E5F /* CDReminderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDReminderTableViewController.m; path = Classes/Controller/CDReminderTableViewController.m; sourceTree = "<group>"; };
+		B6AAB4D21D34FA2900D76E5F /* CDReminderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDReminderTableViewController.h; path = Classes/Controller/CDReminderTableViewController.h; sourceTree = "<group>"; };
+		B6AAB4D41D353F9300D76E5F /* CDReminderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDReminderCell.h; path = Classes/ReminderCell/CDReminderCell.h; sourceTree = "<group>"; };
+		B6AAB4D51D353F9300D76E5F /* CDReminderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDReminderCell.m; path = Classes/ReminderCell/CDReminderCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,10 +149,10 @@
 		B656C81C1D2A4F900042F5E7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B6AAB4D11D34FA2900D76E5F /* CDReminderTableViewController.m */,
+				B6AAB4D21D34FA2900D76E5F /* CDReminderTableViewController.h */,
 				B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */,
 				B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */,
-				B6A4CD171D33E4CF0049B994 /* CDReminderTableViewController.h */,
-				B6A4CD181D33E4CF0049B994 /* CDReminderTableViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -159,6 +162,8 @@
 			children = (
 				B6A4CD111D33E3BC0049B994 /* CDAddReminderCell.h */,
 				B6A4CD121D33E3BC0049B994 /* CDAddReminderCell.m */,
+				B6AAB4D41D353F9300D76E5F /* CDReminderCell.h */,
+				B6AAB4D51D353F9300D76E5F /* CDReminderCell.m */,
 			);
 			name = ReminderCell;
 			sourceTree = "<group>";
@@ -235,16 +240,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				B65226571D3387B800588A87 /* CDTopic+CoreDataProperties.m in Sources */,
+				B6AAB4D61D353F9300D76E5F /* CDReminderCell.m in Sources */,
 				B65576721D26B0940075805E /* AppDelegate.m in Sources */,
 				B655766F1D26B0940075805E /* main.m in Sources */,
 				B65226581D3387B800588A87 /* CDTopic.m in Sources */,
 				B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */,
 				B65226521D33879100588A87 /* CDReminder.m in Sources */,
+				B6AAB4D31D34FA2900D76E5F /* CDReminderTableViewController.m in Sources */,
 				B65226511D33879100588A87 /* CDReminder+CoreDataProperties.m in Sources */,
 				B64B937E1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld in Sources */,
 				B6A4CD1F1D33EFDE0049B994 /* CDUser.m in Sources */,
 				B6A4CD131D33E3BC0049B994 /* CDAddReminderCell.m in Sources */,
-				B6A4CD191D33E4CF0049B994 /* CDReminderTableViewController.m in Sources */,
 				B6A4CD1E1D33EFDE0049B994 /* CDUser+CoreDataProperties.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
