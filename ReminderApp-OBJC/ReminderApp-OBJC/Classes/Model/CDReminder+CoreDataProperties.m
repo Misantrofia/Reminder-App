@@ -2,7 +2,7 @@
 //  CDReminder+CoreDataProperties.m
 //  ReminderApp-OBJC
 //
-//  Created by Catalin David on 11/07/16.
+//  Created by Catalin David on 13/07/16.
 //  Copyright © 2016 Catalin David. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -15,6 +15,8 @@
 
 @dynamic taskDate;
 @dynamic taskName;
+@dynamic note;
+@dynamic priority;
 @dynamic topic;
 
 @end
