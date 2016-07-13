@@ -9,10 +9,14 @@
 #import "CDReminderTableViewController.h"
 #import "CDAddReminderCell.h"
 #import "CDReminderCell.h"
+#import "AppDelegate.h"
+#import "CDReminder.h"
 
-@interface CDReminderTableViewController () <UITextViewDelegate>
+@interface CDReminderTableViewController () <UITextViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, assign) NSInteger count;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSManagedObjectContext *managedContext;
 
 @end
 
@@ -36,6 +40,78 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	
+	self.managedContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
+	
+	NSError *error;
+	if (![self.fetchedResultsController performFetch:&error]) {
+		NSLog(@"An error occured: %@", error);
+	}
+	
+}
+
+
+#pragma mark - NSFetchResultsController
+
+- (NSFetchedResultsController *)fetchedResultsController {
+	
+	if (_fetchedResultsController == nil) {
+		NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Reminder"];
+		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"taskName" ascending:YES];
+		
+		request.sortDescriptors = @[sortDescriptor];
+		
+		_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+																		managedObjectContext:self.managedContext
+																		  sectionNameKeyPath:nil
+																				   cacheName:nil];
+		_fetchedResultsController.delegate = self;
+	}
+	
+	return _fetchedResultsController;
+	
+}
+
+#pragma mark - NSFetchResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+	
+	[self.tableView beginUpdates];
+	
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+	   atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath *)newIndexPath {
+	
+	switch (type) {
+  		case NSFetchedResultsChangeInsert:
+			[self.tableView insertRowsAtIndexPaths:@[newIndexPath]
+								  withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		case NSFetchedResultsChangeDelete:
+			[self.tableView deleteRowsAtIndexPaths:@[indexPath]
+								  withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		case NSFetchedResultsChangeUpdate: {
+			CDAddReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+			CDReminder *reminderItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			cell.textLabel.text = reminderItem.taskName;
+		}
+			break;
+		case NSFetchedResultsChangeMove:
+			[self.tableView deleteRowsAtIndexPaths:@[indexPath]
+								  withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView insertRowsAtIndexPaths:@[newIndexPath]
+								  withRowAnimation:UITableViewRowAnimationFade];
+			break;
+	}
+	
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	
+	[self.tableView endUpdates];
+	
 }
 
 #pragma mark - Helper methods
@@ -45,18 +121,13 @@
 	UITextView *calculationView = ((CDAddReminderCell *)[self.tableView cellForRowAtIndexPath:indexPath]).textView;
 	CGFloat textViewWidth = calculationView.frame.size.width;
 	
-	if(!calculationView.attributedText) {
-		calculationView = [[UITextView alloc] init];
-		NSString *stringFromTextView = calculationView.text;// get the text from your datasource
-		NSDictionary *dict1 = @{NSFontAttributeName: [UIFont fontWithName:@"Helvetica Neue" size:14.0]}; //add attributes
-		calculationView.attributedText = [[NSAttributedString alloc] initWithString:stringFromTextView attributes:dict1];//insert here
-		textViewWidth = 290.0;
+	if (!calculationView) {
+		return 50;
 	}
+
 	
 	CGSize size = [calculationView sizeThatFits:CGSizeMake(textViewWidth, FLT_MAX)];
-	
 	return size.height;
-	
 }
 
 - (void)scrollToCursorForTextView:(UITextView *)textView {
@@ -135,52 +206,106 @@
 	
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.fetchedResultsController.sections[0].numberOfObjects inSection:0];
+	CDAddReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	
+	if ([text isEqualToString:@"\n"]) {
+		[textView resignFirstResponder];
+		
+		/* If we add a new reminder by using the last cell's textview, we create a new Reminder Instance
+		   Afterwards we set the cell's text back to empty.
+		 */
+		if (cell.textView == textView){
+			CDReminder *reminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
+			reminder.taskName = textView.text;
+			textView.text = @"";
+			
+			NSError *error;
+			if (![self.managedContext save:&error]) {
+				NSLog(@"An error occured: %@", error.localizedDescription);
+			}
+		}else {
+			/* 
+			 Case for Update cell
+			 */
+		}
+		return NO;
+	}
+	
+	return YES;
+	
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+	
 	if(self.tableView == scrollView) {
-		
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 		[[self.tableView cellForRowAtIndexPath:indexPath] resignFirstResponder];
 	}
+	
 }
 
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
 	return [self textViewHeightForRowAtIndexPath:indexPath];
+
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	
-	return 1;
+	return self.fetchedResultsController.sections.count;
 	
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
-	return self.count;
+	/* We want to return the number of items in the database plus a temporary cell in which the user can add
+	   another reminder when the cell its tapped */
+	return self.fetchedResultsController.sections[section].numberOfObjects + 1;
 	
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	if (indexPath.row % 2 == 0) {
-		CDAddReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+	CDReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+	
+	if (cell) {
+		if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
+			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			cell.textView.text = reminder.taskName;
+		}
 		cell.textView.delegate = self;
-		return cell;
 	}
 	
-	CDReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
-	cell.textView.delegate = self;
-	
 	return cell;
+	
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	self.count += 1;
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+	  toIndexPath:(NSIndexPath *)destinationIndexPath {
 	
-	[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:YES];
+	NSLog(@"MovedRow from row %ld, to row %ld", (long)sourceIndexPath.row, (long)destinationIndexPath.row);
+	
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		[self.managedContext deleteObject:reminderToDelete];
+		
+		NSError *error;
+		if (![self.managedContext save:&error]) {
+			NSLog(@"An error occured: %@", error.localizedDescription);
+		}
+	}
 	
 }
 

@@ -87,6 +87,11 @@
 	CDTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:@"Topic" inManagedObjectContext:self.managedContext];
 	topic.title = topicName;
 	
+	NSError *error;
+	if (![self.managedContext save:&error]) {
+		NSLog(@"An error occured: %@", error);
+	}
+	
 }
 
 #pragma mark - FetchedResultsController
@@ -149,7 +154,7 @@
 	
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
 	[self.tableView endUpdates];
 	
