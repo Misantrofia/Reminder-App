@@ -229,6 +229,8 @@
 		}else {
 			/* 
 			 Case for Update cell
+			 Is there any way of getting the indexPath from the superView of the textView? 
+			 so i can fetch that particular cell to update its content with the new one?
 			 */
 		}
 		return NO;
