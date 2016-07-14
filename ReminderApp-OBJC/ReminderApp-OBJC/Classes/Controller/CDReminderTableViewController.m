@@ -153,6 +153,8 @@
 	
 }
 
+#pragma mark - Keyboard specific methods
+
 - (BOOL)rectVisible:(CGRect)rect {
 	
 	CGRect visibleRect;
