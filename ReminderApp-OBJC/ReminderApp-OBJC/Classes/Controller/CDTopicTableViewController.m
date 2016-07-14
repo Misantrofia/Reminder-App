@@ -9,6 +9,7 @@
 #import "CDTopicTableViewController.h"
 #import "AppDelegate.h"
 #import "CDTopic.h"
+#import "CDReminderTableViewController.h"
 
 #pragma mark - Class extension
 
@@ -36,6 +37,15 @@
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
 		NSLog(@"An error occured: %@", error);
+	}
+	
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	
+	if ([segue.identifier isEqualToString:@"segueTopicControllerToReminderController"]) {
+		CDReminderTableViewController *destinationController = ((CDReminderTableViewController *)segue.destinationViewController);
+		destinationController.topic = ((CDTopic *) [self.fetchedResultsController objectAtIndexPath:self.tableView.indexPathForSelectedRow]);
 	}
 	
 }
@@ -210,47 +220,4 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//	
-//	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Edit Reminder"
-//																   message:@"Edit with format \n \t 'Name - hh:mm'"
-//															preferredStyle:UIAlertControllerStyleAlert];
-//	
-//	UIAlertAction *updateAction = [UIAlertAction actionWithTitle:@"Update"
-//														   style:UIAlertActionStyleDefault
-//														 handler:^(UIAlertAction *action) {
-//															 
-//															 NSString *inputText = alert.textFields.firstObject.text;
-//															 NSArray *components = [inputText componentsSeparatedByString:@"-"];
-//															 
-//															CDReminder *objectToUpdate = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//															 if (components.count > 1) {
-//																objectToUpdate.taskName = [components objectAtIndex:0];
-//																objectToUpdate.taskHoure = [components objectAtIndex:1];
-//															 } else {
-//																 NSLog(@"IndexOutOfBounds");
-//															 }
-//														 
-//															 NSError *error;
-//															 if (![self.managedContext save:&error]) {
-//															 	NSLog(@"An error occured %@", error);
-//															 }
-//				
-//															 [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-//															 
-//														 }];
-//	
-//	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-//														   style:UIAlertActionStyleDefault
-//														 handler:nil];
-//	
-//	[alert addTextFieldWithConfigurationHandler:nil];
-//	
-//	[alert addAction:updateAction];
-//	[alert addAction:cancelAction];
-//	
-//	[self presentViewController:alert animated:YES completion:nil];
-//	
-//}
-//
 @end

@@ -11,14 +11,12 @@
 #import "CDReminderCell.h"
 #import "AppDelegate.h"
 #import "CDReminder.h"
-#import "CDTopic.h"
 
 @interface CDReminderTableViewController () <UITextViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
-@property (nonatomic, strong) CDTopic *topic;
 
 @end
 

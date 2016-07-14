@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CDTopic.h"
 
 @interface CDReminderTableViewController : UITableViewController
+
+@property (nonatomic, strong) CDTopic *topic;
 
 @end
