@@ -41,12 +41,18 @@
 	
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
 	if ([segue.identifier isEqualToString:@"segueTopicControllerToReminderController"]) {
 		CDReminderTableViewController *destinationController = ((CDReminderTableViewController *)segue.destinationViewController);
 		destinationController.topic = ((CDTopic *) [self.fetchedResultsController objectAtIndexPath:self.tableView.indexPathForSelectedRow]);
 	}
+	
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	
+	[self.tableView reloadData];
 	
 }
 
