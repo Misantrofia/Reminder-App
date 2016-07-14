@@ -21,8 +21,10 @@
 @dynamic topic;
 
 -(void)awakeFromInsert {
+	
 	[super awakeFromInsert];
 	[self setValue:[NSDate date] forKey:@"creationDate"];
+	
 }
 
 @end

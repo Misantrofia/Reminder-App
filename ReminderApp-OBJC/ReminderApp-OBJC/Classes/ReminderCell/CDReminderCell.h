@@ -11,6 +11,5 @@
 @interface CDReminderCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) IBOutlet UILabel *noteLabel;
 
 @end
