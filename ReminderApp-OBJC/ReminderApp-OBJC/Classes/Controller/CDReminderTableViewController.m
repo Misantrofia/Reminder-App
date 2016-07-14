@@ -58,7 +58,10 @@
 	if (_fetchedResultsController == nil) {
 		NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Reminder"];
 		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
-		
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic.title LIKE %@", self.topic.title];
+  
+		[request setPredicate:pred];
+
 		request.sortDescriptors = @[sortDescriptor];
 		
 		_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
@@ -222,6 +225,8 @@
 		if (cell.textView == textView){
 			CDReminder *reminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
 			reminder.taskName = textView.text;
+			reminder.topic = self.topic;
+			
 			textView.text = @"";
 			
 			NSError *error;

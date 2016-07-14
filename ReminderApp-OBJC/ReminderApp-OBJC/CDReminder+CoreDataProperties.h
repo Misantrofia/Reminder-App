@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CDReminder (CoreDataProperties)
 
 @property (nullable, nonatomic, retain) NSString *note;
-@property (nullable, nonatomic, retain) NSString *priority;
+@property (nullable, nonatomic, retain) NSNumber *priority;
 @property (nullable, nonatomic, retain) NSDate *taskDate;
 @property (nullable, nonatomic, retain) NSString *taskName;
 @property (nullable, nonatomic, retain) NSDate *creationDate;

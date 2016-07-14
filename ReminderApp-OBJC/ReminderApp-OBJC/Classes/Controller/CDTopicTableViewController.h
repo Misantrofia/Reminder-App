@@ -10,6 +10,5 @@
 
 @interface CDTopicTableViewController : UITableViewController
 
-
 @end
 
