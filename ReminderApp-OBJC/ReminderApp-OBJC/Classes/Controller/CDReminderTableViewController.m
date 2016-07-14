@@ -125,9 +125,9 @@
 		return 50;
 	}
 
-	
 	CGSize size = [calculationView sizeThatFits:CGSizeMake(textViewWidth, FLT_MAX)];
 	return size.height;
+	
 }
 
 - (void)scrollToCursorForTextView:(UITextView *)textView {
@@ -227,11 +227,29 @@
 				NSLog(@"An error occured: %@", error.localizedDescription);
 			}
 		}else {
-			/* 
+			
+			/*
 			 Case for Update cell
-			 Is there any way of getting the indexPath from the superView of the textView? 
-			 so i can fetch that particular cell to update its content with the new one?
+			 We acces the cell in which the textView is in by accesing it's superview.superview
+			 Then we iterate through tableView's rows until we find the cell by computing indexPath with different row
+			 Once we find its match, we break the loop and update its content
 			 */
+
+			CDAddReminderCell *cellFromTextView = (CDAddReminderCell *)textView.superview.superview;
+			
+			for (int row = 0; row < ((int)self.fetchedResultsController.sections[0].numberOfObjects); row += 1) {
+				NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
+				if ([self.tableView cellForRowAtIndexPath:indexPath] == cellFromTextView) {
+					CDReminder *reminderToUpdate = [self.fetchedResultsController objectAtIndexPath:indexPath];
+					reminderToUpdate.taskName = textView.text;
+					break;
+				}
+			}
+
+			NSError *error;
+			if (![self.managedContext save:&error]) {
+				NSLog(@"An error occured: %@", error.localizedDescription);
+			}
 		}
 		return NO;
 	}
