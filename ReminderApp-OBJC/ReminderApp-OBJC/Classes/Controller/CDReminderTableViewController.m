@@ -122,6 +122,7 @@
 	CGFloat textViewWidth = calculationView.frame.size.width;
 	
 	if (!calculationView) {
+		textViewWidth = 290;
 		return 50;
 	}
 
@@ -233,6 +234,9 @@
 			 We acces the cell in which the textView is in by accesing it's superview.superview
 			 Then we iterate through tableView's rows until we find the cell by computing indexPath with different row
 			 Once we find its match, we break the loop and update its content
+			 
+			 OR: Can we pass somehow the event from the textView, to it's superview, way up to the cell. And then
+			 we can get use of indexPathForSelectedRow? (like in the WWDC video with the gesture events)
 			 */
 
 			CDAddReminderCell *cellFromTextView = (CDAddReminderCell *)textView.superview.superview;
