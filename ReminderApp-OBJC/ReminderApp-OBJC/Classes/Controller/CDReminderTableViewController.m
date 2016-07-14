@@ -318,8 +318,10 @@
 forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		[self.managedContext deleteObject:reminderToDelete];
+		if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
+			CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			[self.managedContext deleteObject:reminderToDelete];
+		}
 		
 		NSError *error;
 		if (![self.managedContext save:&error]) {
