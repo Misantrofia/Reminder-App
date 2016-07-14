@@ -11,22 +11,18 @@
 #import "CDReminderCell.h"
 #import "AppDelegate.h"
 #import "CDReminder.h"
+#import "CDTopic.h"
 
 @interface CDReminderTableViewController () <UITextViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
+@property (nonatomic, strong) CDTopic *topic;
 
 @end
 
 @implementation CDReminderTableViewController
-
-- (IBAction)detailAction:(id)sender {
-
-	NSLog(@"Pam");
-	
-}
 
 - (void)viewDidLoad {
 	
@@ -49,6 +45,13 @@
 	
 }
 
+#pragma mark - Specific action Buttons
+
+- (IBAction)detailAction:(id)sender {
+	
+	NSLog(@"Pam");
+	
+}
 
 #pragma mark - NSFetchResultsController
 
@@ -56,7 +59,7 @@
 	
 	if (_fetchedResultsController == nil) {
 		NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Reminder"];
-		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"taskName" ascending:YES];
+		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
 		
 		request.sortDescriptors = @[sortDescriptor];
 		
