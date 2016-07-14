@@ -38,12 +38,19 @@
 	
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
-		NSLog(@"An error occured: %@", error);
+		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
 	
 }
 
-#pragma mark - Specific action Buttons
+-(void)dealloc {
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+	
+}
+
+#pragma mark - Action methods for buttons
 
 - (IBAction)detailAction:(id)sender {
 	
@@ -57,12 +64,12 @@
 	
 	if (_fetchedResultsController == nil) {
 		NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Reminder"];
+		
 		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic.title LIKE %@", self.topic.title];
-  
-		[request setPredicate:pred];
-
 		request.sortDescriptors = @[sortDescriptor];
+		
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic.title LIKE %@", self.topic.title];
+		request.predicate = pred;
 		
 		_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
 																		managedObjectContext:self.managedContext
@@ -126,7 +133,6 @@
 	CGFloat textViewWidth = calculationView.frame.size.width;
 	
 	if (!calculationView) {
-		textViewWidth = 290;
 		return 50;
 	}
 
@@ -231,7 +237,7 @@
 			
 			NSError *error;
 			if (![self.managedContext save:&error]) {
-				NSLog(@"An error occured: %@", error.localizedDescription);
+				NSLog(@"Could not save a Reminder object:%@. \n An error occured: %@", reminder, error);
 			}
 		}else {
 			
@@ -252,13 +258,14 @@
 				if ([self.tableView cellForRowAtIndexPath:indexPath] == cellFromTextView) {
 					CDReminder *reminderToUpdate = [self.fetchedResultsController objectAtIndexPath:indexPath];
 					reminderToUpdate.taskName = textView.text;
+					
+					NSError *error;
+					if (![self.managedContext save:&error]) {
+						NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", reminderToUpdate, error);
+					}
+					
 					break;
 				}
-			}
-
-			NSError *error;
-			if (![self.managedContext save:&error]) {
-				NSLog(@"An error occured: %@", error.localizedDescription);
 			}
 		}
 		return NO;
@@ -331,11 +338,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 		if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
 			CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			[self.managedContext deleteObject:reminderToDelete];
-		}
-		
-		NSError *error;
-		if (![self.managedContext save:&error]) {
-			NSLog(@"An error occured: %@", error.localizedDescription);
+			
+			NSError *error;
+			if (![self.managedContext save:&error]) {
+				NSLog(@"Could not delete a Reminder object:%@. \n An error occured: %@", reminderToDelete, error);
+			}
+			
 		}
 	}
 	

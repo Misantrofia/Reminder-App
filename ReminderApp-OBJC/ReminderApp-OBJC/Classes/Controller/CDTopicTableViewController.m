@@ -36,7 +36,7 @@
 	
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
-		NSLog(@"An error occured: %@", error);
+		NSLog(@"Could not perform a fetch for Topic entity, an error occured: %@", error);
 	}
 	
 }
@@ -50,7 +50,7 @@
 	
 }
 
-#pragma mark - Specific action buttons
+#pragma mark - Action methods for buttons
 
 - (IBAction)editTapped:(id)sender {
 
@@ -74,8 +74,8 @@
 														 style:UIAlertActionStyleDefault
 													   handler:^(UIAlertAction	*action) {
 														   
-														   NSString *textField = alert.textFields.firstObject.text;
-														   [self saveTask:textField];
+														   NSString *topicName = alert.textFields.firstObject.text;
+														   [self saveTopicWithName:topicName];
 													   } ];
 	
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
@@ -92,14 +92,14 @@
 
 #pragma mark - Helper func for addTapped
 
-- (void) saveTask:(NSString *)topicName {
+- (void) saveTopicWithName:(NSString *)topicName {
 	
 	CDTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:@"Topic" inManagedObjectContext:self.managedContext];
 	topic.title = topicName;
 	
 	NSError *error;
 	if (![self.managedContext save:&error]) {
-		NSLog(@"An error occured: %@", error);
+		NSLog(@"Could not save the Topic object:%@ An error occured: %@", topic, error);
 	}
 	
 }
@@ -192,6 +192,7 @@
 		CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
 		cell.textLabel.text = topic.title;
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",topic.reminders.count];
 	}
 	
 	return cell;
@@ -214,7 +215,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 		
 		NSError *error;
 		if (![self.managedContext save:&error]) {
-			NSLog(@"An error occured: %@", error.localizedDescription);
+			NSLog(@"Could not delete the Topic object:%@ An error occured: %@", topicToDelete, error);
 		}
 	}
 	
