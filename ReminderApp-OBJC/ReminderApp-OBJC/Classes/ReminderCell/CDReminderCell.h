@@ -7,9 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CDReminder.h"
 
-@interface CDReminderCell : UITableViewCell
+@class CDReminderCell;
 
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@protocol CDReminderCellDelegate
+
+- (void)reminderCell:(CDReminderCell *)cell wantsToSaveReminder:(CDReminder *)reminder;
+
+@end
+
+@interface CDReminderCell : UITableViewCell <UITextViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UITextView *textView;
+@property (nonatomic, weak) id <CDReminderCellDelegate> delegate;
 
 @end

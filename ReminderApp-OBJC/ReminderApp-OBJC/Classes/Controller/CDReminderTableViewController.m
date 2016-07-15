@@ -12,7 +12,7 @@
 #import "AppDelegate.h"
 #import "CDReminder.h"
 
-@interface CDReminderTableViewController () <UITextViewDelegate, NSFetchedResultsControllerDelegate>
+@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -40,6 +40,13 @@
 		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
 	
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+	
+	NSLog(@"DidChange \n");
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
 }
 
 #pragma mark - Action methods for buttons
@@ -117,126 +124,13 @@
 	
 }
 
-#pragma mark - Helper methods
+#pragma mark - CDAddReminderCellDelegate + CDReminderCellDelegate
 
-- (CGFloat)textViewHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	UITextView *calculationView = ((CDAddReminderCell *)[self.tableView cellForRowAtIndexPath:indexPath]).textView;
-	CGFloat textViewWidth = calculationView.frame.size.width;
-	
-	if (!calculationView) {
-		return 50;
-	}
-
-	CGSize size = [calculationView sizeThatFits:CGSizeMake(textViewWidth, FLT_MAX)];
-	return size.height;
+- (void)reminderCell:(CDReminderCell *)cell wantsToSaveReminder:(CDReminder *)reminder {
 	
 }
 
-- (void)scrollToCursorForTextView:(UITextView *)textView {
-	
-	CGRect cursorRect = [textView caretRectForPosition:textView.selectedTextRange.start];
-	cursorRect = [self.tableView convertRect:cursorRect fromView:textView];
-	
-	if (![self rectVisible:cursorRect]) {
-		cursorRect.size.height += 8;
-		[self.tableView scrollRectToVisible:cursorRect animated:YES];
-	}
-	
-}
-
-#pragma mark - Keyboard specific methods
-
-- (BOOL)rectVisible:(CGRect)rect {
-	
-	CGRect visibleRect;
-	visibleRect.origin = self.tableView.contentOffset;
-	visibleRect.origin.y += self.tableView.contentInset.top;
-	visibleRect.size = self.tableView.bounds.size;
-	visibleRect.size.height -= self.tableView.contentInset.top + self.tableView.contentInset.bottom;
-	
-	return CGRectContainsRect(visibleRect, rect);
-	
-}
-
-#pragma mark - UITextViewDelegate
-
-- (void)textViewDidBeginEditing:(UITextView *)textView {
-	
-	NSLog(@"Begin editing \n");
-	[self scrollToCursorForTextView:textView];
-	
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-	
-	NSLog(@"End edititing \n");
-	
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-	
-	NSLog(@"DidChange \n");
-	
-	[self scrollToCursorForTextView:textView];
-	
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-	
-	NSIndexPath *lastIndexPathFromFirstSection = [NSIndexPath indexPathForRow:self.fetchedResultsController.sections[0].numberOfObjects inSection:0];
-	CDAddReminderCell *createReminderCell = [self.tableView cellForRowAtIndexPath:lastIndexPathFromFirstSection];
-	
-	if ([text isEqualToString:@"\n"]) {
-		[textView resignFirstResponder];
-		
-		/* If we add a new reminder by using the last cell's textview, we create a new Reminder Instance
-		   Afterwards we set the cell's text back to empty.
-		 */
-		if (createReminderCell.textView == textView){
-			CDReminder *reminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
-			reminder.taskName = textView.text;
-			reminder.topic = self.topic;
-			
-			textView.text = @"";
-			
-			NSError *error;
-			if (![self.managedContext save:&error]) {
-				NSLog(@"Could not save a Reminder object:%@. \n An error occured: %@", reminder, error);
-			}
-		}else {
-			
-			/*
-			 Case for Update cell
-			 We acces the cell in which the textView is in by accesing it's superview.superview
-			 Then we iterate through tableView's rows until we find the cell by computing indexPath with different row
-			 Once we find its match, we break the loop and update its content
-			 
-			 OR: Can we pass somehow the event from the textView, to it's superview, way up to the cell. And then
-			 we can get use of indexPathForSelectedRow? (like in the WWDC video with the gesture events)
-			 */
-
-			CDAddReminderCell *cellFromTextView = (CDAddReminderCell *)textView.superview.superview;
-			
-			for (int row = 0; row < ((int)self.fetchedResultsController.sections[0].numberOfObjects); row += 1) {
-				NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-				if ([self.tableView cellForRowAtIndexPath:indexPath] == cellFromTextView) {
-					CDReminder *reminderToUpdate = [self.fetchedResultsController objectAtIndexPath:indexPath];
-					reminderToUpdate.taskName = textView.text;
-					
-					NSError *error;
-					if (![self.managedContext save:&error]) {
-						NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", reminderToUpdate, error);
-					}
-					
-					break;
-				}
-			}
-		}
-		return NO;
-	}
-	
-	return YES;
+- (void)addReminderCell:(CDAddReminderCell *)cell wantsToAddReminder:(CDReminder *)reminder {
 	
 }
 
@@ -252,14 +146,6 @@
 		[[self.tableView cellForRowAtIndexPath:indexPath] resignFirstResponder];
 	}
 	
-}
-
-#pragma mark - Table view data source
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	return [self textViewHeightForRowAtIndexPath:indexPath];
-
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -278,14 +164,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	CDReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+	CDReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
 	
 	if (cell) {
 		if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
 			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			cell.textView.text = reminder.taskName;
 		}
-		cell.textView.delegate = self;
+		cell.delegate = self;
 	}
 	
 	return cell;
