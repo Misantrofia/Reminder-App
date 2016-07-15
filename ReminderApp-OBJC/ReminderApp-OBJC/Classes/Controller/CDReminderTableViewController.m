@@ -33,26 +33,12 @@
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.estimatedRowHeight = 100;
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
-												 name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
-												 name:UIKeyboardWillHideNotification object:nil];
-	
 	self.managedContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
 	
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
 		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
-	
-}
-
--(void)dealloc {
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self
-													name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self
-													name:UIKeyboardWillHideNotification object:nil];
 	
 }
 
@@ -173,32 +159,6 @@
 	
 }
 
-- (void)keyboardWillShow:(NSNotification *)aNotification {
-	
-	NSDictionary* info = [aNotification userInfo];
-	CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-	
-	UIEdgeInsets contentInsets = UIEdgeInsetsMake(self.tableView.contentInset.top, 0.0, kbSize.height, 0.0);
-	
-	self.tableView.contentInset = contentInsets;
-	self.tableView.scrollIndicatorInsets = contentInsets;
-	
-}
-
-- (void)keyboardWillHide:(NSNotification*)aNotification {
-	
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.35];
-	
-	UIEdgeInsets contentInsets = UIEdgeInsetsMake(self.tableView.contentInset.top, 0.0, 0.0, 0.0);
-	
-	self.tableView.contentInset = contentInsets;
-	self.tableView.scrollIndicatorInsets = contentInsets;
-	
-	[UIView commitAnimations];
-	
-}
-
 #pragma mark - UITextViewDelegate
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
@@ -218,17 +178,14 @@
 	
 	NSLog(@"DidChange \n");
 	
-	[self.tableView beginUpdates];
-	[self.tableView endUpdates];
-	
 	[self scrollToCursorForTextView:textView];
 	
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 	
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.fetchedResultsController.sections[0].numberOfObjects inSection:0];
-	CDAddReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+	NSIndexPath *lastIndexPathFromFirstSection = [NSIndexPath indexPathForRow:self.fetchedResultsController.sections[0].numberOfObjects inSection:0];
+	CDAddReminderCell *createReminderCell = [self.tableView cellForRowAtIndexPath:lastIndexPathFromFirstSection];
 	
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
@@ -236,7 +193,7 @@
 		/* If we add a new reminder by using the last cell's textview, we create a new Reminder Instance
 		   Afterwards we set the cell's text back to empty.
 		 */
-		if (cell.textView == textView){
+		if (createReminderCell.textView == textView){
 			CDReminder *reminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
 			reminder.taskName = textView.text;
 			reminder.topic = self.topic;
@@ -287,6 +244,9 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	
+	/* This was just an example, adapt this to work properly for all the cases. Do the changes
+	 after the scrolling logic is removed.
+	*/
 	if(self.tableView == scrollView) {
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 		[[self.tableView cellForRowAtIndexPath:indexPath] resignFirstResponder];

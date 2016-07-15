@@ -192,7 +192,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SimpleReminderCell"];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TopicCell"];
 	
 	if (cell) {
 		CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];

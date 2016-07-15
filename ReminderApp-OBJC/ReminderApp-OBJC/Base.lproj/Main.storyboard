@@ -134,7 +134,7 @@
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="sectionIndexColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SimpleReminderCell" textLabel="ZVk-ec-0tR" detailTextLabel="XTZ-iF-X2A" imageView="gY2-SX-J9G" style="IBUITableViewCellStyleValue1" id="7gN-Ei-46K">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopicCell" textLabel="ZVk-ec-0tR" detailTextLabel="XTZ-iF-X2A" imageView="gY2-SX-J9G" style="IBUITableViewCellStyleValue1" id="7gN-Ei-46K">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7gN-Ei-46K" id="qlf-g3-cfI">
