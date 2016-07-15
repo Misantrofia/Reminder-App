@@ -13,10 +13,10 @@
 
 #pragma mark - UITextViewDelegate
 
-- (void)textViewDidChange:(UITextView *)textView {
-	
-	NSLog(@"DidChange \n");
-}
+//- (void)textViewDidChange:(UITextView *)textView {
+//	
+//	NSLog(@"DidChange \n");
+//}
 
 //- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
 //	
