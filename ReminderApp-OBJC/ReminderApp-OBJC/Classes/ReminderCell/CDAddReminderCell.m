@@ -8,6 +8,43 @@
 
 #import "CDAddReminderCell.h"
 
+@interface CDAddReminderCell () <UITextViewDelegate>
+
+@end
+
 @implementation CDAddReminderCell
+
+- (void)setupCell {
+	
+	self.textView.delegate = self;
+	
+}
+
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView {
+	
+	NSLog(@"DidChange \n");
+	
+	[self.delegate addReminderCell:self wantsToResizeTextView:textView];
+	
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	
+	if ([text isEqualToString:@"\n"]) {
+		[textView resignFirstResponder];
+		
+		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text];
+		self.textView.text = @"";
+		
+		return NO;
+	}
+	
+	return YES;
+
+
+}
 
 @end

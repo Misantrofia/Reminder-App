@@ -13,13 +13,16 @@
 
 @protocol CDAddReminderCellDelegate
 
-- (void)addReminderCell:(CDAddReminderCell *)cell wantsToAddReminder:(CDReminder *)reminder;
+- (void)addReminderCell:(CDAddReminderCell *)cell wantsToAddReminderWithText:(NSString *)reminderText;
+- (void)addReminderCell:(CDAddReminderCell *)cell wantsToResizeTextView:(UITextView *)textView;
 
 @end
 
-@interface CDAddReminderCell : UITableViewCell <UITextViewDelegate>
+@interface CDAddReminderCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDAddReminderCellDelegate> delegate;
+
+- (void)setupCell;
 
 @end

@@ -14,12 +14,15 @@
 @protocol CDReminderCellDelegate
 
 - (void)reminderCell:(CDReminderCell *)cell wantsToSaveReminder:(CDReminder *)reminder;
-
+- (void)reminderCell:(CDReminderCell *)cell wantsToResizeTextView:(UITextView *)textView;
+	
 @end
 
-@interface CDReminderCell : UITableViewCell <UITextViewDelegate>
+@interface CDReminderCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDReminderCellDelegate> delegate;
+
+- (void)updateWithReminder:(CDReminder *)reminder;
 
 @end

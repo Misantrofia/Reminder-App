@@ -26,8 +26,8 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" image="Pluse-128" translatesAutoresizingMaskIntoConstraints="NO" id="MxZ-RS-1cF">
                                             <rect key="frame" x="19" y="8" width="27" height="27"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="27" id="Hsb-U0-NxE"/>
-                                                <constraint firstAttribute="height" constant="27" id="bJP-fj-HvP"/>
+                                                <constraint firstAttribute="height" constant="27" id="MmZ-AT-lYa"/>
+                                                <constraint firstAttribute="width" constant="27" id="wQG-tS-eXE"/>
                                             </constraints>
                                         </imageView>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="T28-1u-WLY">
@@ -44,27 +44,17 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="MxZ-RS-1cF" firstAttribute="centerY" secondItem="phh-o7-2Vm" secondAttribute="centerY" id="3As-Zk-AMb"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Jcx-W7-RhW" secondAttribute="trailing" id="DPH-mc-mAl"/>
-                                        <constraint firstItem="Jcx-W7-RhW" firstAttribute="leading" secondItem="T28-1u-WLY" secondAttribute="trailing" constant="17" id="J8y-32-2oj"/>
-                                        <constraint firstItem="Jcx-W7-RhW" firstAttribute="centerY" secondItem="phh-o7-2Vm" secondAttribute="centerY" id="OIU-Jl-ctg"/>
-                                        <constraint firstItem="T28-1u-WLY" firstAttribute="top" secondItem="phh-o7-2Vm" secondAttribute="topMargin" constant="-1" id="SBT-nI-HhL"/>
-                                        <constraint firstItem="T28-1u-WLY" firstAttribute="leading" secondItem="MxZ-RS-1cF" secondAttribute="trailing" constant="15" id="Tbj-rx-zM8"/>
-                                        <constraint firstItem="MxZ-RS-1cF" firstAttribute="leading" secondItem="phh-o7-2Vm" secondAttribute="leadingMargin" constant="11" id="XEf-rc-9CJ"/>
-                                        <constraint firstItem="T28-1u-WLY" firstAttribute="height" secondItem="phh-o7-2Vm" secondAttribute="height" id="tJc-ab-O56"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="T28-1u-WLY" secondAttribute="trailing" constant="40" id="xKh-lM-LaH"/>
+                                        <constraint firstItem="T28-1u-WLY" firstAttribute="leading" secondItem="MxZ-RS-1cF" secondAttribute="trailing" constant="15" id="9lr-tY-Joc"/>
+                                        <constraint firstItem="Jcx-W7-RhW" firstAttribute="centerY" secondItem="phh-o7-2Vm" secondAttribute="centerY" id="QUO-eO-uR8"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="T28-1u-WLY" secondAttribute="bottom" constant="-2" id="bne-ZD-VdW"/>
+                                        <constraint firstItem="Jcx-W7-RhW" firstAttribute="leading" secondItem="T28-1u-WLY" secondAttribute="trailing" constant="17" id="ffZ-Sw-zLd"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Jcx-W7-RhW" secondAttribute="trailing" id="iVm-Lb-8vY"/>
+                                        <constraint firstItem="MxZ-RS-1cF" firstAttribute="leading" secondItem="phh-o7-2Vm" secondAttribute="leadingMargin" constant="11" id="jDG-7A-nC3"/>
+                                        <constraint firstItem="T28-1u-WLY" firstAttribute="top" secondItem="phh-o7-2Vm" secondAttribute="topMargin" constant="-1" id="t0v-fI-iz5"/>
+                                        <constraint firstItem="MxZ-RS-1cF" firstAttribute="centerY" secondItem="phh-o7-2Vm" secondAttribute="centerY" id="wtg-OE-Hk1"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="tJc-ab-O56"/>
-                                            <exclude reference="xKh-lM-LaH"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <gestureRecognizers/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="T28-1u-WLY" secondAttribute="bottom" constant="7" id="saC-2v-9bL"/>
-                                </constraints>
                                 <connections>
                                     <outlet property="textView" destination="T28-1u-WLY" id="3xq-pN-veI"/>
                                 </connections>

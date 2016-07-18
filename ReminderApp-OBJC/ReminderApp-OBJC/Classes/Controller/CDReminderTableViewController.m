@@ -12,7 +12,7 @@
 #import "AppDelegate.h"
 #import "CDReminder.h"
 
-@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate, UITextViewDelegate>
+@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate>
 
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -33,7 +33,7 @@
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.estimatedRowHeight = 100;
 	
-	self.managedContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
+	self.managedContext = ((AppDelegate *)[UIApplication sharedApplication].delegate).managedObjectContext;
 	
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
@@ -60,7 +60,7 @@
 		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
 		request.sortDescriptors = @[sortDescriptor];
 		
-		NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic.title LIKE %@", self.topic.title];
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", self.topic];
 		request.predicate = pred;
 		
 		_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
@@ -96,9 +96,9 @@
 								  withRowAnimation:UITableViewRowAnimationFade];
 			break;
 		case NSFetchedResultsChangeUpdate: {
-			CDAddReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+			CDReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 			CDReminder *reminderItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-			cell.textLabel.text = reminderItem.taskName;
+			[cell updateWithReminder:reminderItem];
 		}
 			break;
 		case NSFetchedResultsChangeMove:
@@ -119,23 +119,46 @@
 
 #pragma mark - CDAddReminderCellDelegate + CDReminderCellDelegate
 
-- (void)reminderCell:(CDReminderCell *)cell wantsToSaveReminder:(CDReminder *)reminder {
+- (void)reminderCell:(CDReminderCell *)reminderCell wantsToSaveReminder:(CDReminder *)reminder {
+	
+	NSError *error;
+	if (![self.managedContext save:&error]) {
+		NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", reminder, error);
+	}
 	
 }
 
-- (void)addReminderCell:(CDAddReminderCell *)cell wantsToAddReminder:(CDReminder *)reminder {
-	
-}
-
-#pragma mark - UITextViewDelegate
-
-- (void)textViewDidChange:(UITextView *)textView {
-	
-	NSLog(@"DidChange \n");
+- (void)reminderCell:(CDReminderCell *)reminderCell wantsToResizeTextView:(UITextView *)textView {
 	
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
+	
 }
+
+- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToAddReminderWithText:(NSString *)reminderText {
+	
+	CDReminder *newReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
+	newReminder.topic = self.topic;
+	newReminder.taskName = reminderText;
+	
+	
+	NSError *error;
+	if (![self.managedContext save:&error]) {
+		NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", newReminder, error);
+	}
+	
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:addRemindercell];
+	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+	
+}
+
+- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToResizeTextView:(UITextView *)textView {
+	
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+	
+}
+
 
 #pragma mark - UIScrollViewDelegate
 
@@ -150,6 +173,7 @@
 //	}
 //	
 //}
+
 
 #pragma mark - Table view data source
 
@@ -169,18 +193,28 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	CDReminderCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
-	
-	if (cell) {
-		if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
+	if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
+		CDReminderCell *reminderCell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
+		
+		if (reminderCell) {
+			reminderCell.delegate = self;
 			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
-			cell.textView.text = reminder.taskName;
+			[reminderCell updateWithReminder:reminder];
+			
+			return reminderCell;
 		}
-		cell.textView.delegate = self;
-		cell.delegate = self;
+	} else {
+		CDAddReminderCell *addCell = [tableView dequeueReusableCellWithIdentifier:@"AddReminderCell" forIndexPath:indexPath];
+		
+		if (addCell) {
+			[addCell setupCell];
+			addCell.delegate = self;
+			
+			return addCell;
+		}
 	}
 	
-	return cell;
+	return nil;
 	
 }
 
@@ -195,7 +229,7 @@
 forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
+		if ([[self.tableView cellForRowAtIndexPath:indexPath] isKindOfClass:[CDReminderCell class]]) {
 			CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			[self.managedContext deleteObject:reminderToDelete];
 			
@@ -203,7 +237,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 			if (![self.managedContext save:&error]) {
 				NSLog(@"Could not delete a Reminder object:%@. \n An error occured: %@", reminderToDelete, error);
 			}
-			
 		}
 	}
 	
