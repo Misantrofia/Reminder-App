@@ -20,8 +20,17 @@
 
 @interface CDReminderCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewToDateBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewToNoteBottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewToCellBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateToNote;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateToCellBottom;
+
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDReminderCellDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UILabel *date;
+@property (weak, nonatomic) IBOutlet UILabel *note;
+@property (weak, nonatomic) IBOutlet UILabel *priority;
 
 - (void)updateWithReminder:(CDReminder *)reminder;
 

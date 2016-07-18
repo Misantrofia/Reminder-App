@@ -140,7 +140,8 @@
 	CDReminder *newReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
 	newReminder.topic = self.topic;
 	newReminder.taskName = reminderText;
-	
+	newReminder.taskDate = [NSDate date];
+	//newReminder.priority = [NSNumber numberWithInteger:1];
 	
 	NSError *error;
 	if (![self.managedContext save:&error]) {
@@ -207,7 +208,6 @@
 		CDAddReminderCell *addCell = [tableView dequeueReusableCellWithIdentifier:@"AddReminderCell" forIndexPath:indexPath];
 		
 		if (addCell) {
-			[addCell setupCell];
 			addCell.delegate = self;
 			
 			return addCell;

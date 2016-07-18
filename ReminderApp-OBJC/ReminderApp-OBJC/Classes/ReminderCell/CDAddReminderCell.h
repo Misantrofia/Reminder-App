@@ -23,6 +23,4 @@
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDAddReminderCellDelegate> delegate;
 
-- (void)setupCell;
-
 @end

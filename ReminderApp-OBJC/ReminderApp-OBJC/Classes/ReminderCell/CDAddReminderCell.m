@@ -14,8 +14,9 @@
 
 @implementation CDAddReminderCell
 
-- (void)setupCell {
+- (void)awakeFromNib {
 	
+	[super awakeFromNib];
 	self.textView.delegate = self;
 	
 }
