@@ -1,26 +1,24 @@
 //
-//  ViewController.m
+//  CDReminderTableViewController.m
 //  ReminderApp-OBJC
 //
-//  Created by Catalin David on 01/07/16.
+//  Created by Catalin David on 11/07/16.
 //  Copyright © 2016 Catalin David. All rights reserved.
 //
 
 #import "CDReminderTableViewController.h"
+#import "CDAddReminderCell.h"
+#import "CDReminderCell.h"
 #import "AppDelegate.h"
 #import "CDReminder.h"
 
-#pragma mark - Class extension
+@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate>
 
-@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate>
-
-@property (nonatomic, weak) IBOutlet UIBarButtonItem *editButton;
+@property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
 
 @end
-
-#pragma mark - Class implementation
 
 @implementation CDReminderTableViewController
 
@@ -28,87 +26,47 @@
 	
 	[super viewDidLoad];
 	
-	self.editButton.title = @"Edit";
-	self.title = @"Reminder";
+	self.count = 1;
 	
-	self.managedContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
+	self.title = self.topic.title;
+	
+	self.tableView.rowHeight = UITableViewAutomaticDimension;
+	self.tableView.estimatedRowHeight = 100;
+	
+	self.managedContext = ((AppDelegate *)[UIApplication sharedApplication].delegate).managedObjectContext;
 	
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
-		NSLog(@"An error occured: %@", error);
+		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
 	
 }
 
-#pragma mark - Specific action buttons
+#pragma mark - Action methods for buttons
 
-- (IBAction)editTapped:(id)sender {
-
-	if (self.tableView.editing) {
-		self.editButton.title = @"Edit";
-		self.tableView.editing = NO;
-	} else {
-		self.editButton.title = @"Back";
-		self.tableView.editing = YES;
-	}
+- (IBAction)detailAction:(id)sender {
+	
+	NSLog(@"Pam");
 	
 }
 
-- (IBAction)addTapped:(id)sender {
-	
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"New Reminder"
-																   message:@"Add a new task with format \n \t ' Name - hh:mm'"
-															preferredStyle:UIAlertControllerStyleAlert];
-	
-	UIAlertAction *saveAction = [UIAlertAction actionWithTitle:@"Save"
-														 style:UIAlertActionStyleDefault
-													   handler:^(UIAlertAction	*action) {
-														   
-														   NSString *textField = alert.textFields.firstObject.text;
-														   NSArray<NSString *> *result = [textField componentsSeparatedByString:@"-"];
-														   
-														   if (result.count > 1) {
-															   [self saveTask:result[0] taskHoure:result[1]];
-														   }
-														   
-													   } ];
-	
-	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-														   style:UIAlertActionStyleDefault
-														 handler:nil];
-	
-	[alert addTextFieldWithConfigurationHandler:nil];
-	[alert addAction:saveAction];
-	[alert addAction:cancelAction];
-	
-	[self presentViewController:alert animated:YES completion:nil];
-	
-}
-
-#pragma mark - Helper func for addTapped
-
-- (void) saveTask:(NSString *)taskName taskHoure:(NSString *)taskHoure {
-	
-	CDReminder *object = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
-	object.taskName = taskName;
-	object.taskHoure = taskHoure;
-	
-}
-
-#pragma mark - FetchedResultsController
+#pragma mark - NSFetchResultsController
 
 - (NSFetchedResultsController *)fetchedResultsController {
-
+	
 	if (_fetchedResultsController == nil) {
-		NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Reminder"];
-		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"taskName"
-															   ascending:YES];
+		NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Reminder"];
 		
-		fetch.sortDescriptors = @[sort];
-		_fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:fetch
-																	   managedObjectContext:self.managedContext
-																		 sectionNameKeyPath:nil
-																				  cacheName:nil];
+		NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+		request.sortDescriptors = @[sortDescriptor];
+		
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", self.topic];
+		request.predicate = pred;
+		
+		_fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+																		managedObjectContext:self.managedContext
+																		  sectionNameKeyPath:nil
+																				   cacheName:nil];
 		_fetchedResultsController.delegate = self;
 	}
 	
@@ -116,7 +74,7 @@
 	
 }
 
-#pragma mark - NSFetchedResultsControllerDelegate
+#pragma mark - NSFetchResultsControllerDelegate
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
 	
@@ -129,65 +87,134 @@
 	  newIndexPath:(NSIndexPath *)newIndexPath {
 	
 	switch (type) {
-		case NSFetchedResultsChangeInsert:
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+  		case NSFetchedResultsChangeInsert:
+			[self.tableView insertRowsAtIndexPaths:@[newIndexPath]
 								  withRowAnimation:UITableViewRowAnimationFade];
 			break;
 		case NSFetchedResultsChangeDelete:
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+			[self.tableView deleteRowsAtIndexPaths:@[indexPath]
 								  withRowAnimation:UITableViewRowAnimationFade];
 			break;
 		case NSFetchedResultsChangeUpdate: {
-			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+			CDReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 			CDReminder *reminderItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-			cell.textLabel.text = reminderItem.taskName;
-			cell.detailTextLabel.text = reminderItem.taskHoure;
+			[cell updateWithReminder:reminderItem];
 		}
 			break;
 		case NSFetchedResultsChangeMove:
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+			[self.tableView deleteRowsAtIndexPaths:@[indexPath]
 								  withRowAnimation:UITableViewRowAnimationFade];
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+			[self.tableView insertRowsAtIndexPaths:@[newIndexPath]
 								  withRowAnimation:UITableViewRowAnimationFade];
-			break;
-		default:
 			break;
 	}
 	
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
 	[self.tableView endUpdates];
 	
 }
 
-#pragma mark - DataSource and Delegate
+#pragma mark - CDAddReminderCellDelegate + CDReminderCellDelegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *) tableView {
+- (void)reminderCell:(CDReminderCell *)reminderCell wantsToSaveReminder:(CDReminder *)reminder {
+	
+	NSError *error;
+	if (![self.managedContext save:&error]) {
+		NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", reminder, error);
+	}
+	
+}
+
+- (void)reminderCell:(CDReminderCell *)reminderCell wantsToResizeTextView:(UITextView *)textView {
+	
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+	
+}
+
+- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToAddReminderWithText:(NSString *)reminderText {
+	
+	CDReminder *newReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
+	newReminder.topic = self.topic;
+	newReminder.taskName = reminderText;
+	
+	
+	NSError *error;
+	if (![self.managedContext save:&error]) {
+		NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", newReminder, error);
+	}
+	
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:addRemindercell];
+	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+	
+}
+
+- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToResizeTextView:(UITextView *)textView {
+	
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+	
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//	
+//	/* This was just an example, adapt this to work properly for all the cases. Do the changes
+//	 after the scrolling logic is removed.
+//	*/
+//	if(self.tableView == scrollView) {
+//		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//		[[self.tableView cellForRowAtIndexPath:indexPath] resignFirstResponder];
+//	}
+//	
+//}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	
 	return self.fetchedResultsController.sections.count;
-
+	
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
-	return self.fetchedResultsController.sections[section].numberOfObjects;
-
+	
+	/* We want to return the number of items in the database plus a temporary cell in which the user can add
+	   another reminder when the cell its tapped */
+	return self.fetchedResultsController.sections[section].numberOfObjects + 1;
+	
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SimpleReminderCell"];
-	
-	if (cell) {
-		CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	
-		cell.textLabel.text = reminder.taskName;
-		cell.detailTextLabel.text = reminder.taskHoure;
+	if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
+		CDReminderCell *reminderCell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
+		
+		if (reminderCell) {
+			reminderCell.delegate = self;
+			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			[reminderCell updateWithReminder:reminder];
+			
+			return reminderCell;
+		}
+	} else {
+		CDAddReminderCell *addCell = [tableView dequeueReusableCellWithIdentifier:@"AddReminderCell" forIndexPath:indexPath];
+		
+		if (addCell) {
+			[addCell setupCell];
+			addCell.delegate = self;
+			
+			return addCell;
+		}
 	}
 	
-	return cell;
+	return nil;
 	
 }
 
@@ -202,57 +229,16 @@
 forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		[self.managedContext deleteObject:reminderToDelete];
-		
-		NSError *error;
-		if (![self.managedContext save:&error]) {
-			NSLog(@"An error occured: %@", error.localizedDescription);
+		if ([[self.tableView cellForRowAtIndexPath:indexPath] isKindOfClass:[CDReminderCell class]]) {
+			CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			[self.managedContext deleteObject:reminderToDelete];
+			
+			NSError *error;
+			if (![self.managedContext save:&error]) {
+				NSLog(@"Could not delete a Reminder object:%@. \n An error occured: %@", reminderToDelete, error);
+			}
 		}
 	}
-	
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Edit Reminder"
-																   message:@"Edit with format \n \t 'Name - hh:mm'"
-															preferredStyle:UIAlertControllerStyleAlert];
-	
-	UIAlertAction *updateAction = [UIAlertAction actionWithTitle:@"Update"
-														   style:UIAlertActionStyleDefault
-														 handler:^(UIAlertAction *action) {
-															 
-															 NSString *inputText = alert.textFields.firstObject.text;
-															 NSArray *components = [inputText componentsSeparatedByString:@"-"];
-															 
-															CDReminder *objectToUpdate = [self.fetchedResultsController objectAtIndexPath:indexPath];
-															 if (components.count > 1) {
-																objectToUpdate.taskName = [components objectAtIndex:0];
-																objectToUpdate.taskHoure = [components objectAtIndex:1];
-															 } else {
-																 NSLog(@"IndexOutOfBounds");
-															 }
-														 
-															 NSError *error;
-															 if (![self.managedContext save:&error]) {
-															 	NSLog(@"An error occured %@", error);
-															 }
-				
-															 [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-															 
-														 }];
-	
-	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
-														   style:UIAlertActionStyleDefault
-														 handler:nil];
-	
-	[alert addTextFieldWithConfigurationHandler:nil];
-	
-	[alert addAction:updateAction];
-	[alert addAction:cancelAction];
-	
-	[self presentViewController:alert animated:YES completion:nil];
 	
 }
 

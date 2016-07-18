@@ -1,19 +1,19 @@
 //
-//  Reminder.h
+//  CDReminder.h
 //  ReminderApp-OBJC
 //
-//  Created by Catalin David on 01/07/16.
+//  Created by Catalin David on 14/07/16.
 //  Copyright © 2016 Catalin David. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class CDTopic;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CDReminder : NSManagedObject
-
-// Insert code here to declare functionality of your managed object subclass
 
 @end
 
