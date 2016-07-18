@@ -12,7 +12,7 @@
 #import "AppDelegate.h"
 #import "CDReminder.h"
 
-@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate, UIScrollViewDelegate>
+@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate, UITextViewDelegate>
 
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -40,13 +40,6 @@
 		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
 	
-}
-
-- (void)textViewDidChange:(UITextView *)textView {
-	
-	NSLog(@"DidChange \n");
-	[self.tableView beginUpdates];
-	[self.tableView endUpdates];
 }
 
 #pragma mark - Action methods for buttons
@@ -134,6 +127,16 @@
 	
 }
 
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView {
+	
+	NSLog(@"DidChange \n");
+	
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 //- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -147,6 +150,8 @@
 //	}
 //	
 //}
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	
@@ -171,6 +176,7 @@
 			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			cell.textView.text = reminder.taskName;
 		}
+		cell.textView.delegate = self;
 		cell.delegate = self;
 	}
 	
