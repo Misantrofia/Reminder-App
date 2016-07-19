@@ -98,8 +98,9 @@
 		case NSFetchedResultsChangeUpdate: {
 			CDReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 			CDReminder *reminderItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			[self.tableView setNeedsUpdateConstraints];
 			[cell updateWithReminder:reminderItem];
-		}
+			}
 			break;
 		case NSFetchedResultsChangeMove:
 			[self.tableView deleteRowsAtIndexPaths:@[indexPath]
@@ -141,7 +142,6 @@
 	newReminder.topic = self.topic;
 	newReminder.taskName = reminderText;
 	
-	
 	NSError *error;
 	if (![self.managedContext save:&error]) {
 		NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", newReminder, error);
@@ -158,22 +158,6 @@
 	[self.tableView endUpdates];
 	
 }
-
-
-#pragma mark - UIScrollViewDelegate
-
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-//	
-//	/* This was just an example, adapt this to work properly for all the cases. Do the changes
-//	 after the scrolling logic is removed.
-//	*/
-//	if(self.tableView == scrollView) {
-//		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//		[[self.tableView cellForRowAtIndexPath:indexPath] resignFirstResponder];
-//	}
-//	
-//}
-
 
 #pragma mark - Table view data source
 
@@ -200,14 +184,12 @@
 			reminderCell.delegate = self;
 			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			[reminderCell updateWithReminder:reminder];
-			
 			return reminderCell;
 		}
 	} else {
 		CDAddReminderCell *addCell = [tableView dequeueReusableCellWithIdentifier:@"AddReminderCell" forIndexPath:indexPath];
 		
 		if (addCell) {
-			[addCell setupCell];
 			addCell.delegate = self;
 			
 			return addCell;

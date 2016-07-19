@@ -198,7 +198,7 @@
 		CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
 		cell.textLabel.text = topic.title;
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",topic.reminders.count];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",topic.reminders.count];
 	}
 	
 	return cell;
