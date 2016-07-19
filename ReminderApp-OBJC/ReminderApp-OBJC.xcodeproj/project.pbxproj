@@ -18,6 +18,12 @@
 		B65576781D26B0940075805E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B65576761D26B0940075805E /* Main.storyboard */; };
 		B655767D1D26B0940075805E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B655767C1D26B0940075805E /* Assets.xcassets */; };
 		B65576801D26B0940075805E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B655767E1D26B0940075805E /* LaunchScreen.storyboard */; };
+		B6886A5C1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A5B1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m */; };
+		B6886A5F1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A5E1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m */; };
+		B6886A621D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A611D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.m */; };
+		B6886A651D3E5EFF00B5E8F4 /* CDEditPriorityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A641D3E5EFF00B5E8F4 /* CDEditPriorityCell.m */; };
+		B6886A681D3E5F2D00B5E8F4 /* CDEditNotesTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A671D3E5F2D00B5E8F4 /* CDEditNotesTextCell.m */; };
+		B6886A6B1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A6A1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m */; };
 		B6A4CD131D33E3BC0049B994 /* CDAddReminderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6A4CD121D33E3BC0049B994 /* CDAddReminderCell.m */; };
 		B6AAB4D31D34FA2900D76E5F /* CDReminderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB4D11D34FA2900D76E5F /* CDReminderTableViewController.m */; };
 		B6AAB4D61D353F9300D76E5F /* CDReminderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AAB4D51D353F9300D76E5F /* CDReminderCell.m */; };
@@ -43,6 +49,18 @@
 		B655767C1D26B0940075805E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B655767F1D26B0940075805E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B65576811D26B0940075805E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6886A5A1D3E44A800B5E8F4 /* CDEditReminderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEditReminderTableViewController.h; path = Classes/Controller/CDEditReminderTableViewController.h; sourceTree = "<group>"; };
+		B6886A5B1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEditReminderTableViewController.m; path = Classes/Controller/CDEditReminderTableViewController.m; sourceTree = "<group>"; };
+		B6886A5D1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEditReminderTextCell.h; path = Classes/ReminderCell/CDEditReminderTextCell.h; sourceTree = "<group>"; };
+		B6886A5E1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEditReminderTextCell.m; path = Classes/ReminderCell/CDEditReminderTextCell.m; sourceTree = "<group>"; };
+		B6886A601D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEditRemindOnDayCell.h; path = Classes/ReminderCell/CDEditRemindOnDayCell.h; sourceTree = "<group>"; };
+		B6886A611D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEditRemindOnDayCell.m; path = Classes/ReminderCell/CDEditRemindOnDayCell.m; sourceTree = "<group>"; };
+		B6886A631D3E5EFF00B5E8F4 /* CDEditPriorityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEditPriorityCell.h; path = Classes/ReminderCell/CDEditPriorityCell.h; sourceTree = "<group>"; };
+		B6886A641D3E5EFF00B5E8F4 /* CDEditPriorityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEditPriorityCell.m; path = Classes/ReminderCell/CDEditPriorityCell.m; sourceTree = "<group>"; };
+		B6886A661D3E5F2D00B5E8F4 /* CDEditNotesTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEditNotesTextCell.h; path = Classes/ReminderCell/CDEditNotesTextCell.h; sourceTree = "<group>"; };
+		B6886A671D3E5F2D00B5E8F4 /* CDEditNotesTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEditNotesTextCell.m; path = Classes/ReminderCell/CDEditNotesTextCell.m; sourceTree = "<group>"; };
+		B6886A691D3E5F4700B5E8F4 /* CDEditDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEditDatePickerCell.h; path = Classes/ReminderCell/CDEditDatePickerCell.h; sourceTree = "<group>"; };
+		B6886A6A1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDEditDatePickerCell.m; path = Classes/ReminderCell/CDEditDatePickerCell.m; sourceTree = "<group>"; };
 		B6A4CD111D33E3BC0049B994 /* CDAddReminderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDAddReminderCell.h; path = Classes/ReminderCell/CDAddReminderCell.h; sourceTree = "<group>"; };
 		B6A4CD121D33E3BC0049B994 /* CDAddReminderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDAddReminderCell.m; path = Classes/ReminderCell/CDAddReminderCell.m; sourceTree = "<group>"; };
 		B6AAB4D11D34FA2900D76E5F /* CDReminderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDReminderTableViewController.m; path = Classes/Controller/CDReminderTableViewController.m; sourceTree = "<group>"; };
@@ -143,6 +161,8 @@
 				B6AAB4D21D34FA2900D76E5F /* CDReminderTableViewController.h */,
 				B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */,
 				B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */,
+				B6886A5A1D3E44A800B5E8F4 /* CDEditReminderTableViewController.h */,
+				B6886A5B1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -154,6 +174,16 @@
 				B6A4CD121D33E3BC0049B994 /* CDAddReminderCell.m */,
 				B6AAB4D41D353F9300D76E5F /* CDReminderCell.h */,
 				B6AAB4D51D353F9300D76E5F /* CDReminderCell.m */,
+				B6886A5D1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.h */,
+				B6886A5E1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m */,
+				B6886A601D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.h */,
+				B6886A611D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.m */,
+				B6886A631D3E5EFF00B5E8F4 /* CDEditPriorityCell.h */,
+				B6886A641D3E5EFF00B5E8F4 /* CDEditPriorityCell.m */,
+				B6886A661D3E5F2D00B5E8F4 /* CDEditNotesTextCell.h */,
+				B6886A671D3E5F2D00B5E8F4 /* CDEditNotesTextCell.m */,
+				B6886A691D3E5F4700B5E8F4 /* CDEditDatePickerCell.h */,
+				B6886A6A1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m */,
 			);
 			name = ReminderCell;
 			sourceTree = "<group>";
@@ -230,13 +260,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				B65226571D3387B800588A87 /* CDTopic+CoreDataProperties.m in Sources */,
+				B6886A651D3E5EFF00B5E8F4 /* CDEditPriorityCell.m in Sources */,
 				B6AAB4D61D353F9300D76E5F /* CDReminderCell.m in Sources */,
 				B65576721D26B0940075805E /* AppDelegate.m in Sources */,
 				B655766F1D26B0940075805E /* main.m in Sources */,
 				B65226581D3387B800588A87 /* CDTopic.m in Sources */,
+				B6886A6B1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m in Sources */,
 				B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */,
 				B6AAB4D31D34FA2900D76E5F /* CDReminderTableViewController.m in Sources */,
+				B6886A621D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.m in Sources */,
+				B6886A5F1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m in Sources */,
 				B64B937E1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld in Sources */,
+				B6886A681D3E5F2D00B5E8F4 /* CDEditNotesTextCell.m in Sources */,
+				B6886A5C1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m in Sources */,
 				B6A4CD131D33E3BC0049B994 /* CDAddReminderCell.m in Sources */,
 				B643A9421D37AE1E000E861F /* CDReminder+CoreDataProperties.m in Sources */,
 				B643A9431D37AE1E000E861F /* CDReminder.m in Sources */,
