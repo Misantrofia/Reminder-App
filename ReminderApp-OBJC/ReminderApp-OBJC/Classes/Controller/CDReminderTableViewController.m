@@ -141,6 +141,7 @@
 	newReminder.topic = self.topic;
 	newReminder.taskName = reminderText;
 	newReminder.taskDate = [NSDate date];
+	newReminder.note = @"Works?";
 	//newReminder.priority = [NSNumber numberWithInteger:1];
 	
 	NSError *error;

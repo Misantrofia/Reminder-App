@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewToCellBottom;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateToNote;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateToCellBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *noteToBottomCell;
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDReminderCellDelegate> delegate;

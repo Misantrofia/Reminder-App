@@ -30,72 +30,147 @@
 	self.reminder = reminder;
 	self.textView.text = self.reminder.taskName;
 	self.note.text = self.reminder.note;
+	self.priority.text = [self stringFromNSNumberPriority:reminder.priority];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeZone:[NSTimeZone defaultTimeZone]];
 	self.date.text = [dateFormatter stringFromDate:self.reminder.taskDate];
+	
 	[self changePriorities:reminder];
 	
 }
+
+#pragma mark Change Outlet Priorities Methods
 
 -(void)changePriorities:(CDReminder *)reminder {
 	
 	if (!reminder.taskDate && !reminder.note &&
 		[reminder.priority isEqualToNumber:[NSNumber numberWithInteger:0]]) {
-		
-		self.textViewToNoteBottomConstraint.priority = 800;
-		self.textViewToDateBottomConstraint.priority = 800;
-		self.dateToNote.priority = 800;
-		self.dateToCellBottom.priority = 800;
-		self.textViewToCellBottom.priority = 1000;
-		self.textViewToCellBottom.constant = 2;
-
-		self.date.alpha = 0;
-		self.note.alpha = 0;
-		self.priority.alpha = 0;
-		[self.contentView layoutIfNeeded];
+		[self setConstraintPriorityForSimpleCell];
 	}
-	
+ 
 	if (![reminder.priority isEqualToNumber:[NSNumber numberWithInteger:0]]) {
-		self.textView.textContainerInset = UIEdgeInsetsMake(0.0, self.priority.bounds.size.width, 0.0, 0.0);
-		self.priority.text = @"!!!";
-		self.priority.alpha = 100;
-		[self.contentView layoutIfNeeded];
+		[self setConstraintPriorityForPriorityAttribute];
 	} else {
-		self.priority.text = @"";
+		self.textView.textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
 		self.priority.alpha = 0;
 	}
-	
-	if (reminder.taskDate) {
-		self.date.alpha = 100;
-		self.textViewToDateBottomConstraint.priority = 1000;
-		self.dateToNote.priority = 800;
-		self.dateToCellBottom.priority = 1000;
-		self.dateToCellBottom.constant = 2;
-		self.textViewToNoteBottomConstraint.priority = 800;
-		self.textViewToCellBottom.priority = 800;
-		[self.contentView layoutIfNeeded];
-	} else {
-		self.textViewToDateBottomConstraint.priority = 800;
-		self.dateToCellBottom.priority = 800;
-		self.date.alpha = 0;
+
+	if (reminder.taskDate && !reminder.note) {
+		[self setConstraintPriorityForSimpleCellPlusDate];
+	} else if (reminder.taskDate && reminder.note) {
+		[self setConstraintPriorityForSimpleCellPlusDateAndNote];
+	} else if (!reminder.taskDate && reminder.note) {
+		[self setConstraintPriorityForSimpleCellPlusNote];
 	}
 	
-	if (reminder.note) {
-		self.note.alpha = 100;
-		if (!reminder.taskDate) {
-			self.textViewToNoteBottomConstraint.priority = 1000;
-		} else {
-			self.dateToNote.priority = 1000;
-		}
-		self.textViewToCellBottom.priority = 800;
-		[self.contentView layoutIfNeeded];
-	} else {
-		self.textViewToNoteBottomConstraint.priority = 800;
-		self.note.alpha = 0;
+}
+
+#pragma mark - Helper Methods for changing priorities
+
+- (void)setConstraintPriorityForSimpleCell {
+	
+	self.textViewToCellBottom.priority = 1000;
+	self.textViewToCellBottom.constant = 2;
+	
+	self.textViewToNoteBottomConstraint.priority = 800;
+	self.textViewToDateBottomConstraint.priority = 800;
+	self.dateToNote.priority = 800;
+	self.dateToCellBottom.priority = 800;
+	self.noteToBottomCell.priority = 800;
+	
+	self.date.alpha = 0;
+	self.note.alpha = 0;
+	
+	[self.contentView layoutIfNeeded];
+
+}
+
+- (void)setConstraintPriorityForSimpleCellPlusDate {
+	
+	self.textViewToDateBottomConstraint.priority = 1000;
+	self.dateToCellBottom.priority = 1000;
+	self.dateToCellBottom.constant = 2;
+	self.date.alpha = 100;
+	self.note.alpha = 0;
+	
+	self.textViewToNoteBottomConstraint.priority = 800;
+	self.textViewToCellBottom.priority = 800;
+	self.dateToNote.priority = 800;
+	self.noteToBottomCell.priority = 800;
+	
+	[self.contentView layoutIfNeeded];
+	
+}
+
+- (void)setConstraintPriorityForSimpleCellPlusNote {
+
+	self.textViewToNoteBottomConstraint.priority = 1000;
+	self.textViewToNoteBottomConstraint.constant = 2;
+	self.noteToBottomCell.priority = 1000;
+	self.noteToBottomCell.constant = 2;
+	self.note.alpha = 100;
+	self.date.alpha = 0;
+	
+	self.textViewToDateBottomConstraint.priority = 800;
+	self.dateToNote.priority = 800;
+	self.dateToCellBottom.priority = 800;
+	self.textViewToCellBottom.priority = 800;
+	
+	[self.contentView layoutIfNeeded];
+
+}
+
+- (void)setConstraintPriorityForSimpleCellPlusDateAndNote {
+	
+	self.textViewToDateBottomConstraint.priority = 1000;
+	self.dateToNote.priority = 1000;
+	self.noteToBottomCell.priority = 1000;
+	self.noteToBottomCell.constant = 2;
+	
+	self.note.alpha = 100;
+	self.date.alpha = 100;
+	
+	self.textViewToNoteBottomConstraint.priority = 800;
+	self.textViewToCellBottom.priority = 800;
+	self.dateToCellBottom.priority = 800;
+	
+	[self.contentView layoutIfNeeded];
+	
+}
+
+- (void)setConstraintPriorityForPriorityAttribute {
+	
+	self.textView.textContainerInset = UIEdgeInsetsMake(self.priority.bounds.size.height, 0.0, 0.0, 0.0);
+	self.priority.alpha = 100;
+	
+	[self.contentView layoutIfNeeded];
+	
+}
+
+#pragma mark - Helper method for converting Priority attribute into string
+
+- (NSString *)stringFromNSNumberPriority:(NSNumber *)priorityNumber {
+	
+	switch (priorityNumber.integerValue) {
+		case 0:
+			return @"";
+			break;
+		case 1:
+			return @"!";
+			break;
+		case 2:
+			return @"!!";
+			break;
+		case 3:
+			return @"!!!";
+			break;
+		default:
+			break;
 	}
+	return @"";
 	
 }
 
@@ -114,6 +189,7 @@
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
 		self.reminder.taskName = self.textView.text;
+		self.reminder.priority = [NSNumber numberWithInteger:1];
 		
 		[self.delegate reminderCell:self wantsToSaveReminder:self.reminder];
 		
