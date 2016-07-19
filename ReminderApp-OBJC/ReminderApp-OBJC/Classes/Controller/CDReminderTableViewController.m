@@ -159,22 +159,6 @@
 	
 }
 
-
-#pragma mark - UIScrollViewDelegate
-
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-//	
-//	/* This was just an example, adapt this to work properly for all the cases. Do the changes
-//	 after the scrolling logic is removed.
-//	*/
-//	if(self.tableView == scrollView) {
-//		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//		[[self.tableView cellForRowAtIndexPath:indexPath] resignFirstResponder];
-//	}
-//	
-//}
-
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
