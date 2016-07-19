@@ -8,6 +8,20 @@
 
 #import "CDEditReminderTableViewController.h"
 
+@interface CDEditReminderTableViewController ()
+
+@end
+
 @implementation CDEditReminderTableViewController
+
+#pragma mark - Action button methods
+
+- (IBAction)switchRemindOnDay:(id)sender {
+
+}
+
+#pragma mark - TableView DataSource
+
+
 
 @end
