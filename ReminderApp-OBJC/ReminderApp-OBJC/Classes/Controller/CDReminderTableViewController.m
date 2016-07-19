@@ -98,8 +98,9 @@
 		case NSFetchedResultsChangeUpdate: {
 			CDReminderCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
 			CDReminder *reminderItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+			[self.tableView setNeedsUpdateConstraints];
 			[cell updateWithReminder:reminderItem];
-		}
+			}
 			break;
 		case NSFetchedResultsChangeMove:
 			[self.tableView deleteRowsAtIndexPaths:@[indexPath]
@@ -140,9 +141,6 @@
 	CDReminder *newReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
 	newReminder.topic = self.topic;
 	newReminder.taskName = reminderText;
-	newReminder.taskDate = [NSDate date];
-	newReminder.note = @"Works?";
-	//newReminder.priority = [NSNumber numberWithInteger:1];
 	
 	NSError *error;
 	if (![self.managedContext save:&error]) {
@@ -202,7 +200,6 @@
 			reminderCell.delegate = self;
 			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			[reminderCell updateWithReminder:reminder];
-			
 			return reminderCell;
 		}
 	} else {

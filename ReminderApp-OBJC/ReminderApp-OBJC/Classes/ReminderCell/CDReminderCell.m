@@ -30,7 +30,7 @@
 	self.reminder = reminder;
 	self.textView.text = self.reminder.taskName;
 	self.note.text = self.reminder.note;
-	self.priority.text = [self stringFromNSNumberPriority:reminder.priority];
+	self.priority.text = [self stringFromNSNumberPriority:self.reminder.priority];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
@@ -58,7 +58,7 @@
 		self.priority.alpha = 0;
 	}
 
-	if (reminder.taskDate && !reminder.note) {
+	if (reminder.taskDate && (!reminder.note || [reminder.note isEqualToString:@""])) {
 		[self setConstraintPriorityForSimpleCellPlusDate];
 	} else if (reminder.taskDate && reminder.note) {
 		[self setConstraintPriorityForSimpleCellPlusDateAndNote];
@@ -72,7 +72,7 @@
 
 - (void)setConstraintPriorityForSimpleCell {
 	
-	self.textViewToCellBottom.priority = 1000;
+	self.textViewToCellBottom.priority = 999;
 	self.textViewToCellBottom.constant = 2;
 	
 	self.textViewToNoteBottomConstraint.priority = 800;
@@ -90,8 +90,8 @@
 
 - (void)setConstraintPriorityForSimpleCellPlusDate {
 	
-	self.textViewToDateBottomConstraint.priority = 1000;
-	self.dateToCellBottom.priority = 1000;
+	self.textViewToDateBottomConstraint.priority = 999;
+	self.dateToCellBottom.priority = 999;
 	self.dateToCellBottom.constant = 2;
 	self.date.alpha = 100;
 	self.note.alpha = 0;
@@ -107,9 +107,9 @@
 
 - (void)setConstraintPriorityForSimpleCellPlusNote {
 
-	self.textViewToNoteBottomConstraint.priority = 1000;
+	self.textViewToNoteBottomConstraint.priority = 999;
 	self.textViewToNoteBottomConstraint.constant = 2;
-	self.noteToBottomCell.priority = 1000;
+	self.noteToBottomCell.priority = 999;
 	self.noteToBottomCell.constant = 2;
 	self.note.alpha = 100;
 	self.date.alpha = 0;
@@ -125,9 +125,9 @@
 
 - (void)setConstraintPriorityForSimpleCellPlusDateAndNote {
 	
-	self.textViewToDateBottomConstraint.priority = 1000;
-	self.dateToNote.priority = 1000;
-	self.noteToBottomCell.priority = 1000;
+	self.textViewToDateBottomConstraint.priority = 999;
+	self.dateToNote.priority = 999;
+	self.noteToBottomCell.priority = 999;
 	self.noteToBottomCell.constant = 2;
 	
 	self.note.alpha = 100;
@@ -189,8 +189,9 @@
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
 		self.reminder.taskName = self.textView.text;
-		self.reminder.priority = [NSNumber numberWithInteger:1];
-		
+		/*
+		 Here we will have the other attributes to be saved to self.reminder (date, note, priority) - comming from the edit screen
+		 */
 		[self.delegate reminderCell:self wantsToSaveReminder:self.reminder];
 		
 		return NO;

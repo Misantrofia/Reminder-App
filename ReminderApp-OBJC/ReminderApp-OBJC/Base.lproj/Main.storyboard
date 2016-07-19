@@ -110,24 +110,24 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="BbX-S1-ska" firstAttribute="leading" secondItem="rn0-J8-Bxx" secondAttribute="trailing" constant="17" id="0FT-Gj-Bb2"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="rn0-J8-Bxx" secondAttribute="bottom" constant="43" id="3cL-OW-8b6"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="rn0-J8-Bxx" secondAttribute="bottom" priority="999" constant="43" id="3cL-OW-8b6"/>
                                         <constraint firstItem="xJl-f4-9IC" firstAttribute="leading" secondItem="rn0-J8-Bxx" secondAttribute="leading" id="4kW-Ba-WfA"/>
                                         <constraint firstItem="rn0-J8-Bxx" firstAttribute="top" secondItem="dgi-ct-S1B" secondAttribute="topMargin" constant="-1" id="5S4-ZE-MJA"/>
                                         <constraint firstItem="Zc1-vO-Hgl" firstAttribute="leading" secondItem="rn0-J8-Bxx" secondAttribute="leading" id="5Yf-c9-F6q"/>
-                                        <constraint firstItem="Zc1-vO-Hgl" firstAttribute="top" secondItem="xJl-f4-9IC" secondAttribute="bottom" constant="1" id="8df-JC-acE"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="xJl-f4-9IC" secondAttribute="bottom" constant="18" id="FaD-Fx-jPa"/>
+                                        <constraint firstItem="Zc1-vO-Hgl" firstAttribute="top" secondItem="xJl-f4-9IC" secondAttribute="bottom" priority="999" constant="1" id="8df-JC-acE"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="xJl-f4-9IC" secondAttribute="bottom" priority="999" constant="18" id="FaD-Fx-jPa"/>
                                         <constraint firstItem="Zc1-vO-Hgl" firstAttribute="trailing" secondItem="rn0-J8-Bxx" secondAttribute="trailing" id="FwP-fV-dau"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="BbX-S1-ska" secondAttribute="trailing" id="ORX-6d-bQ9"/>
                                         <constraint firstItem="LjS-9F-LZE" firstAttribute="leading" secondItem="dgi-ct-S1B" secondAttribute="leadingMargin" constant="11" id="PqW-Bh-Gbz"/>
                                         <constraint firstItem="BbX-S1-ska" firstAttribute="centerY" secondItem="dgi-ct-S1B" secondAttribute="centerY" id="RZx-HX-hhS"/>
-                                        <constraint firstItem="Zc1-vO-Hgl" firstAttribute="top" secondItem="rn0-J8-Bxx" secondAttribute="bottom" constant="26" id="Wva-M9-GIg"/>
+                                        <constraint firstItem="Zc1-vO-Hgl" firstAttribute="top" secondItem="rn0-J8-Bxx" secondAttribute="bottom" priority="999" constant="26" id="Wva-M9-GIg"/>
                                         <constraint firstItem="rn0-J8-Bxx" firstAttribute="top" secondItem="E3K-s1-spH" secondAttribute="bottom" constant="-21" id="XkQ-Vx-RJ3"/>
                                         <constraint firstItem="xJl-f4-9IC" firstAttribute="trailing" secondItem="rn0-J8-Bxx" secondAttribute="trailing" id="f34-dP-b7P"/>
                                         <constraint firstItem="LjS-9F-LZE" firstAttribute="centerY" secondItem="dgi-ct-S1B" secondAttribute="centerY" id="rB8-27-0sm"/>
                                         <constraint firstItem="rn0-J8-Bxx" firstAttribute="leading" secondItem="LjS-9F-LZE" secondAttribute="trailing" constant="15" id="ttF-ok-TmW"/>
                                         <constraint firstItem="E3K-s1-spH" firstAttribute="leading" secondItem="rn0-J8-Bxx" secondAttribute="leading" id="v2X-ck-kb6"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="Zc1-vO-Hgl" secondAttribute="bottom" id="vC5-Wu-2e1"/>
-                                        <constraint firstItem="xJl-f4-9IC" firstAttribute="top" secondItem="rn0-J8-Bxx" secondAttribute="bottom" constant="8" id="zbJ-VJ-sni"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Zc1-vO-Hgl" secondAttribute="bottom" priority="999" id="vC5-Wu-2e1"/>
+                                        <constraint firstItem="xJl-f4-9IC" firstAttribute="top" secondItem="rn0-J8-Bxx" secondAttribute="bottom" priority="999" constant="8" id="zbJ-VJ-sni"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
