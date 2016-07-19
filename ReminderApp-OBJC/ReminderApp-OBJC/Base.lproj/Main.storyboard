@@ -131,12 +131,12 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="date" destination="xJl-f4-9IC" id="f2V-99-arY"/>
+                                    <outlet property="dateLabel" destination="xJl-f4-9IC" id="Qfs-XD-sPP"/>
                                     <outlet property="dateToCellBottom" destination="FaD-Fx-jPa" id="aM8-B3-ASH"/>
                                     <outlet property="dateToNote" destination="8df-JC-acE" id="wvb-Aa-fU5"/>
-                                    <outlet property="note" destination="Zc1-vO-Hgl" id="StW-wK-fPr"/>
+                                    <outlet property="noteLabel" destination="Zc1-vO-Hgl" id="Br7-yt-efq"/>
                                     <outlet property="noteToBottomCell" destination="vC5-Wu-2e1" id="fq4-y1-wso"/>
-                                    <outlet property="priority" destination="E3K-s1-spH" id="LLT-QI-EVf"/>
+                                    <outlet property="priorityLabel" destination="E3K-s1-spH" id="6zP-Hc-gf6"/>
                                     <outlet property="textView" destination="rn0-J8-Bxx" id="LMB-gm-aAU"/>
                                     <outlet property="textViewToCellBottom" destination="3cL-OW-8b6" id="taV-7o-pc9"/>
                                     <outlet property="textViewToDateBottomConstraint" destination="zbJ-VJ-sni" id="jTl-CE-xAw"/>

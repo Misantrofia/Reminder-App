@@ -29,33 +29,33 @@
 
 	self.reminder = reminder;
 	self.textView.text = self.reminder.taskName;
-	self.note.text = self.reminder.note;
-	self.priority.text = [self stringFromNSNumberPriority:self.reminder.priority];
+	self.noteLabel.text = self.reminder.note;
+	self.priorityLabel.text = CDPriorityStringRepresentationForPriority(self.reminder.priority.integerValue);
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeZone:[NSTimeZone defaultTimeZone]];
-	self.date.text = [dateFormatter stringFromDate:self.reminder.taskDate];
+	self.dateLabel.text = [dateFormatter stringFromDate:self.reminder.taskDate];
 	
-	[self changePriorities:reminder];
+	[self changePrioritiesForReminder:self.reminder];
 	
 }
 
 #pragma mark Change Outlet Priorities Methods
 
--(void)changePriorities:(CDReminder *)reminder {
+-(void)changePrioritiesForReminder:(CDReminder *)reminder {
 	
 	if (!reminder.taskDate && !reminder.note &&
-		[reminder.priority isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+		reminder.priority.integerValue == CDPriorityLow) {
 		[self setConstraintPriorityForSimpleCell];
 	}
  
-	if (![reminder.priority isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+	if (reminder.priority.integerValue != CDPriorityLow) {
 		[self setConstraintPriorityForPriorityAttribute];
 	} else {
 		self.textView.textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
-		self.priority.alpha = 0;
+		self.priorityLabel.alpha = 0;
 	}
 
 	if (reminder.taskDate && (!reminder.note || [reminder.note isEqualToString:@""])) {
@@ -81,8 +81,8 @@
 	self.dateToCellBottom.priority = 800;
 	self.noteToBottomCell.priority = 800;
 	
-	self.date.alpha = 0;
-	self.note.alpha = 0;
+	self.dateLabel.alpha = 0;
+	self.noteLabel.alpha = 0;
 	
 	[self.contentView layoutIfNeeded];
 
@@ -93,8 +93,8 @@
 	self.textViewToDateBottomConstraint.priority = 999;
 	self.dateToCellBottom.priority = 999;
 	self.dateToCellBottom.constant = 2;
-	self.date.alpha = 100;
-	self.note.alpha = 0;
+	self.dateLabel.alpha = 100;
+	self.noteLabel.alpha = 0;
 	
 	self.textViewToNoteBottomConstraint.priority = 800;
 	self.textViewToCellBottom.priority = 800;
@@ -111,8 +111,8 @@
 	self.textViewToNoteBottomConstraint.constant = 2;
 	self.noteToBottomCell.priority = 999;
 	self.noteToBottomCell.constant = 2;
-	self.note.alpha = 100;
-	self.date.alpha = 0;
+	self.noteLabel.alpha = 100;
+	self.dateLabel.alpha = 0;
 	
 	self.textViewToDateBottomConstraint.priority = 800;
 	self.dateToNote.priority = 800;
@@ -130,8 +130,8 @@
 	self.noteToBottomCell.priority = 999;
 	self.noteToBottomCell.constant = 2;
 	
-	self.note.alpha = 100;
-	self.date.alpha = 100;
+	self.noteLabel.alpha = 100;
+	self.dateLabel.alpha = 100;
 	
 	self.textViewToNoteBottomConstraint.priority = 800;
 	self.textViewToCellBottom.priority = 800;
@@ -143,28 +143,28 @@
 
 - (void)setConstraintPriorityForPriorityAttribute {
 	
-	self.textView.textContainerInset = UIEdgeInsetsMake(self.priority.bounds.size.height, 0.0, 0.0, 0.0);
-	self.priority.alpha = 100;
+	self.textView.textContainerInset = UIEdgeInsetsMake(self.priorityLabel.bounds.size.height, 0.0, 0.0, 0.0);
+	self.priorityLabel.alpha = 100;
 	
 	[self.contentView layoutIfNeeded];
 	
 }
 
-#pragma mark - Helper method for converting Priority attribute into string
+#pragma mark - external String for converting Priority attribute into string
 
-- (NSString *)stringFromNSNumberPriority:(NSNumber *)priorityNumber {
+NSString *CDPriorityStringRepresentationForPriority(CDPriority priority) {
 	
-	switch (priorityNumber.integerValue) {
-		case 0:
+	switch (priority) {
+		case CDPriorityLow:
 			return @"";
 			break;
-		case 1:
+		case CDPriorityMedium:
 			return @"!";
 			break;
-		case 2:
+		case CDPriorityHigh:
 			return @"!!";
 			break;
-		case 3:
+		case CDPriorityCritical:
 			return @"!!!";
 			break;
 		default:
