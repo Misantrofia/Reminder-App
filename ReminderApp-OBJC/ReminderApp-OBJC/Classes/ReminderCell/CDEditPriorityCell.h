@@ -10,4 +10,6 @@
 
 @interface CDEditPriorityCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *prioritySegmentedControl;
+
 @end

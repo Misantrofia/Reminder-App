@@ -10,4 +10,6 @@
 
 @interface CDEditNotesTextCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UITextView *noteTextView;
+
 @end

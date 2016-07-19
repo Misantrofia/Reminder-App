@@ -321,6 +321,9 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="V0s-WF-EXa" secondAttribute="trailing" constant="8" id="uKO-f5-89Q"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textView" destination="V0s-WF-EXa" id="vOM-UC-RjT"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="remindOnDayCell" id="dYH-Ai-nBw" customClass="CDEditRemindOnDayCell">
                                 <rect key="frame" x="0.0" y="136" width="600" height="44"/>
@@ -385,6 +388,9 @@
                                         <constraint firstItem="y2e-MV-MTr" firstAttribute="leading" secondItem="OeW-Dx-MEs" secondAttribute="trailing" constant="8" id="zfm-wk-Iaw"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="prioritySegmentedControl" destination="y2e-MV-MTr" id="iqq-b8-Tol"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notesCell" rowHeight="70" id="Tbn-id-sq6" customClass="CDEditNotesTextCell">
                                 <rect key="frame" x="0.0" y="224" width="600" height="70"/>
@@ -417,6 +423,9 @@
                                         <constraint firstItem="A2s-kH-bcI" firstAttribute="top" secondItem="g37-eQ-oze" secondAttribute="bottom" constant="-2" id="v7L-PW-RqZ"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="noteTextView" destination="A2s-kH-bcI" id="0tS-YN-HNG"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="alarmAndRepeatCell" textLabel="BEd-wA-R40" detailTextLabel="K0Z-P3-sC3" style="IBUITableViewCellStyleValue1" id="DIJ-kx-gFA">
                                 <rect key="frame" x="0.0" y="294" width="600" height="44"/>
@@ -463,6 +472,9 @@
                                         <constraint firstAttribute="bottomMargin" secondItem="jNX-K2-jmN" secondAttribute="bottom" constant="1" id="xiU-BW-D9y"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="datePicker" destination="jNX-K2-jmN" id="XxS-Ef-fbT"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
