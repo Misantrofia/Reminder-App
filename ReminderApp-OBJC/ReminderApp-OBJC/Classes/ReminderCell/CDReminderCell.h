@@ -18,6 +18,15 @@
 	
 @end
 
+typedef NS_ENUM(NSInteger, CDPriority){
+	CDPriorityLow,
+	CDPriorityMedium,
+	CDPriorityHigh,
+	CDPriorityCritical
+};
+
+extern NSString *CDPriorityStringRepresentationForPriority(CDPriority priority);
+
 @interface CDReminderCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewToDateBottomConstraint;
@@ -29,9 +38,9 @@
 
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDReminderCellDelegate> delegate;
-@property (weak, nonatomic) IBOutlet UILabel *date;
-@property (weak, nonatomic) IBOutlet UILabel *note;
-@property (weak, nonatomic) IBOutlet UILabel *priority;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *noteLabel;
+@property (weak, nonatomic) IBOutlet UILabel *priorityLabel;
 
 - (void)updateWithReminder:(CDReminder *)reminder;
 
