@@ -17,7 +17,7 @@
 
 @implementation CDReminderCell
 
--(void)awakeFromNib {
+- (void)awakeFromNib {
 	
 	[super awakeFromNib];
 	
@@ -44,7 +44,7 @@
 
 #pragma mark Change Outlet Priorities Methods
 
--(void)changePrioritiesForReminder:(CDReminder *)reminder {
+- (void)changePrioritiesForReminder:(CDReminder *)reminder {
 	
 	if (!reminder.taskDate && !reminder.note &&
 		reminder.priority.integerValue == CDPriorityLow) {

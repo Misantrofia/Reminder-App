@@ -321,6 +321,9 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="Q4i-xV-bTm" secondAttribute="trailing" constant="8" id="sQE-AK-9oI"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textView" destination="Q4i-xV-bTm" id="Icw-bI-vm8"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="remindOnDayCell" id="dYH-Ai-nBw" customClass="CDEditRemindOnDayCell">
                                 <rect key="frame" x="0.0" y="158" width="600" height="44"/>

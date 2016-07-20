@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CDReminder.h"
 
 @interface CDEditReminderTableViewController : UITableViewController
+
+@property (nonatomic, strong) CDReminder *reminder;
 
 @end

@@ -12,6 +12,7 @@
 #import "CDEditPriorityCell.h"
 #import "CDEditNotesTextCell.h"
 #import "CDEditDatePickerCell.h"
+#import "CDReminder.h"
 
 @interface CDEditReminderTableViewController ()
 
@@ -36,9 +37,11 @@
 }
 
 #pragma mark - Action button methods
+
 - (IBAction)switchRemindOnDayButton:(id)sender {
 	
 	self.switchState = !self.switchState;
+	
 	if (self.switchState) {
 		[self.tableView beginUpdates];
 		[self.tableView insertRowsAtIndexPaths:@[self.indexPathForAlarm] withRowAnimation:UITableViewRowAnimationBottom];
@@ -79,6 +82,7 @@
 	
 	if (indexPath.row == 0 && indexPath.section == 0 ) {
 		CDEditReminderTextCell *reminderTextCell = [tableView dequeueReusableCellWithIdentifier:@"reminderTextCell"];
+		reminderTextCell.textView.text = self.reminder.taskName;
 		return reminderTextCell;
 	} else if (indexPath.row == 0 && indexPath.section == 1) {
 		CDEditRemindOnDayCell *remindOnDayCell = [tableView dequeueReusableCellWithIdentifier:@"remindOnDayCell"];

@@ -11,6 +11,7 @@
 #import "CDReminderCell.h"
 #import "AppDelegate.h"
 #import "CDReminder.h"
+#import "CDEditReminderTableViewController.h"
 
 @interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate>
 
@@ -31,13 +32,23 @@
 	self.title = self.topic.title;
 	
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
-	self.tableView.estimatedRowHeight = 100;
+	self.tableView.estimatedRowHeight = 44;
 	
 	self.managedContext = ((AppDelegate *)[UIApplication sharedApplication].delegate).managedObjectContext;
 	
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
 		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
+	}
+	
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	
+	if ([segue.identifier isEqualToString:@"CDReminderCellDetailButtonToEditScreen"]) {
+		CDEditReminderTableViewController *editController = segue.destinationViewController;
+		CDReminder *reminderToSend = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+		editController.reminder = reminderToSend;
 	}
 	
 }
