@@ -14,7 +14,7 @@
 #import "CDEditDatePickerCell.h"
 #import "CDReminder.h"
 
-@interface CDEditReminderTableViewController ()
+@interface CDEditReminderTableViewController () <CDEditReminderTextCellDelegate>
 
 @property (nonatomic, assign) BOOL switchState;
 @property (nonatomic, strong) NSIndexPath *indexPathForAlarm;
@@ -33,6 +33,10 @@
 	self.switchState = NO;
 	self.indexPathForAlarm = [NSIndexPath indexPathForRow:1 inSection:1];
 	self.indexPathForRepeat = [NSIndexPath indexPathForRow:2 inSection:1];
+	
+}
+
+- (void)prepareForUnwind {
 	
 }
 
@@ -56,6 +60,17 @@
 	
 }
 
+#pragma mark CDEditReminderTextCellDelegate
+
+-(void)editReminderTextCell:(CDEditReminderTextCell *)cell wantsToResizeTextView:(UITextView *)textView {
+	
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+	
+}
+
+#pragma mark - TableView DataSource and Delegate
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	
 	return 3;
@@ -76,13 +91,13 @@
 	
 }
 
-#pragma mark - TableView DataSource
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (indexPath.row == 0 && indexPath.section == 0 ) {
 		CDEditReminderTextCell *reminderTextCell = [tableView dequeueReusableCellWithIdentifier:@"reminderTextCell"];
 		reminderTextCell.textView.text = self.reminder.taskName;
+		reminderTextCell.delegate = self;
+		[reminderTextCell setupReminderWithReminder:self.reminder];
 		return reminderTextCell;
 	} else if (indexPath.row == 0 && indexPath.section == 1) {
 		CDEditRemindOnDayCell *remindOnDayCell = [tableView dequeueReusableCellWithIdentifier:@"remindOnDayCell"];

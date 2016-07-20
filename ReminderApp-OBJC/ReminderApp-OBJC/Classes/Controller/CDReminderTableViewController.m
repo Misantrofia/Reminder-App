@@ -18,6 +18,7 @@
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
+@property (nonatomic, strong) CDReminder *reminderToEdit;
 
 @end
 
@@ -43,12 +44,23 @@
 	
 }
 
+- (IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+	if ([segue.identifier isEqualToString:@"editToReminderUnwind"]) {
+		
+		NSError *error;
+		if (![self.managedContext save:&error]) {
+			NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", self.reminderToEdit, error);
+		}
+
+	}
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
 	if ([segue.identifier isEqualToString:@"CDReminderCellDetailButtonToEditScreen"]) {
 		CDEditReminderTableViewController *editController = segue.destinationViewController;
-		CDReminder *reminderToSend = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
-		editController.reminder = reminderToSend;
+		self.reminderToEdit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+		editController.reminder = self.reminderToEdit;
 	}
 	
 }

@@ -483,8 +483,12 @@
                             <outlet property="delegate" destination="RKq-y0-mAO" id="WL7-y8-jMO"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="10u-i4-CKc" kind="unwind" identifier="editToReminderUnwind" unwindAction="prepareForUnwind:" id="2js-il-yBl"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x4q-UU-uSZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="10u-i4-CKc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2102" y="-16"/>
         </scene>
