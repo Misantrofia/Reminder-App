@@ -47,12 +47,10 @@
 - (IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
 	
 	if ([segue.identifier isEqualToString:@"editToReminderUnwind"]) {
-		
 		NSError *error;
 		if (![self.managedContext save:&error]) {
 			NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", self.reminderToEdit, error);
 		}
-
 	}
 	
 }
@@ -61,7 +59,7 @@
 	
 	if ([segue.identifier isEqualToString:@"CDReminderCellDetailButtonToEditScreen"]) {
 		CDEditReminderTableViewController *editController = segue.destinationViewController;
-		self.reminderToEdit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
+		self.reminderToEdit = [self.fetchedResultsController objectAtIndexPath:self.tableView.indexPathForSelectedRow];
 		editController.reminder = self.reminderToEdit;
 		[self.tableView resignFirstResponder];
 	}
