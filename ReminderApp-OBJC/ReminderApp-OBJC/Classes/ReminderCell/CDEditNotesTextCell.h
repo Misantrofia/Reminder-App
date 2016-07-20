@@ -7,9 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CDReminder.h"
+
+@class CDEditNotesTextCell;
+
+@protocol CDEditNotesTextCellDelegate
+
+- (void)editNotesTextCell:(CDEditNotesTextCell *)cell wantsToResizeTextView:(UITextView *)textView;
+
+@end
+
 
 @interface CDEditNotesTextCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UITextView *noteTextView;
+@property (nonatomic, weak) IBOutlet UITextView *noteTextView;
+@property (nonatomic, weak) id <CDEditNotesTextCellDelegate> delegate;
+
+- (void)setupReminderWithReminder:(CDReminder *)reminder;
 
 @end

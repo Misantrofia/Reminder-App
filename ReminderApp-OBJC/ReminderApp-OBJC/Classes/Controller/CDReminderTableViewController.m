@@ -45,6 +45,7 @@
 }
 
 - (IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+	
 	if ([segue.identifier isEqualToString:@"editToReminderUnwind"]) {
 		
 		NSError *error;
@@ -53,6 +54,7 @@
 		}
 
 	}
+	
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -61,6 +63,7 @@
 		CDEditReminderTableViewController *editController = segue.destinationViewController;
 		self.reminderToEdit = [self.fetchedResultsController objectAtIndexPath:[self.tableView indexPathForSelectedRow]];
 		editController.reminder = self.reminderToEdit;
+		[self.tableView resignFirstResponder];
 	}
 	
 }

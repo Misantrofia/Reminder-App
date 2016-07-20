@@ -295,12 +295,12 @@
         <scene sceneID="cSm-5d-7dB">
             <objects>
                 <tableViewController id="RKq-y0-mAO" customClass="CDEditReminderTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="drg-uy-lBu">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="drg-uy-lBu">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reminderTextCell" id="nkJ-U2-n1g" customClass="CDEditReminderTextCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="reminderTextCell" id="nkJ-U2-n1g" customClass="CDEditReminderTextCell">
                                 <rect key="frame" x="0.0" y="114" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nkJ-U2-n1g" id="m6O-bj-AaR">
@@ -373,6 +373,9 @@
                                                 <segment title="!!"/>
                                                 <segment title="!!!"/>
                                             </segments>
+                                            <connections>
+                                                <action selector="prioritySegmentedControllAction:" destination="IT4-jE-CsO" eventType="valueChanged" id="j5g-kj-7e1"/>
+                                            </connections>
                                         </segmentedControl>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Priority" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OeW-Dx-MEs">
                                             <rect key="frame" x="16" y="11" width="389" height="21"/>
@@ -393,7 +396,7 @@
                                     <outlet property="prioritySegmentedControl" destination="y2e-MV-MTr" id="iqq-b8-Tol"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="notesCell" rowHeight="70" id="Tbn-id-sq6" customClass="CDEditNotesTextCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="notesCell" rowHeight="70" id="Tbn-id-sq6" customClass="CDEditNotesTextCell">
                                 <rect key="frame" x="0.0" y="246" width="600" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tbn-id-sq6" id="zgw-mz-K8d">

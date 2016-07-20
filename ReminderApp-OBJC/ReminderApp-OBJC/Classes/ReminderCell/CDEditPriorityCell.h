@@ -7,9 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CDReminder.h"
+
+typedef NS_ENUM(NSInteger, CDPriority){
+	CDPriorityLow,
+	CDPriorityMedium,
+	CDPriorityHigh,
+	CDPriorityCritical
+};
 
 @interface CDEditPriorityCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *prioritySegmentedControl;
+
+- (void)setupReminderWithReminder:(CDReminder *)reminder;
 
 @end

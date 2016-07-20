@@ -17,10 +17,13 @@
 @implementation CDEditReminderTextCell
 
 - (void)awakeFromNib {
+	
 	[super awakeFromNib];
 	
 	self.textView.delegate = self;
-	
+	self.textView.textContainerInset = UIEdgeInsetsZero;
+	self.textView.textContainer.lineFragmentPadding = 0;
+
 }
 
 - (void)setupReminderWithReminder:(CDReminder *)reminder {

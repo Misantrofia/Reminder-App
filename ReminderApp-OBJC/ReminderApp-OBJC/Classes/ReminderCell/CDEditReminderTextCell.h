@@ -19,7 +19,7 @@
 
 @interface CDEditReminderTextCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDEditReminderTextCellDelegate> delegate;
 
 - (void)setupReminderWithReminder:(CDReminder *)reminder;

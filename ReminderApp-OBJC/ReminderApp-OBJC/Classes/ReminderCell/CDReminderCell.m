@@ -22,6 +22,9 @@
 	[super awakeFromNib];
 	
 	self.textView.delegate = self;
+	self.textView.textContainerInset = UIEdgeInsetsZero;
+	self.textView.textContainer.lineFragmentPadding = 0;
+	[self setConstraintPriorityForSimpleCell];
 	
 }
 

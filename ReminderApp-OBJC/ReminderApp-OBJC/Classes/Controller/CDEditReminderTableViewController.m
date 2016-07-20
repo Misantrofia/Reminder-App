@@ -14,7 +14,7 @@
 #import "CDEditDatePickerCell.h"
 #import "CDReminder.h"
 
-@interface CDEditReminderTableViewController () <CDEditReminderTextCellDelegate>
+@interface CDEditReminderTableViewController () <CDEditReminderTextCellDelegate, CDEditNotesTextCellDelegate>
 
 @property (nonatomic, assign) BOOL switchState;
 @property (nonatomic, strong) NSIndexPath *indexPathForAlarm;
@@ -33,10 +33,6 @@
 	self.switchState = NO;
 	self.indexPathForAlarm = [NSIndexPath indexPathForRow:1 inSection:1];
 	self.indexPathForRepeat = [NSIndexPath indexPathForRow:2 inSection:1];
-	
-}
-
-- (void)prepareForUnwind {
 	
 }
 
@@ -69,6 +65,15 @@
 	
 }
 
+#pragma mark CDEditNotesTextCellDelegate
+
+- (void)editNotesTextCell:(CDEditNotesTextCell *)cell wantsToResizeTextView:(UITextView *)textView {
+	
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+
+}
+
 #pragma mark - TableView DataSource and Delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -95,25 +100,50 @@
 	
 	if (indexPath.row == 0 && indexPath.section == 0 ) {
 		CDEditReminderTextCell *reminderTextCell = [tableView dequeueReusableCellWithIdentifier:@"reminderTextCell"];
-		reminderTextCell.textView.text = self.reminder.taskName;
-		reminderTextCell.delegate = self;
-		[reminderTextCell setupReminderWithReminder:self.reminder];
-		return reminderTextCell;
+		
+		if (reminderTextCell) {
+			reminderTextCell.textView.text = self.reminder.taskName;
+			reminderTextCell.delegate = self;
+			[reminderTextCell setupReminderWithReminder:self.reminder];
+			return reminderTextCell;
+		}
 	} else if (indexPath.row == 0 && indexPath.section == 1) {
 		CDEditRemindOnDayCell *remindOnDayCell = [tableView dequeueReusableCellWithIdentifier:@"remindOnDayCell"];
-		return remindOnDayCell;
+		
+		if (remindOnDayCell) {
+			return remindOnDayCell;
+		}
 	} else if (indexPath.row == 1 && indexPath.section == 1 && self.switchState == YES) {
 		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
-		return alertAndReminderCell;
+		
+		if (alertAndReminderCell) {
+			alertAndReminderCell.textLabel.text = @"Alarm";
+			return alertAndReminderCell;
+		}
 	} else if (indexPath.row == 2 && indexPath.section == 1 && self.switchState == YES) {
 		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
-		return alertAndReminderCell;
+		
+		if (alertAndReminderCell) {
+			alertAndReminderCell.textLabel.text = @"Repeat";
+			return alertAndReminderCell;
+		}
 	} else if (indexPath.row == 0 && indexPath.section == 2) {
 		CDEditPriorityCell *priorityCell = [tableView dequeueReusableCellWithIdentifier:@"priorityCell"];
-		return  priorityCell;
+		
+		if (priorityCell) {
+			priorityCell.prioritySegmentedControl.selectedSegmentIndex = self.reminder.priority.integerValue;
+			[priorityCell setupReminderWithReminder:self.reminder];
+			return  priorityCell;
+		}
 	} else if (indexPath.row == 1 && indexPath.section == 2) {
 		CDEditNotesTextCell *notesCell = [tableView dequeueReusableCellWithIdentifier:@"notesCell"];
-		return notesCell;
+		
+		if (notesCell) {
+			notesCell.noteTextView.text = self.reminder.note;
+			notesCell.delegate = self;
+			[notesCell setupReminderWithReminder:self.reminder];
+			return notesCell;
+		}
 	}
 
 	return nil;
