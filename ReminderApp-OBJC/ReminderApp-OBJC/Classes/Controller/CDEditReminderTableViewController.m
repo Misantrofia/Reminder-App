@@ -17,8 +17,8 @@
 @interface CDEditReminderTableViewController () <CDEditReminderTextCellDelegate, CDEditNotesTextCellDelegate>
 
 @property (nonatomic, assign) BOOL switchState;
-@property (nonatomic, strong) NSIndexPath *indexPathForAlarm;
-@property (nonatomic, strong) NSIndexPath *indexPathForRepeat;
+@property (nonatomic, strong) NSIndexPath *indexPathForAlarmCell;
+@property (nonatomic, strong) NSIndexPath *indexPathForRepeatCell;
 
 @end
 
@@ -31,8 +31,8 @@
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.estimatedRowHeight = 70;
 	self.switchState = NO;
-	self.indexPathForAlarm = [NSIndexPath indexPathForRow:1 inSection:1];
-	self.indexPathForRepeat = [NSIndexPath indexPathForRow:2 inSection:1];
+	self.indexPathForAlarmCell = [NSIndexPath indexPathForRow:1 inSection:1];
+	self.indexPathForRepeatCell = [NSIndexPath indexPathForRow:2 inSection:1];
 	
 }
 
@@ -44,13 +44,13 @@
 	
 	if (self.switchState) {
 		[self.tableView beginUpdates];
-		[self.tableView insertRowsAtIndexPaths:@[self.indexPathForAlarm] withRowAnimation:UITableViewRowAnimationBottom];
-		[self.tableView insertRowsAtIndexPaths:@[self.indexPathForRepeat] withRowAnimation:UITableViewRowAnimationBottom];
+		[self.tableView insertRowsAtIndexPaths:@[self.indexPathForAlarmCell] withRowAnimation:UITableViewRowAnimationBottom];
+		[self.tableView insertRowsAtIndexPaths:@[self.indexPathForRepeatCell] withRowAnimation:UITableViewRowAnimationBottom];
 		[self.tableView endUpdates];
 	} else {
 		[self.tableView beginUpdates];
-		[self.tableView deleteRowsAtIndexPaths:@[self.indexPathForAlarm] withRowAnimation:UITableViewRowAnimationBottom];
-		[self.tableView deleteRowsAtIndexPaths:@[self.indexPathForRepeat] withRowAnimation:UITableViewRowAnimationBottom];
+		[self.tableView deleteRowsAtIndexPaths:@[self.indexPathForAlarmCell] withRowAnimation:UITableViewRowAnimationBottom];
+		[self.tableView deleteRowsAtIndexPaths:@[self.indexPathForRepeatCell] withRowAnimation:UITableViewRowAnimationBottom];
 		[self.tableView endUpdates];
 	}
 	
