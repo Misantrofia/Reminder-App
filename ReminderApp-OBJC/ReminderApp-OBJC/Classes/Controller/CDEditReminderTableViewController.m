@@ -111,6 +111,7 @@
 	if (indexPath.section == 1 && indexPath.row == 1) {
 		self.alarmCellDropDown = !self.alarmCellDropDown;
 		NSIndexPath *indexForDatePickerToInsert = [NSIndexPath indexPathForRow:2 inSection:1];
+		
 			if (self.alarmCellDropDown) {
 				[self.tableView beginUpdates];
 				[self.tableView insertRowsAtIndexPaths:@[indexForDatePickerToInsert] withRowAnimation:UITableViewRowAnimationFade];
@@ -136,6 +137,7 @@
 				alarmCell.detailTextLabel.text = [dateFormatter stringFromDate:self.reminder.taskDate];
 			}
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		
 		}
 	
 }

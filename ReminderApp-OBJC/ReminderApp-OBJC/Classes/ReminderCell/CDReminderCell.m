@@ -192,9 +192,7 @@ NSString *CDPriorityStringRepresentationForPriority(CDPriority priority) {
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
 		self.reminder.taskName = self.textView.text;
-		/*
-		 Here we will have the other attributes to be saved to self.reminder (date, note, priority) - comming from the edit screen
-		 */
+		
 		[self.delegate reminderCell:self wantsToSaveReminder:self.reminder];
 		
 		return NO;
