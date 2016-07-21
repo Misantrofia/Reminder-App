@@ -113,7 +113,7 @@
 	self.textViewToNoteBottomConstraint.priority = 999;
 	self.textViewToNoteBottomConstraint.constant = 2;
 	self.noteToBottomCell.priority = 999;
-	self.noteToBottomCell.constant = 2;
+
 	self.noteLabel.alpha = 100;
 	self.dateLabel.alpha = 0;
 	
@@ -131,14 +131,15 @@
 	self.textViewToDateBottomConstraint.priority = 999;
 	self.dateToNote.priority = 999;
 	self.noteToBottomCell.priority = 999;
-	self.noteToBottomCell.constant = 2;
 	
 	self.noteLabel.alpha = 100;
 	self.dateLabel.alpha = 100;
 	
+	self.textViewToNoteBottomConstraint.constant = 20;
 	self.textViewToNoteBottomConstraint.priority = 800;
 	self.textViewToCellBottom.priority = 800;
 	self.dateToCellBottom.priority = 800;
+	self.dateToCellBottom.constant = 20;
 	
 	[self.contentView layoutIfNeeded];
 	
