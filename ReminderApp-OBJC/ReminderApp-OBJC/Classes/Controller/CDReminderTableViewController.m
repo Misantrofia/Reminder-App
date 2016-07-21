@@ -124,6 +124,7 @@
 			CDReminder *reminderItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
 			[self.tableView setNeedsUpdateConstraints];
 			[cell updateWithReminder:reminderItem];
+			[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 			}
 			break;
 		case NSFetchedResultsChangeMove:
