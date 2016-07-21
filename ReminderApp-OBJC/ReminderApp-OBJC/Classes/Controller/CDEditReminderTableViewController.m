@@ -17,6 +17,7 @@
 @interface CDEditReminderTableViewController () <CDEditReminderTextCellDelegate, CDEditNotesTextCellDelegate>
 
 @property (nonatomic, assign) BOOL switchState;
+@property (nonatomic, assign) BOOL alarmCellDropDown;
 @property (nonatomic, strong) NSIndexPath *indexPathForAlarmCell;
 @property (nonatomic, strong) NSIndexPath *indexPathForRepeatCell;
 
@@ -31,6 +32,7 @@
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.estimatedRowHeight = 70;
 	self.switchState = NO;
+	self.alarmCellDropDown = NO;
 	self.indexPathForAlarmCell = [NSIndexPath indexPathForRow:1 inSection:1];
 	self.indexPathForRepeatCell = [NSIndexPath indexPathForRow:2 inSection:1];
 	
@@ -84,11 +86,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	
-	if (section == 1 && self.switchState == YES) {
+	if (section == 1 && self.switchState == YES && self.alarmCellDropDown == YES) {
+		return 4;
+	} else if (section == 1 && self.switchState == YES) {
 		return 3;
-	}
-	
-	if (section == 2) {
+	} else if (section == 2) {
 		return 2;
 	}
 	
@@ -96,9 +98,43 @@
 	
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	if (indexPath.section == 1 && indexPath.row == 1) {
+		self.alarmCellDropDown = !self.alarmCellDropDown;
+		NSIndexPath *indexForDatePickerToInsert = [NSIndexPath indexPathForRow:2 inSection:1];
+		if (self.alarmCellDropDown) {
+			[self.tableView beginUpdates];
+			[self.tableView insertRowsAtIndexPaths:@[indexForDatePickerToInsert] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView endUpdates];
+			UITableViewCell *alarmCell = [tableView cellForRowAtIndexPath:indexPath];
+			alarmCell.detailTextLabel.text = @"";
+			
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			dateFormatter.dateStyle = kCFDateFormatterFullStyle;
+			alarmCell.textLabel.text = [dateFormatter stringFromDate:[NSDate date]];
+			alarmCell.textLabel.textColor = [UIColor colorWithRed:0.25 green:0.50 blue:0.25 alpha:1.0];
+		} else {
+			[self.tableView beginUpdates];
+			[self.tableView deleteRowsAtIndexPaths:@[indexForDatePickerToInsert] withRowAnimation:UITableViewRowAnimationFade];
+			[self.tableView endUpdates];
+			UITableViewCell *alarmCell = [tableView cellForRowAtIndexPath:indexPath];
+			alarmCell.textLabel.text = @"Alarm";
+			alarmCell.textLabel.textColor = [UIColor blackColor];
+			
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+			dateFormatter.dateFormat = @"EE dd/MM/yy hh:mm";
+			alarmCell.detailTextLabel.text = [dateFormatter stringFromDate:[NSDate date]];
+		}
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
+	
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	if (indexPath.row == 0 && indexPath.section == 0 ) {
+	if (indexPath.section == 0 && indexPath.row == 0 ) {
 		CDEditReminderTextCell *reminderTextCell = [tableView dequeueReusableCellWithIdentifier:@"reminderTextCell"];
 		
 		if (reminderTextCell) {
@@ -107,27 +143,41 @@
 			[reminderTextCell setupReminderWithReminder:self.reminder];
 			return reminderTextCell;
 		}
-	} else if (indexPath.row == 0 && indexPath.section == 1) {
+	} else if (indexPath.section == 1 && indexPath.row == 0) {
 		CDEditRemindOnDayCell *remindOnDayCell = [tableView dequeueReusableCellWithIdentifier:@"remindOnDayCell"];
 		
 		if (remindOnDayCell) {
 			return remindOnDayCell;
 		}
-	} else if (indexPath.row == 1 && indexPath.section == 1 && self.switchState == YES) {
+	} else if (indexPath.section == 1 && indexPath.row == 1 && self.switchState == YES) {
 		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
 		
 		if (alertAndReminderCell) {
 			alertAndReminderCell.textLabel.text = @"Alarm";
 			return alertAndReminderCell;
 		}
-	} else if (indexPath.row == 2 && indexPath.section == 1 && self.switchState == YES) {
+	} else if (indexPath.section == 1 && indexPath.row == 2 &&  self.switchState == YES && self.alarmCellDropDown == NO) {
 		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
 		
 		if (alertAndReminderCell) {
 			alertAndReminderCell.textLabel.text = @"Repeat";
 			return alertAndReminderCell;
 		}
-	} else if (indexPath.row == 0 && indexPath.section == 2) {
+	}  else if (indexPath.section == 1 && indexPath.row == 2 && self.switchState == YES && self.alarmCellDropDown == YES) {
+		CDEditDatePickerCell *datePickerCell = [tableView dequeueReusableCellWithIdentifier:@"datePickerCell"];
+		
+		if (datePickerCell) {
+			datePickerCell.datePicker.date = [NSDate date];
+			return datePickerCell;
+		}
+	} else if (indexPath.section == 1 && indexPath.row == 3 && self.switchState == YES && self.alarmCellDropDown == YES) {
+		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
+		
+		if (alertAndReminderCell) {
+			alertAndReminderCell.textLabel.text = @"Repeat";
+			return alertAndReminderCell;
+		}
+	} else if (indexPath.section == 2 && indexPath.row == 0) {
 		CDEditPriorityCell *priorityCell = [tableView dequeueReusableCellWithIdentifier:@"priorityCell"];
 		
 		if (priorityCell) {
@@ -135,7 +185,7 @@
 			[priorityCell setupReminderWithReminder:self.reminder];
 			return  priorityCell;
 		}
-	} else if (indexPath.row == 1 && indexPath.section == 2) {
+	} else if (indexPath.section == 2 && indexPath.row == 1) {
 		CDEditNotesTextCell *notesCell = [tableView dequeueReusableCellWithIdentifier:@"notesCell"];
 		
 		if (notesCell) {
