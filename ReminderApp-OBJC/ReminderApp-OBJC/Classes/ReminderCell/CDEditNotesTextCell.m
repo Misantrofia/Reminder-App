@@ -29,11 +29,22 @@
 - (void)setupCellWithReminder:(CDReminder *)reminder {
 	
 	self.reminder = reminder;
-	self.noteTextView.text = self.reminder.note;
+	
+	if (!self.reminder.note || [self.reminder.note isEqualToString:@""]) {
+		self.noteTextView.text = @"Note";
+	} else {
+		self.noteTextView.text = self.reminder.note;
+	}
 	
 }
 
 #pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	
+	self.noteTextView.text = @"";
+	
+}
 
 - (void)textViewDidChange:(UITextView *)textView {
 	
