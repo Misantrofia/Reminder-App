@@ -16,9 +16,10 @@
 
 @implementation CDEditPriorityCell
 
-- (void)setupReminderWithReminder:(CDReminder *)reminder {
+- (void)setupCellWithReminder:(CDReminder *)reminder {
 	
 	self.reminder = reminder;
+	self.prioritySegmentedControl.selectedSegmentIndex = self.reminder.priority.integerValue;
 	
 }
 

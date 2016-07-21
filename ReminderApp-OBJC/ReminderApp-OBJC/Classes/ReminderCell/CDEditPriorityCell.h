@@ -20,6 +20,6 @@ typedef NS_ENUM(NSInteger, CDPriority){
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *prioritySegmentedControl;
 
-- (void)setupReminderWithReminder:(CDReminder *)reminder;
+- (void)setupCellWithReminder:(CDReminder *)reminder;
 
 @end

@@ -22,6 +22,6 @@
 @property (nonatomic, weak) IBOutlet UITextView *textView;
 @property (nonatomic, weak) id <CDEditReminderTextCellDelegate> delegate;
 
-- (void)setupReminderWithReminder:(CDReminder *)reminder;
+- (void)setupCellWithReminder:(CDReminder *)reminder;
 
 @end

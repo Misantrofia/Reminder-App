@@ -19,6 +19,7 @@
 - (void)setupReminderWithReminder:(CDReminder *)reminder {
 	
 	self.reminder = reminder;
+	self.datePicker.date = self.reminder.taskDate;
 	
 }
 

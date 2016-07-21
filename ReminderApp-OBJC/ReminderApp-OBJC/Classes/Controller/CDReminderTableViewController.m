@@ -59,18 +59,9 @@
 	
 	if ([segue.identifier isEqualToString:@"CDReminderCellDetailButtonToEditScreen"]) {
 		CDEditReminderTableViewController *editController = segue.destinationViewController;
-		self.reminderToEdit = [self.fetchedResultsController objectAtIndexPath:self.tableView.indexPathForSelectedRow];
 		editController.reminder = self.reminderToEdit;
 		[self.tableView resignFirstResponder];
 	}
-	
-}
-
-#pragma mark - Action methods for buttons
-
-- (IBAction)detailAction:(id)sender {
-	
-	NSLog(@"Pam");
 	
 }
 
@@ -161,11 +152,23 @@
 	
 }
 
-- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToAddReminderWithText:(NSString *)reminderText {
+- (void)reminderCell:(CDReminderCell *)cell wantsToEditReminder:(CDReminder *)reminder {
+	
+	self.reminderToEdit = reminder;
+	
+}
+
+- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToAddReminderWithText:(NSString *)reminderText
+		viaDetailButton:(BOOL)detailButton{
 	
 	CDReminder *newReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
 	newReminder.topic = self.topic;
 	newReminder.taskName = reminderText;
+	
+	if (detailButton) {
+		self.reminderToEdit = newReminder;
+		[self performSegueWithIdentifier:@"CDReminderCellDetailButtonToEditScreen" sender:self];
+	}
 	
 	NSError *error;
 	if (![self.managedContext save:&error]) {
@@ -204,25 +207,18 @@
 	
 	if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
 		CDReminderCell *reminderCell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
-		
-		if (reminderCell) {
-			reminderCell.delegate = self;
-			CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
-			[reminderCell updateWithReminder:reminder];
-			return reminderCell;
-		}
+
+		reminderCell.delegate = self;
+		CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		[reminderCell updateWithReminder:reminder];
+		return reminderCell;
 	} else {
 		CDAddReminderCell *addCell = [tableView dequeueReusableCellWithIdentifier:@"AddReminderCell" forIndexPath:indexPath];
-		
-		if (addCell) {
-			addCell.delegate = self;
-			
-			return addCell;
-		}
+		addCell.delegate = self;
+		return addCell;
 	}
 	
-	return nil;
-	
+	return [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath

@@ -45,7 +45,15 @@
 	
 }
 
-#pragma mark Change Outlet Priorities Methods
+#pragma mark - Action Button Methods
+
+- (IBAction)detailButtonTapped:(id)sender {
+	
+	[self.delegate reminderCell:self wantsToEditReminder:self.reminder];
+	
+}
+
+#pragma mark - Change Outlet Priorities Methods
 
 - (void)changePrioritiesForReminder:(CDReminder *)reminder {
 	

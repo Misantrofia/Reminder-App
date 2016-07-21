@@ -26,9 +26,10 @@
 
 }
 
-- (void)setupReminderWithReminder:(CDReminder *)reminder {
+- (void)setupCellWithReminder:(CDReminder *)reminder {
 	
 	self.reminder = reminder;
+	self.noteTextView.text = self.reminder.note;
 	
 }
 

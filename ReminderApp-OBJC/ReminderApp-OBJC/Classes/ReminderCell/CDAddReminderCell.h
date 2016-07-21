@@ -13,7 +13,7 @@
 
 @protocol CDAddReminderCellDelegate
 
-- (void)addReminderCell:(CDAddReminderCell *)cell wantsToAddReminderWithText:(NSString *)reminderText;
+- (void)addReminderCell:(CDAddReminderCell *)cell wantsToAddReminderWithText:(NSString *)reminderText viaDetailButton:(BOOL)detailButton;
 - (void)addReminderCell:(CDAddReminderCell *)cell wantsToResizeTextView:(UITextView *)textView;
 
 @end

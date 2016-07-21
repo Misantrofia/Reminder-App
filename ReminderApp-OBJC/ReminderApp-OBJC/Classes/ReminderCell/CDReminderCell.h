@@ -15,7 +15,8 @@
 
 - (void)reminderCell:(CDReminderCell *)cell wantsToSaveReminder:(CDReminder *)reminder;
 - (void)reminderCell:(CDReminderCell *)cell wantsToResizeTextView:(UITextView *)textView;
-	
+- (void)reminderCell:(CDReminderCell *)cell wantsToEditReminder:(CDReminder *)reminder;
+
 @end
 
 typedef NS_ENUM(NSInteger, CDPriority){

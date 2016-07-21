@@ -29,6 +29,7 @@
 	
 	[super viewDidLoad];
 	
+	self.title = @"Details";
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.estimatedRowHeight = 70;
 	self.switchState = NO;
@@ -145,80 +146,77 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (indexPath.section == 0 && indexPath.row == 0 ) {
-		CDEditReminderTextCell *reminderTextCell = [tableView dequeueReusableCellWithIdentifier:@"reminderTextCell"];
-		
-		if (reminderTextCell) {
-			reminderTextCell.textView.text = self.reminder.taskName;
-			reminderTextCell.delegate = self;
-			[reminderTextCell setupReminderWithReminder:self.reminder];
-			return reminderTextCell;
-		}
+		CDEditReminderTextCell *reminderTextCell = [tableView dequeueReusableCellWithIdentifier:@"reminderTextCell"
+																				   forIndexPath:indexPath];
+		[reminderTextCell setupCellWithReminder:self.reminder];
+		reminderTextCell.delegate = self;
+		return reminderTextCell;
 	} else if (indexPath.section == 1 && indexPath.row == 0) {
-		CDEditRemindOnDayCell *remindOnDayCell = [tableView dequeueReusableCellWithIdentifier:@"remindOnDayCell"];
+		CDEditRemindOnDayCell *remindOnDayCell = [tableView dequeueReusableCellWithIdentifier:@"remindOnDayCell"
+																				 forIndexPath:indexPath];
+		return remindOnDayCell;
+	} else if (indexPath.section == 1 && indexPath.row == 1 &&
+			   self.switchState == YES) {
+		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"
+																				forIndexPath:indexPath];
+		[self updateContentForCell:alertAndReminderCell isAlert:YES];
+		return alertAndReminderCell;
+	} else if (indexPath.section == 1 && indexPath.row == 2 &&
+			   self.switchState == YES && self.alarmCellDropDown == NO) {
+		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"
+																				forIndexPath:indexPath];
+		[self updateContentForCell:alertAndReminderCell isAlert:NO];
+		return alertAndReminderCell;
+	}  else if (indexPath.section == 1 && indexPath.row == 2 &&
+				self.switchState == YES && self.alarmCellDropDown == YES) {
+		CDEditDatePickerCell *datePickerCell = [tableView dequeueReusableCellWithIdentifier:@"datePickerCell"
+																			   forIndexPath:indexPath];
 		
-		if (remindOnDayCell) {
-			return remindOnDayCell;
-		}
-	} else if (indexPath.section == 1 && indexPath.row == 1 && self.switchState == YES) {
-		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
+		[datePickerCell setupReminderWithReminder:self.reminder];
+		return datePickerCell;
+	} else if (indexPath.section == 1 && indexPath.row == 3 &&
+			   self.switchState == YES && self.alarmCellDropDown == YES) {
+		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"
+																				forIndexPath:indexPath];
 		
-		if (alertAndReminderCell) {
-			alertAndReminderCell.textLabel.text = @"Alarm";
-			alertAndReminderCell.textLabel.textColor = [UIColor blackColor];
-			
-			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-			dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-			dateFormatter.dateFormat = @"EE dd/MM/yy hh:mm";
-			alertAndReminderCell.detailTextLabel.text = [dateFormatter stringFromDate:self.reminder.taskDate];
-			return alertAndReminderCell;
-		}
-	} else if (indexPath.section == 1 && indexPath.row == 2 &&  self.switchState == YES && self.alarmCellDropDown == NO) {
-		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
-		
-		if (alertAndReminderCell) {
-			alertAndReminderCell.textLabel.text = @"Repeat";
-			alertAndReminderCell.textLabel.textColor = [UIColor blackColor];
-			alertAndReminderCell.detailTextLabel.text = @"Never";
-			return alertAndReminderCell;
-		}
-	}  else if (indexPath.section == 1 && indexPath.row == 2 && self.switchState == YES && self.alarmCellDropDown == YES) {
-		CDEditDatePickerCell *datePickerCell = [tableView dequeueReusableCellWithIdentifier:@"datePickerCell"];
-		
-		if (datePickerCell) {
-			[datePickerCell setupReminderWithReminder:self.reminder];
-			datePickerCell.datePicker.date = self.reminder.taskDate;
-			return datePickerCell;
-		}
-	} else if (indexPath.section == 1 && indexPath.row == 3 && self.switchState == YES && self.alarmCellDropDown == YES) {
-		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"];
-		
-		if (alertAndReminderCell) {
-			alertAndReminderCell.textLabel.text = @"Repeat";
-			alertAndReminderCell.textLabel.textColor = [UIColor blackColor];
-			alertAndReminderCell.detailTextLabel.text = @"Never";
-			return alertAndReminderCell;
-		}
+		[self updateContentForCell:alertAndReminderCell isAlert:NO];
+		return alertAndReminderCell;
 	} else if (indexPath.section == 2 && indexPath.row == 0) {
-		CDEditPriorityCell *priorityCell = [tableView dequeueReusableCellWithIdentifier:@"priorityCell"];
-		
-		if (priorityCell) {
-			priorityCell.prioritySegmentedControl.selectedSegmentIndex = self.reminder.priority.integerValue;
-			[priorityCell setupReminderWithReminder:self.reminder];
-			return  priorityCell;
-		}
+		CDEditPriorityCell *priorityCell = [tableView dequeueReusableCellWithIdentifier:@"priorityCell"
+																		   forIndexPath:indexPath];
+		[priorityCell setupCellWithReminder:self.reminder];
+		return  priorityCell;
 	} else if (indexPath.section == 2 && indexPath.row == 1) {
-		CDEditNotesTextCell *notesCell = [tableView dequeueReusableCellWithIdentifier:@"notesCell"];
-		
-		if (notesCell) {
-			notesCell.noteTextView.text = self.reminder.note;
-			notesCell.delegate = self;
-			[notesCell setupReminderWithReminder:self.reminder];
-			return notesCell;
-		}
+		CDEditNotesTextCell *notesCell = [tableView dequeueReusableCellWithIdentifier:@"notesCell"
+																		 forIndexPath:indexPath];
+		notesCell.delegate = self;
+		[notesCell setupCellWithReminder:self.reminder];
+		return notesCell;
 	}
 
-	return nil;
+	return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
 
 }
+
+#pragma mark - Helper Method for Alert and Repeat Cells - Update Content
+
+- (void)updateContentForCell:(UITableViewCell *)cell isAlert:(BOOL)alert {
+	
+	if (alert) {
+		cell.textLabel.text = @"Alarm";
+		cell.textLabel.textColor = [UIColor blackColor];
+	
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+		dateFormatter.dateFormat = @"EE dd/MM/yy hh:mm";
+		cell.detailTextLabel.text = [dateFormatter stringFromDate:self.reminder.taskDate];
+	} else {
+		cell.textLabel.text = @"Repeat";
+		cell.textLabel.textColor = [UIColor blackColor];
+		cell.detailTextLabel.text = @"Never";
+	}
+	
+}
+
 
 @end

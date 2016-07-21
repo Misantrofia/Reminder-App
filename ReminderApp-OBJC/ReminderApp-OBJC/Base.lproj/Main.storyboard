@@ -39,8 +39,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jcx-W7-RhW">
                                             <rect key="frame" x="570" y="11" width="22" height="22"/>
                                             <connections>
-                                                <action selector="detailAction:" destination="PcV-bd-CUg" eventType="touchUpInside" id="xa4-K5-4oA"/>
-                                                <segue destination="RKq-y0-mAO" kind="show" identifier="CDAddReminderCellDetailButtonToEditScreen" id="D38-eI-IZT"/>
+                                                <action selector="detailButtonTapped:" destination="etT-ee-efC" eventType="touchUpInside" id="AFE-8T-fVt"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -83,7 +82,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BbX-S1-ska">
                                             <rect key="frame" x="570" y="39" width="22" height="22"/>
                                             <connections>
-                                                <action selector="detailAction:" destination="PcV-bd-CUg" eventType="touchUpInside" id="IEi-7i-FPI"/>
+                                                <action selector="detailButtonTapped:" destination="5wz-Or-nZX" eventType="touchUpInside" id="MP5-eO-sFj"/>
                                                 <segue destination="RKq-y0-mAO" kind="show" identifier="CDReminderCellDetailButtonToEditScreen" id="DDf-uS-vVc"/>
                                             </connections>
                                         </button>
@@ -307,7 +306,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Reminder Text" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Q4i-xV-bTm">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Title" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Q4i-xV-bTm">
                                             <rect key="frame" x="16" y="8" width="568" height="27"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -409,7 +408,7 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="751" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="asd" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="A2s-kH-bcI">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="252" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="751" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="note" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="A2s-kH-bcI">
                                             <rect key="frame" x="16" y="24" width="568" height="37"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
@@ -619,7 +618,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3qc-JP-hNi"/>
-        <segue reference="DDf-uS-vVc"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.1843137255" green="0.40000000000000002" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>

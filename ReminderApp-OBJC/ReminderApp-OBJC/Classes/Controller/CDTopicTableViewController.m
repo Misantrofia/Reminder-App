@@ -52,6 +52,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	
+	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 	
 }
@@ -192,14 +193,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TopicCell"];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TopicCell" forIndexPath:indexPath];
 	
-	if (cell) {
-		CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	
-		cell.textLabel.text = topic.title;
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",topic.reminders.count];
-	}
+	CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+	cell.textLabel.text = topic.title;
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu",topic.reminders.count];
 	
 	return cell;
 	

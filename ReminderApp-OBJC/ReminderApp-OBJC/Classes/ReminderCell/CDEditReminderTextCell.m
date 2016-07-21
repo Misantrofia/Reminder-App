@@ -26,9 +26,17 @@
 
 }
 
-- (void)setupReminderWithReminder:(CDReminder *)reminder {
+- (void)setupCellWithReminder:(CDReminder *)reminder {
 	
 	self.reminder = reminder;
+	
+	if (!self.reminder || [self.reminder.taskName isEqualToString: @""]) {
+		self.textView.text = @"Title";
+		self.textView.textColor = [UIColor lightGrayColor];
+	} else {
+		self.textView.textColor = [UIColor blackColor];
+		self.textView.text = self.reminder.taskName;
+	}
 	
 }
 

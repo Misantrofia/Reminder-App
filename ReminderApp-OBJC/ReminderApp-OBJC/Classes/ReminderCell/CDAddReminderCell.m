@@ -18,11 +18,30 @@
 	
 	[super awakeFromNib];
 	self.textView.delegate = self;
+	self.textView.text = @"Title";
+	self.textView.textColor = [UIColor lightGrayColor];
 	
 }
 
+#pragma mark - Action Button Methods
+
+- (IBAction)detailButtonTapped:(id)sender {
+	
+	[self.textView resignFirstResponder];
+	
+	[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text viaDetailButton:YES];
+	self.textView.text = @"";
+	
+}
 
 #pragma mark - UITextViewDelegate
+
+-(void)textViewDidBeginEditing:(UITextView *)textView {
+	
+	self.textView.text = @"";
+	self.textView.textColor = [UIColor blackColor];
+	
+}
 
 - (void)textViewDidChange:(UITextView *)textView {
 	
@@ -37,7 +56,7 @@
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
 		
-		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text];
+		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text viaDetailButton:NO];
 		self.textView.text = @"";
 		
 		return NO;
