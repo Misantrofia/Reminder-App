@@ -7,10 +7,28 @@
 //
 
 #import "CDEditDatePickerCell.h"
-#import "CDReminder.h"
+
+@interface CDEditDatePickerCell ()
+
+@property (nonatomic, strong) CDReminder *reminder;
+
+@end
 
 @implementation CDEditDatePickerCell
 
+- (void)setupReminderWithReminder:(CDReminder *)reminder {
+	
+	self.reminder = reminder;
+	if (!reminder.taskDate) {
+		self.reminder.taskDate = [NSDate date];
+	}
+	
+}
 
+- (IBAction)datePickerHasChanged:(id)sender {
+	
+	self.reminder.taskDate = self.datePicker.date;
+	
+}
 
 @end

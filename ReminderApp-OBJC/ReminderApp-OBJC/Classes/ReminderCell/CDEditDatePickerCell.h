@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CDReminder.h"
 
 @interface CDEditDatePickerCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+
+- (void)setupReminderWithReminder:(CDReminder *)reminder;
 
 @end
