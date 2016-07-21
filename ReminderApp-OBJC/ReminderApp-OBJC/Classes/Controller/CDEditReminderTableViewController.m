@@ -48,6 +48,9 @@
 		[self.tableView beginUpdates];
 		[self.tableView insertRowsAtIndexPaths:@[self.indexPathForAlarmCell] withRowAnimation:UITableViewRowAnimationBottom];
 		[self.tableView insertRowsAtIndexPaths:@[self.indexPathForRepeatCell] withRowAnimation:UITableViewRowAnimationBottom];
+		if (!self.reminder.taskDate) {
+			self.reminder.taskDate = [NSDate date];
+		}
 		[self.tableView endUpdates];
 	} else {
 		[self.tableView beginUpdates];
@@ -57,6 +60,7 @@
 			self.alarmCellDropDown = !self.alarmCellDropDown;
 			[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:1]] withRowAnimation:UITableViewRowAnimationBottom];
 		}
+		self.reminder.taskDate = nil;
 		[self.tableView endUpdates];
 	}
 
@@ -159,6 +163,11 @@
 		if (alertAndReminderCell) {
 			alertAndReminderCell.textLabel.text = @"Alarm";
 			alertAndReminderCell.textLabel.textColor = [UIColor blackColor];
+			
+			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+			dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+			dateFormatter.dateFormat = @"EE dd/MM/yy hh:mm";
+			alertAndReminderCell.detailTextLabel.text = [dateFormatter stringFromDate:self.reminder.taskDate];
 			return alertAndReminderCell;
 		}
 	} else if (indexPath.section == 1 && indexPath.row == 2 &&  self.switchState == YES && self.alarmCellDropDown == NO) {
@@ -167,6 +176,7 @@
 		if (alertAndReminderCell) {
 			alertAndReminderCell.textLabel.text = @"Repeat";
 			alertAndReminderCell.textLabel.textColor = [UIColor blackColor];
+			alertAndReminderCell.detailTextLabel.text = @"Never";
 			return alertAndReminderCell;
 		}
 	}  else if (indexPath.section == 1 && indexPath.row == 2 && self.switchState == YES && self.alarmCellDropDown == YES) {
@@ -183,6 +193,7 @@
 		if (alertAndReminderCell) {
 			alertAndReminderCell.textLabel.text = @"Repeat";
 			alertAndReminderCell.textLabel.textColor = [UIColor blackColor];
+			alertAndReminderCell.detailTextLabel.text = @"Never";
 			return alertAndReminderCell;
 		}
 	} else if (indexPath.section == 2 && indexPath.row == 0) {

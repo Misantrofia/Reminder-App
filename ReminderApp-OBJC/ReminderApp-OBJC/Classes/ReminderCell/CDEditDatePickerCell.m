@@ -19,9 +19,6 @@
 - (void)setupReminderWithReminder:(CDReminder *)reminder {
 	
 	self.reminder = reminder;
-	if (!reminder.taskDate) {
-		self.reminder.taskDate = [NSDate date];
-	}
 	
 }
 
