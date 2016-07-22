@@ -178,6 +178,8 @@
 	NSIndexPath *indexPath = [self.tableView indexPathForCell:addRemindercell];
 	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 	
+	[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+	
 }
 
 - (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToResizeTextView:(UITextView *)textView {
