@@ -93,6 +93,7 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
 	
+	[UIView setAnimationsEnabled:NO];
 	[self.tableView beginUpdates];
 	
 }
@@ -131,6 +132,7 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
 	[self.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
 	
 }
 
@@ -147,8 +149,10 @@
 
 - (void)reminderCell:(CDReminderCell *)reminderCell wantsToResizeTextView:(UITextView *)textView {
 	
+	[UIView setAnimationsEnabled:NO];
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
 	
 }
 
@@ -184,12 +188,24 @@
 
 - (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToResizeTextView:(UITextView *)textView {
 	
+	[UIView setAnimationsEnabled:NO];
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
 	
 }
 
 #pragma mark - Table view data source
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	
+	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 100)];
+	
+	view.backgroundColor = [UIColor redColor];
+	
+	return view;
+	
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	
@@ -254,7 +270,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 			}
 		}
 	}
-	
+
 }
 
 @end
