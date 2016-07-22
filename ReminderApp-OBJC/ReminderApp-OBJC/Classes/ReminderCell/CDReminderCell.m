@@ -7,7 +7,6 @@
 //
 
 #import "CDReminderCell.h"
-#import "CDAddReminderCell.h"
 
 @interface CDReminderCell () <UITextViewDelegate>
 

@@ -7,18 +7,19 @@
 //
 
 #import "CDReminderTableViewController.h"
-#import "CDAddReminderCell.h"
 #import "CDReminderCell.h"
 #import "AppDelegate.h"
 #import "CDReminder.h"
 #import "CDEditReminderTableViewController.h"
 
-@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDAddReminderCellDelegate, CDReminderCellDelegate>
+@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDReminderCellDelegate, UITextViewDelegate>
 
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSManagedObjectContext *managedContext;
 @property (nonatomic, strong) CDReminder *reminderToEdit;
+@property (nonatomic, assign) BOOL placeholder;
+@property (nonatomic, strong) UITextView *textView;
 
 @end
 
@@ -28,8 +29,7 @@
 	
 	[super viewDidLoad];
 	
-	self.count = 1;
-	
+	self.placeholder = YES;
 	self.title = self.topic.title;
 	
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -162,8 +162,61 @@
 	
 }
 
-- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToAddReminderWithText:(NSString *)reminderText
-		detailButtonWasPressed:(BOOL)detailButton{
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView {
+	NSLog(@"DidChange \n");
+	
+	[UIView setAnimationsEnabled:NO];
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
+
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+	
+	if ([text isEqualToString:@"\n"]) {
+		[textView resignFirstResponder];
+		
+		if (!self.placeholder) {
+			[self footerTextView:textView wantsToAddReminderWithText:textView.text detailButtonWasPressed:NO];
+			self.placeholder = YES;
+			textView.text = @"Title";
+			textView.textColor = [UIColor lightGrayColor];
+			NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:self.fetchedResultsController.sections[0].numberOfObjects - 1 inSection:0];
+			[self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+		}
+		
+		return NO;
+	}
+	
+	return YES;
+
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	self.placeholder = NO;
+	textView.text = @"";
+	textView.textColor = [UIColor blackColor];
+	
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+	
+	/* Case: when user did begin editing but has not entered anything and attemtps to save - do nothing */
+	if ([textView.text isEqualToString:@""]) {
+		textView.text = @"Title";
+		textView.textColor = [UIColor lightGrayColor];
+		self.placeholder = YES;
+	}
+
+}
+
+#pragma mark - Helper Methods for footer - textView logic + button action
+
+- (void)footerTextView:(UITextView *)footerView wantsToAddReminderWithText:(NSString *)reminderText
+detailButtonWasPressed:(BOOL)detailButton{
 	
 	CDReminder *newReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
 	newReminder.topic = self.topic;
@@ -179,19 +232,42 @@
 		NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", newReminder, error);
 	}
 	
-	NSIndexPath *indexPath = [self.tableView indexPathForCell:addRemindercell];
-	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)detailButtonActionWithTextView {
+	[self.textView resignFirstResponder];
 	
-	[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+	/* We do not attempt to save a reminder when in the addReminderCell text is the placeholder */
+	if (!self.placeholder) {
+		[self footerTextView:self.textView wantsToAddReminderWithText:self.textView.text detailButtonWasPressed:YES];
+		self.placeholder = YES;
+		self.textView.text = @"Title";
+		self.textView.textColor = [UIColor lightGrayColor];
+	}
 	
 }
 
-- (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToResizeTextView:(UITextView *)textView {
+- (void)applySettingsOnTextView:(UITextView *)textView {
 	
-	[UIView setAnimationsEnabled:NO];
-	[self.tableView beginUpdates];
-	[self.tableView endUpdates];
-	[UIView setAnimationsEnabled:YES];
+	textView.layer.cornerRadius = 8;
+	textView.scrollEnabled = NO;
+	textView.text = @"Title - this is footer";
+	textView.textColor = [UIColor lightGrayColor];
+	textView.delegate = self;
+	
+}
+
+- (void)applyShadowOnView:(UIView *)view {
+	
+	/* we should check if we pass the scrool view offset so if its scrollable and footer cover some cells, we put shadow opacity
+	 otherwise we dont */
+	view.layer.masksToBounds = NO;
+	view.layer.cornerRadius = 3;
+	view.layer.shadowOffset = CGSizeMake(0.0, -2.0);
+	view.layer.shadowRadius = 5;
+	view.layer.shadowOpacity = 0.2;
+	view.layer.shadowPath = [UIBezierPath bezierPathWithRect:view.bounds].CGPath;
+	view.backgroundColor = [UIColor whiteColor];
 	
 }
 
@@ -199,11 +275,31 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
 	
-	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 100)];
+	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 44.0)];
+	[self applyShadowOnView:view];
 	
-	view.backgroundColor = [UIColor redColor];
+	UIButton *plusButton = [[UIButton alloc]initWithFrame:CGRectMake(19.0, 8.0, 27.0, 27.0)];
+	[plusButton setImage:[UIImage imageNamed:@"Pluse-128"] forState:UIControlStateNormal];
+	[view addSubview:plusButton];
+	
+	self.textView = [[UITextView alloc] initWithFrame:CGRectMake(61.0, 7.0, self.tableView.bounds.size.width - 100, 30.0) textContainer:nil];
+	[self applySettingsOnTextView:self.textView];
+	[view addSubview:self.textView];
+
+	UIButton *detailButton = [UIButton buttonWithType: UIButtonTypeDetailDisclosure];
+	[detailButton setFrame:CGRectMake(self.textView.bounds.size.width + 69.0, 11.0, 22.0, 22.0)];
+	[detailButton addTarget:self
+					 action:@selector(detailButtonActionWithTextView)
+		   forControlEvents:UIControlEventTouchUpInside];
+	[view addSubview:detailButton];
 	
 	return view;
+	
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+
+	return 44.0;
 	
 }
 
@@ -214,60 +310,33 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	
-	/* We want to return the number of items in the database plus a temporary cell in which the user can add
-	   another reminder when the cell its tapped */
-	return self.fetchedResultsController.sections[section].numberOfObjects + 1;
+	 
+	return self.fetchedResultsController.sections[section].numberOfObjects;
 	
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
-		CDReminderCell *reminderCell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
+	CDReminderCell *reminderCell = [tableView dequeueReusableCellWithIdentifier:@"ReminderCell" forIndexPath:indexPath];
 
-		reminderCell.delegate = self;
-		CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
-		[reminderCell updateWithReminder:reminder];
-		return reminderCell;
-	} else {
-		CDAddReminderCell *addCell = [tableView dequeueReusableCellWithIdentifier:@"AddReminderCell" forIndexPath:indexPath];
-		addCell.delegate = self;
-		return addCell;
-	}
+	reminderCell.delegate = self;
+	CDReminder *reminder = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	[reminderCell updateWithReminder:reminder];
 	
-	return [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DefaultCell"];
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath
-	  toIndexPath:(NSIndexPath *)destinationIndexPath {
+	return reminderCell;
 	
-	NSLog(@"MovedRow from row %ld, to row %ld", (long)sourceIndexPath.row, (long)destinationIndexPath.row);
-	
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
-		return YES;
-	}
-	
-	return NO;
-
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		if ([[self.tableView cellForRowAtIndexPath:indexPath] isKindOfClass:[CDReminderCell class]]) {
-			CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
-			[self.managedContext deleteObject:reminderToDelete];
-			
-			NSError *error;
-			if (![self.managedContext save:&error]) {
-				NSLog(@"Could not delete a Reminder object:%@. \n An error occured: %@", reminderToDelete, error);
-			}
+		CDReminder *reminderToDelete = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		[self.managedContext deleteObject:reminderToDelete];
+		
+		NSError *error;
+		if (![self.managedContext save:&error]) {
+			NSLog(@"Could not delete a Reminder object:%@. \n An error occured: %@", reminderToDelete, error);
 		}
 	}
 

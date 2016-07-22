@@ -71,8 +71,10 @@
 
 -(void)editReminderTextCell:(CDEditReminderTextCell *)cell wantsToResizeTextView:(UITextView *)textView {
 	
+	[UIView setAnimationsEnabled:NO];
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
 	
 }
 
@@ -80,8 +82,10 @@
 
 - (void)editNotesTextCell:(CDEditNotesTextCell *)cell wantsToResizeTextView:(UITextView *)textView {
 	
+	[UIView setAnimationsEnabled:NO];
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
 
 }
 
