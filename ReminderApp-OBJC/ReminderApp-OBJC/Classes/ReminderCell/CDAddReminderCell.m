@@ -35,6 +35,9 @@
 	/* We do not attempt to save a reminder when in the addReminderCell text is the placeholder */
 	if (!self.placeholder) {
 		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text detailButtonWasPressed:YES];
+		self.placeholder = YES;
+		self.textView.text = @"Title";
+		self.textView.textColor = [UIColor lightGrayColor];
 	}
 	
 }
@@ -72,11 +75,12 @@
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
 		
-		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text detailButtonWasPressed:NO];
-		
-		textView.text = @"Title";
-		textView.textColor = [UIColor lightGrayColor];
-		self.placeholder = YES;
+		if (!self.placeholder) {
+			[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text detailButtonWasPressed:NO];
+			self.placeholder = YES;
+			self.textView.text = @"Title";
+			self.textView.textColor = [UIColor lightGrayColor];
+		}
 		
 		return NO;
 	}

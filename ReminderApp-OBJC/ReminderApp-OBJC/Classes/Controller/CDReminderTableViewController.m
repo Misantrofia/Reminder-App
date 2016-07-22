@@ -228,6 +228,16 @@
 	
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	if (indexPath.row < self.fetchedResultsController.sections[indexPath.section].numberOfObjects) {
+		return YES;
+	}
+	
+	return NO;
+
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath *)indexPath {
 	
