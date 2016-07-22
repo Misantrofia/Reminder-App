@@ -159,7 +159,7 @@
 }
 
 - (void)addReminderCell:(CDAddReminderCell *)addRemindercell wantsToAddReminderWithText:(NSString *)reminderText
-		viaDetailButton:(BOOL)detailButton{
+		detailButtonWasPressed:(BOOL)detailButton{
 	
 	CDReminder *newReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:self.managedContext];
 	newReminder.topic = self.topic;

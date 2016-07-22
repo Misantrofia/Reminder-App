@@ -10,6 +10,8 @@
 
 @interface CDAddReminderCell () <UITextViewDelegate>
 
+@property (nonatomic, assign) BOOL placeholder;
+
 @end
 
 @implementation CDAddReminderCell
@@ -20,6 +22,7 @@
 	self.textView.delegate = self;
 	self.textView.text = @"Title";
 	self.textView.textColor = [UIColor lightGrayColor];
+	self.placeholder = YES;
 	
 }
 
@@ -29,17 +32,30 @@
 	
 	[self.textView resignFirstResponder];
 	
-	[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text viaDetailButton:YES];
-	self.textView.text = @"";
+	/* We do not attempt to save a reminder when in the addReminderCell text is the placeholder */
+	if (!self.placeholder) {
+		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text detailButtonWasPressed:YES];
+	}
 	
 }
 
 #pragma mark - UITextViewDelegate
 
--(void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView {
 	
+	self.placeholder = NO;
 	self.textView.text = @"";
 	self.textView.textColor = [UIColor blackColor];
+	
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+	
+	if ([textView.text isEqualToString:@""]) {
+		textView.text = @"Title";
+		textView.textColor = [UIColor lightGrayColor];
+		self.placeholder = YES;
+	}
 	
 }
 
@@ -56,8 +72,11 @@
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
 		
-		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text viaDetailButton:NO];
-		self.textView.text = @"";
+		[self.delegate addReminderCell:self wantsToAddReminderWithText:self.textView.text detailButtonWasPressed:NO];
+		
+		textView.text = @"Title";
+		textView.textColor = [UIColor lightGrayColor];
+		self.placeholder = YES;
 		
 		return NO;
 	}
