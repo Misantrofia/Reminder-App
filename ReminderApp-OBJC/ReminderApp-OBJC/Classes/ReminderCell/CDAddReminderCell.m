@@ -54,6 +54,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
 	
+	/* Case: when user did begin editing but has not entered anything and attemtps to save - do nothing */
 	if ([textView.text isEqualToString:@""]) {
 		textView.text = @"Title";
 		textView.textColor = [UIColor lightGrayColor];
