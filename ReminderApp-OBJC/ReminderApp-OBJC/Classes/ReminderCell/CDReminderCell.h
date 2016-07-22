@@ -19,13 +19,6 @@
 
 @end
 
-typedef NS_ENUM(NSInteger, CDPriority){
-	CDPriorityLow,
-	CDPriorityMedium,
-	CDPriorityHigh,
-	CDPriorityCritical
-};
-
 extern NSString *CDPriorityStringRepresentationForPriority(CDPriority priority);
 
 @interface CDReminderCell : UITableViewCell

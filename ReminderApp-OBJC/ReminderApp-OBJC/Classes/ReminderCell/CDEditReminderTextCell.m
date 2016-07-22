@@ -42,6 +42,13 @@
 
 #pragma mark - UITextViewDelegate
 
+-(void)textViewDidBeginEditing:(UITextView *)textView {
+	
+	self.textView.text = @"";
+	self.textView.textColor = [UIColor blackColor];
+	
+}
+
 - (void)textViewDidChange:(UITextView *)textView {
 	
 	NSLog(@"DidChange \n");

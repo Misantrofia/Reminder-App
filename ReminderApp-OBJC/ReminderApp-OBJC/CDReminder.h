@@ -15,6 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CDReminder : NSManagedObject
 
+typedef NS_ENUM(NSInteger, CDPriority){
+	CDPriorityLow,
+	CDPriorityMedium,
+	CDPriorityHigh,
+	CDPriorityCritical
+};
+
 @end
 
 NS_ASSUME_NONNULL_END
