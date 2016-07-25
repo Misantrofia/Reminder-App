@@ -235,6 +235,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 }
 
 - (void)detailButtonActionWithTextView {
+
 	[self.textView resignFirstResponder];
 	
 	/* We do not attempt to save a reminder when in the addReminderCell text is the placeholder */
