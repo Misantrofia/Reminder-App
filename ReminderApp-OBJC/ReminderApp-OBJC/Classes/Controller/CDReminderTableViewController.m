@@ -196,6 +196,7 @@
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
+	
 	self.placeholder = NO;
 	textView.text = @"";
 	textView.textColor = [UIColor blackColor];
@@ -252,7 +253,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 	
 	textView.layer.cornerRadius = 8;
 	textView.scrollEnabled = NO;
-	textView.text = @"Title - this is footer";
+	textView.text = @"Title";
 	textView.textColor = [UIColor lightGrayColor];
 	textView.delegate = self;
 	
