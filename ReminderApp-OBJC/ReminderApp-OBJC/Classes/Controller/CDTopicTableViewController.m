@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "CDTopic.h"
 #import "CDReminderTableViewController.h"
+#import "CDChangeTopicForReminder.h"
 
 #pragma mark - Class extension
 
@@ -38,6 +39,13 @@
 	if (![self.fetchedResultsController performFetch:&error]) {
 		NSLog(@"Could not perform a fetch for Topic entity, an error occured: %@", error);
 	}
+	
+}
+
+-(void)readyToSendTopicList {
+	
+	self.delegate = ((CDChangeTopicForReminder *)self.navigationController.viewControllers.lastObject);
+	[self.delegate topicController:self wantsToSendTopicList:self.fetchedResultsController.fetchedObjects];
 	
 }
 

@@ -13,6 +13,8 @@
 #import "CDEditNotesTextCell.h"
 #import "CDEditDatePickerCell.h"
 #import "CDReminder.h"
+#import "CDTopic.h"
+#import "CDChangeTopicForReminder.h"
 
 @interface CDEditReminderTableViewController () <CDEditReminderTextCellDelegate, CDEditNotesTextCellDelegate>
 
@@ -20,6 +22,7 @@
 @property (nonatomic, assign) BOOL alarmCellDropDown;
 @property (nonatomic, strong) NSIndexPath *indexPathForAlarmCell;
 @property (nonatomic, strong) NSIndexPath *indexPathForRepeatCell;
+@property (nonatomic, strong) CDChangeTopicForReminder *changeTopicController;
 
 @end
 
@@ -36,6 +39,20 @@
 	self.alarmCellDropDown = NO;
 	self.indexPathForAlarmCell = [NSIndexPath indexPathForRow:1 inSection:1];
 	self.indexPathForRepeatCell = [NSIndexPath indexPathForRow:2 inSection:1];
+	
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	
+	if ([segue.identifier isEqualToString:@"editScreenListCellTappedToChangeTopicForReminderScreen"]) {
+		__weak CDEditReminderTableViewController *weakSelf = self;
+		weakSelf.changeTopicController = segue.destinationViewController;
+		weakSelf.changeTopicController.topic = self.reminder.topic;
+		weakSelf.changeTopicController.changedTopic = ^(CDTopic *receivedTopic) {
+			CDEditReminderTableViewController *strongSelf = weakSelf;
+			strongSelf.reminder.topic = receivedTopic;
+		};
+	}
 	
 }
 
@@ -104,7 +121,7 @@
 	} else if (section == 1 && self.switchState == YES) {
 		return 3;
 	} else if (section == 2) {
-		return 2;
+		return 3;
 	}
 	
 	return 1;
@@ -191,6 +208,11 @@
 		[priorityCell setupCellWithReminder:self.reminder];
 		return  priorityCell;
 	} else if (indexPath.section == 2 && indexPath.row == 1) {
+		UITableViewCell *listCell = [tableView dequeueReusableCellWithIdentifier:@"topicListCell"
+																	forIndexPath:indexPath];
+		listCell.detailTextLabel.text = self.reminder.topic.title;
+		return listCell;
+	} else if (indexPath.section == 2 && indexPath.row == 2) {
 		CDEditNotesTextCell *notesCell = [tableView dequeueReusableCellWithIdentifier:@"notesCell"
 																		 forIndexPath:indexPath];
 		notesCell.delegate = self;
