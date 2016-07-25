@@ -20,6 +20,7 @@
 @property (nonatomic, strong) CDReminder *reminderToEdit;
 @property (nonatomic, assign) BOOL placeholder;
 @property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong) UIView *footerView;
 
 @end
 
@@ -103,7 +104,7 @@
 	  newIndexPath:(NSIndexPath *)newIndexPath {
 	
 	switch (type) {
-  		case NSFetchedResultsChangeInsert:
+		case NSFetchedResultsChangeInsert:
 			[self.tableView insertRowsAtIndexPaths:@[newIndexPath]
 								  withRowAnimation:UITableViewRowAnimationFade];
 			break;
@@ -165,6 +166,7 @@
 #pragma mark - UITextViewDelegate
 
 - (void)textViewDidChange:(UITextView *)textView {
+	
 	NSLog(@"DidChange \n");
 	
 	[UIView setAnimationsEnabled:NO];
@@ -261,15 +263,35 @@ detailButtonWasPressed:(BOOL)detailButton{
 
 - (void)applyShadowOnView:(UIView *)view {
 	
-	/* we should check if we pass the scrool view offset so if its scrollable and footer cover some cells, we put shadow opacity
-	 otherwise we dont */
 	view.layer.masksToBounds = NO;
 	view.layer.cornerRadius = 3;
 	view.layer.shadowOffset = CGSizeMake(0.0, -2.0);
-	view.layer.shadowRadius = 5;
 	view.layer.shadowOpacity = 0.2;
+	view.layer.shadowRadius = 5;
 	view.layer.shadowPath = [UIBezierPath bezierPathWithRect:view.bounds].CGPath;
 	view.backgroundColor = [UIColor whiteColor];
+
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+
+	CGFloat scrollViewHeight = scrollView.frame.size.height;
+	CGFloat contentYoffset = scrollView.contentOffset.y;
+	CGFloat distanceFromBottom = scrollView.contentSize.height - contentYoffset;
+	
+	/* Last visible cell is covered by the footer so we compare with visibleCells - 1 
+	   This additional if, is for when we insert rows, this method is called in that case aswell */
+	if (self.tableView.visibleCells.count - 1 < self.fetchedResultsController.fetchedObjects.count) {
+		if (distanceFromBottom > scrollViewHeight) {
+			self.footerView.layer.shadowOpacity = 0.2;
+		} else {
+			self.footerView.layer.shadowOpacity = 0.0;
+		}
+	} else {
+		self.footerView.layer.shadowOpacity = 0.0;
+	}
 	
 }
 
@@ -277,25 +299,25 @@ detailButtonWasPressed:(BOOL)detailButton{
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
 	
-	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 44.0)];
-	[self applyShadowOnView:view];
+	self.footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, 44.0)];
+	[self applyShadowOnView:self.footerView];
 	
-	UIButton *plusButton = [[UIButton alloc]initWithFrame:CGRectMake(19.0, 8.0, 27.0, 27.0)];
+	UIButton *plusButton = [[UIButton alloc] initWithFrame:CGRectMake(19.0, 8.0, 27.0, 27.0)];
 	[plusButton setImage:[UIImage imageNamed:@"Pluse-128"] forState:UIControlStateNormal];
-	[view addSubview:plusButton];
+	[self.footerView addSubview:plusButton];
 	
 	self.textView = [[UITextView alloc] initWithFrame:CGRectMake(61.0, 7.0, self.tableView.bounds.size.width - 100, 30.0) textContainer:nil];
 	[self applySettingsOnTextView:self.textView];
-	[view addSubview:self.textView];
+	[self.footerView addSubview:self.textView];
 
 	UIButton *detailButton = [UIButton buttonWithType: UIButtonTypeDetailDisclosure];
 	[detailButton setFrame:CGRectMake(self.textView.bounds.size.width + 69.0, 11.0, 22.0, 22.0)];
 	[detailButton addTarget:self
 					 action:@selector(detailButtonActionWithTextView)
 		   forControlEvents:UIControlEventTouchUpInside];
-	[view addSubview:detailButton];
+	[self.footerView addSubview:detailButton];
 	
-	return view;
+	return self.footerView;
 	
 }
 
