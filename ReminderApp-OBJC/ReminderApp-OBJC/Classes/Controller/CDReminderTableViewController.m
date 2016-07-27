@@ -44,6 +44,8 @@
 		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
 	
+	[self setupLocalNotification];
+	
 }
 
 - (IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
@@ -297,6 +299,55 @@ detailButtonWasPressed:(BOOL)detailButton{
 		}
 	} else {
 		self.footerView.layer.shadowOpacity = 0.0;
+	}
+	
+}
+
+#pragma mark - Local notification
+
+- (void)setupLocalNotification {
+	
+	UIUserNotificationSettings *notificationSettings = [UIApplication sharedApplication].currentUserNotificationSettings;
+	
+	if (notificationSettings.types == UIUserNotificationTypeNone) {
+		UIUserNotificationType notificationType = UIUserNotificationTypeAlert |
+												  UIUserNotificationTypeBadge |
+												  UIUserNotificationTypeSound;
+		
+		UIMutableUserNotificationAction *informAction = [[UIMutableUserNotificationAction alloc] init];
+		informAction.identifier = @"inform";
+		informAction.title = @"OK";
+		informAction.activationMode = UIUserNotificationActivationModeBackground;
+		informAction.destructive = NO;
+		informAction.authenticationRequired = NO;
+		
+		UIMutableUserNotificationAction *snoozeAction = [[UIMutableUserNotificationAction alloc] init];
+		snoozeAction.identifier = @"snooze";
+		snoozeAction.title = @"Snooze";
+		snoozeAction.activationMode = UIUserNotificationActivationModeBackground;
+		snoozeAction.destructive = NO;
+		snoozeAction.authenticationRequired = YES;
+		
+		UIMutableUserNotificationAction *deleteAction = [[UIMutableUserNotificationAction alloc] init];
+		deleteAction.identifier = @"delete";
+		deleteAction.title = @"Delete reminder";
+		deleteAction.activationMode = UIUserNotificationActivationModeBackground;
+		deleteAction.destructive = YES;
+		deleteAction.authenticationRequired = YES;
+		
+		NSArray *actions = @[informAction, snoozeAction, deleteAction];
+		NSArray *actionsMinimal = @[informAction, snoozeAction];
+		
+		UIMutableUserNotificationCategory *reminderCategory = [[UIMutableUserNotificationCategory alloc] init];
+		reminderCategory.identifier = @"reminderCategory";
+		[reminderCategory setActions:actions forContext:UIUserNotificationActionContextDefault];
+		[reminderCategory setActions:actionsMinimal forContext:UIUserNotificationActionContextMinimal];
+		
+		NSSet *categoriesForSettings = [[NSSet alloc] initWithObjects:reminderCategory, nil];
+		
+		UIUserNotificationSettings *newNotificationSettings = [UIUserNotificationSettings settingsForTypes:notificationType
+																								categories:categoriesForSettings];
+		[[UIApplication sharedApplication] registerUserNotificationSettings:newNotificationSettings];
 	}
 	
 }
