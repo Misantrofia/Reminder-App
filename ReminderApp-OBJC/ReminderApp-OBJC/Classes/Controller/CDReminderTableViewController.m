@@ -186,8 +186,6 @@
 			self.placeholder = YES;
 			textView.text = @"Title";
 			textView.textColor = [UIColor lightGrayColor];
-			NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:self.fetchedResultsController.sections[0].numberOfObjects - 1 inSection:0];
-			[self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 		}
 		
 		return NO;
@@ -266,7 +264,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 	view.layer.masksToBounds = NO;
 	view.layer.cornerRadius = 3;
 	view.layer.shadowOffset = CGSizeMake(0.0, -2.0);
-	view.layer.shadowOpacity = 0.2;
+	view.layer.shadowOpacity = 0.0;
 	view.layer.shadowRadius = 5;
 	view.layer.shadowPath = [UIBezierPath bezierPathWithRect:view.bounds].CGPath;
 	view.backgroundColor = [UIColor whiteColor];

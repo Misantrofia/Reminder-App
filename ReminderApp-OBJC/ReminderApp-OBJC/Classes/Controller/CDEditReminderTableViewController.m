@@ -42,6 +42,14 @@
 	
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	
+	[super viewWillAppear:animated];
+	
+	[self.tableView reloadData];
+	
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
 	if ([segue.identifier isEqualToString:@"editScreenListCellTappedToChangeTopicForReminderScreen"]) {
