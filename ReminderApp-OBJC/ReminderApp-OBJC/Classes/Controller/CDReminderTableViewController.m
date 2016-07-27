@@ -21,6 +21,7 @@
 @property (nonatomic, assign) BOOL placeholder;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) UIButton *detailButton;
 
 @end
 
@@ -169,6 +170,12 @@
 	
 	NSLog(@"DidChange \n");
 	
+	if (self.detailButton && textView.text.length != 0) {
+		self.detailButton.hidden = NO;
+	} else if (textView.text.length == 0) {
+		self.detailButton.hidden = YES;
+	}
+	
 	[UIView setAnimationsEnabled:NO];
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
@@ -211,6 +218,7 @@
 		textView.textColor = [UIColor lightGrayColor];
 		self.placeholder = YES;
 	}
+	self.detailButton.hidden = YES;
 
 }
 
@@ -308,12 +316,13 @@ detailButtonWasPressed:(BOOL)detailButton{
 	[self applySettingsOnTextView:self.textView];
 	[self.footerView addSubview:self.textView];
 
-	UIButton *detailButton = [UIButton buttonWithType: UIButtonTypeDetailDisclosure];
-	[detailButton setFrame:CGRectMake(self.textView.bounds.size.width + 69.0, 11.0, 22.0, 22.0)];
-	[detailButton addTarget:self
+	self.detailButton = [UIButton buttonWithType: UIButtonTypeDetailDisclosure];
+	[self.detailButton setFrame:CGRectMake(self.textView.bounds.size.width + 69.0, 11.0, 22.0, 22.0)];
+	[self.detailButton addTarget:self
 					 action:@selector(detailButtonActionWithTextView)
 		   forControlEvents:UIControlEventTouchUpInside];
-	[self.footerView addSubview:detailButton];
+	self.detailButton.hidden = YES;
+	[self.footerView addSubview:self.detailButton];
 	
 	return self.footerView;
 	
