@@ -21,6 +21,7 @@
 @property (nonatomic, assign) BOOL placeholder;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) UIButton *detailButton;
 
 @end
 
@@ -169,6 +170,12 @@
 	
 	NSLog(@"DidChange \n");
 	
+	if (self.detailButton && textView.text.length != 0) {
+		self.detailButton.hidden = NO;
+	} else if (textView.text.length == 0) {
+		self.detailButton.hidden = YES;
+	}
+	
 	[UIView setAnimationsEnabled:NO];
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
@@ -211,6 +218,7 @@
 		textView.textColor = [UIColor lightGrayColor];
 		self.placeholder = YES;
 	}
+	self.detailButton.hidden = YES;
 
 }
 
@@ -293,36 +301,6 @@ detailButtonWasPressed:(BOOL)detailButton{
 	
 }
 
-#pragma mark - Local Notification
-
-- (void)setupNotificationSettings {
-	
-	UIUserNotificationSettings *notificationSettings = [UIApplication sharedApplication].currentUserNotificationSettings;
-	
-	if (notificationSettings.types == UIUserNotificationTypeNone) {
-		UIUserNotificationType notificationType = UIUserNotificationTypeAlert |
-												  UIUserNotificationTypeSound |
-												  UIUserNotificationTypeBadge;
-		
-		UIMutableUserNotificationAction *informAction = [[UIMutableUserNotificationAction alloc] init];
-		informAction.identifier = @"inform";
-		informAction.title = @"OK";
-		informAction.activationMode = UIUserNotificationActivationModeBackground;
-		informAction.destructive = NO;
-		informAction.authenticationRequired = NO;
-		
-		UIMutableUserNotificationAction *deleteAction = [[UIMutableUserNotificationAction alloc] init];
-		deleteAction.identifier = @"delete";
-		deleteAction.title = @"Delete reminder";
-		deleteAction.activationMode = UIUserNotificationActivationModeBackground;
-		deleteAction.destructive = YES;
-		deleteAction.authenticationRequired = YES;
-		
-		//UIMutableUserNotificationCategory *reminderCategory =
-	}
-	
-}
-
 #pragma mark - Table view data source
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -337,13 +315,14 @@ detailButtonWasPressed:(BOOL)detailButton{
 	self.textView = [[UITextView alloc] initWithFrame:CGRectMake(61.0, 7.0, self.tableView.bounds.size.width - 100, 30.0) textContainer:nil];
 	[self applySettingsOnTextView:self.textView];
 	[self.footerView addSubview:self.textView];
-	
-	UIButton *detailButton = [UIButton buttonWithType: UIButtonTypeDetailDisclosure];
-	[detailButton setFrame:CGRectMake(self.textView.bounds.size.width + 69.0, 11.0, 22.0, 22.0)];
-	[detailButton addTarget:self
+
+	self.detailButton = [UIButton buttonWithType: UIButtonTypeDetailDisclosure];
+	[self.detailButton setFrame:CGRectMake(self.textView.bounds.size.width + 69.0, 11.0, 22.0, 22.0)];
+	[self.detailButton addTarget:self
 					 action:@selector(detailButtonActionWithTextView)
 		   forControlEvents:UIControlEventTouchUpInside];
-	[self.footerView addSubview:detailButton];
+	self.detailButton.hidden = YES;
+	[self.footerView addSubview:self.detailButton];
 	
 	return self.footerView;
 	
