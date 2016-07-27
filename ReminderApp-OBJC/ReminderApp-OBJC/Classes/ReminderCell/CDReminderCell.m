@@ -41,6 +41,7 @@
 	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeZone:[NSTimeZone defaultTimeZone]];
 	self.dateLabel.text = [dateFormatter stringFromDate:self.reminder.taskDate];
+	self.dateLabel.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.80];
 	
 	[self changePrioritiesForReminder:self.reminder];
 	
