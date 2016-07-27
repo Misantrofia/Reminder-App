@@ -186,8 +186,6 @@
 			self.placeholder = YES;
 			textView.text = @"Title";
 			textView.textColor = [UIColor lightGrayColor];
-			NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:self.fetchedResultsController.sections[0].numberOfObjects - 1 inSection:0];
-			[self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 		}
 		
 		return NO;
@@ -266,7 +264,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 	view.layer.masksToBounds = NO;
 	view.layer.cornerRadius = 3;
 	view.layer.shadowOffset = CGSizeMake(0.0, -2.0);
-	view.layer.shadowOpacity = 0.2;
+	view.layer.shadowOpacity = 0.0;
 	view.layer.shadowRadius = 5;
 	view.layer.shadowPath = [UIBezierPath bezierPathWithRect:view.bounds].CGPath;
 	view.backgroundColor = [UIColor whiteColor];
@@ -295,6 +293,36 @@ detailButtonWasPressed:(BOOL)detailButton{
 	
 }
 
+#pragma mark - Local Notification
+
+- (void)setupNotificationSettings {
+	
+	UIUserNotificationSettings *notificationSettings = [UIApplication sharedApplication].currentUserNotificationSettings;
+	
+	if (notificationSettings.types == UIUserNotificationTypeNone) {
+		UIUserNotificationType notificationType = UIUserNotificationTypeAlert |
+												  UIUserNotificationTypeSound |
+												  UIUserNotificationTypeBadge;
+		
+		UIMutableUserNotificationAction *informAction = [[UIMutableUserNotificationAction alloc] init];
+		informAction.identifier = @"inform";
+		informAction.title = @"OK";
+		informAction.activationMode = UIUserNotificationActivationModeBackground;
+		informAction.destructive = NO;
+		informAction.authenticationRequired = NO;
+		
+		UIMutableUserNotificationAction *deleteAction = [[UIMutableUserNotificationAction alloc] init];
+		deleteAction.identifier = @"delete";
+		deleteAction.title = @"Delete reminder";
+		deleteAction.activationMode = UIUserNotificationActivationModeBackground;
+		deleteAction.destructive = YES;
+		deleteAction.authenticationRequired = YES;
+		
+		//UIMutableUserNotificationCategory *reminderCategory =
+	}
+	
+}
+
 #pragma mark - Table view data source
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -309,7 +337,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 	self.textView = [[UITextView alloc] initWithFrame:CGRectMake(61.0, 7.0, self.tableView.bounds.size.width - 100, 30.0) textContainer:nil];
 	[self applySettingsOnTextView:self.textView];
 	[self.footerView addSubview:self.textView];
-
+	
 	UIButton *detailButton = [UIButton buttonWithType: UIButtonTypeDetailDisclosure];
 	[detailButton setFrame:CGRectMake(self.textView.bounds.size.width + 69.0, 11.0, 22.0, 22.0)];
 	[detailButton addTarget:self

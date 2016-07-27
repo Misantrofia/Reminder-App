@@ -28,7 +28,7 @@
 
 @implementation CDEditReminderTableViewController
 
--(void)viewDidLoad {
+- (void)viewDidLoad {
 	
 	[super viewDidLoad];
 	
@@ -39,6 +39,14 @@
 	self.alarmCellDropDown = NO;
 	self.indexPathForAlarmCell = [NSIndexPath indexPathForRow:1 inSection:1];
 	self.indexPathForRepeatCell = [NSIndexPath indexPathForRow:2 inSection:1];
+	
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	
+	[super viewWillAppear:animated];
+	
+	[self.tableView reloadData];
 	
 }
 
@@ -243,6 +251,5 @@
 	}
 	
 }
-
 
 @end
