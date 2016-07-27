@@ -32,7 +32,9 @@
 	self.reminder = reminder;
 	self.textView.text = self.reminder.taskName;
 	self.noteLabel.text = self.reminder.note;
+	self.noteLabel.textColor = [UIColor colorWithRed:0.25 green:0.50 blue:0.25 alpha:1.0];
 	self.priorityLabel.text = CDPriorityStringRepresentationForPriority(self.reminder.priority.integerValue);
+	self.priorityLabel.textColor = [UIColor orangeColor];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
