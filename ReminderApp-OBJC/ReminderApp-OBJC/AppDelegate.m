@@ -32,6 +32,33 @@
 
 }
 
+#pragma mark - Notification Delegate
+
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+	
+	NSLog(@"Did Register User Notification");
+	
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+	
+	NSLog(@"Received Local Notification");
+	NSLog(@"%@", notification.alertBody);
+	
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
+	
+	if ([identifier isEqualToString:@"delete"]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"deleteReminderNotification" object:nil];
+	} else if([identifier isEqualToString: @"snooze"]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"snoozeReminderNotification" object:nil];
+	}
+	
+	completionHandler();
+	
+}
+
 #pragma mark - Core Data stack
 
 @synthesize managedObjectContext = _managedObjectContext;
