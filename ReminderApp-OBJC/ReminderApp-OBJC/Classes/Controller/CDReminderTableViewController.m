@@ -363,7 +363,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 		snoozeAction.title = @"Snooze";
 		snoozeAction.activationMode = UIUserNotificationActivationModeBackground;
 		snoozeAction.destructive = NO;
-		snoozeAction.authenticationRequired = YES;
+		snoozeAction.authenticationRequired = NO;
 		
 		UIMutableUserNotificationAction *deleteAction = [[UIMutableUserNotificationAction alloc] init];
 		deleteAction.identifier = @"deleteReminder";
