@@ -19,6 +19,8 @@
 		B655767D1D26B0940075805E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B655767C1D26B0940075805E /* Assets.xcassets */; };
 		B65576801D26B0940075805E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B655767E1D26B0940075805E /* LaunchScreen.storyboard */; };
 		B663401C1D4BAC1F00E6C067 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B663401B1D4BAC1F00E6C067 /* KeychainWrapper.m */; };
+		B663401F1D4BAED200E6C067 /* CDLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B663401E1D4BAED200E6C067 /* CDLoginViewController.m */; };
+		B66340221D4BAEE400E6C067 /* CDSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66340211D4BAEE400E6C067 /* CDSignUpViewController.m */; };
 		B6639B3B1D4619690075542E /* CDChangeTopicForReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = B6639B3A1D4619690075542E /* CDChangeTopicForReminder.m */; };
 		B6886A5C1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A5B1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m */; };
 		B6886A5F1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B6886A5E1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m */; };
@@ -52,6 +54,10 @@
 		B65576811D26B0940075805E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B663401A1D4BAC1F00E6C067 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainWrapper.h; path = Classes/Keychain/KeychainWrapper.h; sourceTree = "<group>"; };
 		B663401B1D4BAC1F00E6C067 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainWrapper.m; path = Classes/Keychain/KeychainWrapper.m; sourceTree = "<group>"; };
+		B663401D1D4BAED200E6C067 /* CDLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDLoginViewController.h; path = Classes/Controller/CDLoginViewController.h; sourceTree = "<group>"; };
+		B663401E1D4BAED200E6C067 /* CDLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDLoginViewController.m; path = Classes/Controller/CDLoginViewController.m; sourceTree = "<group>"; };
+		B66340201D4BAEE400E6C067 /* CDSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDSignUpViewController.h; path = Classes/Controller/CDSignUpViewController.h; sourceTree = "<group>"; };
+		B66340211D4BAEE400E6C067 /* CDSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDSignUpViewController.m; path = Classes/Controller/CDSignUpViewController.m; sourceTree = "<group>"; };
 		B6639B391D4619690075542E /* CDChangeTopicForReminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDChangeTopicForReminder.h; path = Classes/Controller/CDChangeTopicForReminder.h; sourceTree = "<group>"; };
 		B6639B3A1D4619690075542E /* CDChangeTopicForReminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDChangeTopicForReminder.m; path = Classes/Controller/CDChangeTopicForReminder.m; sourceTree = "<group>"; };
 		B6886A5A1D3E44A800B5E8F4 /* CDEditReminderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDEditReminderTableViewController.h; path = Classes/Controller/CDEditReminderTableViewController.h; sourceTree = "<group>"; };
@@ -146,14 +152,14 @@
 		B656C81B1D2A4F7B0042F5E7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B65226531D3387B800588A87 /* CDTopic+CoreDataProperties.h */,
-				B65226541D3387B800588A87 /* CDTopic+CoreDataProperties.m */,
-				B65226551D3387B800588A87 /* CDTopic.h */,
-				B65226561D3387B800588A87 /* CDTopic.m */,
-				B643A93E1D37AE1E000E861F /* CDReminder+CoreDataProperties.h */,
-				B643A93F1D37AE1E000E861F /* CDReminder+CoreDataProperties.m */,
 				B643A9401D37AE1E000E861F /* CDReminder.h */,
 				B643A9411D37AE1E000E861F /* CDReminder.m */,
+				B643A93E1D37AE1E000E861F /* CDReminder+CoreDataProperties.h */,
+				B643A93F1D37AE1E000E861F /* CDReminder+CoreDataProperties.m */,
+				B65226551D3387B800588A87 /* CDTopic.h */,
+				B65226561D3387B800588A87 /* CDTopic.m */,
+				B65226531D3387B800588A87 /* CDTopic+CoreDataProperties.h */,
+				B65226541D3387B800588A87 /* CDTopic+CoreDataProperties.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -161,14 +167,18 @@
 		B656C81C1D2A4F900042F5E7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */,
-				B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */,
-				B6AAB4D21D34FA2900D76E5F /* CDReminderTableViewController.h */,
-				B6AAB4D11D34FA2900D76E5F /* CDReminderTableViewController.m */,
-				B6886A5A1D3E44A800B5E8F4 /* CDEditReminderTableViewController.h */,
-				B6886A5B1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m */,
 				B6639B391D4619690075542E /* CDChangeTopicForReminder.h */,
 				B6639B3A1D4619690075542E /* CDChangeTopicForReminder.m */,
+				B6886A5A1D3E44A800B5E8F4 /* CDEditReminderTableViewController.h */,
+				B6886A5B1D3E44A800B5E8F4 /* CDEditReminderTableViewController.m */,
+				B663401D1D4BAED200E6C067 /* CDLoginViewController.h */,
+				B663401E1D4BAED200E6C067 /* CDLoginViewController.m */,
+				B6AAB4D21D34FA2900D76E5F /* CDReminderTableViewController.h */,
+				B6AAB4D11D34FA2900D76E5F /* CDReminderTableViewController.m */,
+				B66340201D4BAEE400E6C067 /* CDSignUpViewController.h */,
+				B66340211D4BAEE400E6C067 /* CDSignUpViewController.m */,
+				B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */,
+				B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -185,18 +195,18 @@
 		B6A4CD101D33E3440049B994 /* ReminderCell */ = {
 			isa = PBXGroup;
 			children = (
-				B6AAB4D41D353F9300D76E5F /* CDReminderCell.h */,
-				B6AAB4D51D353F9300D76E5F /* CDReminderCell.m */,
+				B6886A691D3E5F4700B5E8F4 /* CDEditDatePickerCell.h */,
+				B6886A6A1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m */,
+				B6886A661D3E5F2D00B5E8F4 /* CDEditNotesTextCell.h */,
+				B6886A671D3E5F2D00B5E8F4 /* CDEditNotesTextCell.m */,
+				B6886A631D3E5EFF00B5E8F4 /* CDEditPriorityCell.h */,
+				B6886A641D3E5EFF00B5E8F4 /* CDEditPriorityCell.m */,
 				B6886A5D1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.h */,
 				B6886A5E1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m */,
 				B6886A601D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.h */,
 				B6886A611D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.m */,
-				B6886A631D3E5EFF00B5E8F4 /* CDEditPriorityCell.h */,
-				B6886A641D3E5EFF00B5E8F4 /* CDEditPriorityCell.m */,
-				B6886A661D3E5F2D00B5E8F4 /* CDEditNotesTextCell.h */,
-				B6886A671D3E5F2D00B5E8F4 /* CDEditNotesTextCell.m */,
-				B6886A691D3E5F4700B5E8F4 /* CDEditDatePickerCell.h */,
-				B6886A6A1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m */,
+				B6AAB4D41D353F9300D76E5F /* CDReminderCell.h */,
+				B6AAB4D51D353F9300D76E5F /* CDReminderCell.m */,
 			);
 			name = ReminderCell;
 			sourceTree = "<group>";
@@ -279,7 +289,9 @@
 				B65576721D26B0940075805E /* AppDelegate.m in Sources */,
 				B655766F1D26B0940075805E /* main.m in Sources */,
 				B65226581D3387B800588A87 /* CDTopic.m in Sources */,
+				B66340221D4BAEE400E6C067 /* CDSignUpViewController.m in Sources */,
 				B6886A6B1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m in Sources */,
+				B663401F1D4BAED200E6C067 /* CDLoginViewController.m in Sources */,
 				B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */,
 				B663401C1D4BAC1F00E6C067 /* KeychainWrapper.m in Sources */,
 				B6AAB4D31D34FA2900D76E5F /* CDReminderTableViewController.m in Sources */,
