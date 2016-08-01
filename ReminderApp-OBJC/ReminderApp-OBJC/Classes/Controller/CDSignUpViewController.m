@@ -8,7 +8,7 @@
 
 #import "CDSignUpViewController.h"
 
-@interface CDSignUpViewController ()
+@interface CDSignUpViewController ()  <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
@@ -21,6 +21,9 @@
 	
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+	
+	self.usernameTextField.delegate = self;
+	self.passwordTextField.delegate = self;
 	
 }
 
@@ -82,6 +85,16 @@
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
 
 	return NO;
+	
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	
+	[textField resignFirstResponder];
+	
+	return YES;
 	
 }
 

@@ -10,7 +10,7 @@
 #import "KeychainWrapper.h"
 #import "CDSignUpViewController.h"
 
-@interface CDLoginViewController ()
+@interface CDLoginViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -27,6 +27,9 @@
 	[super viewDidLoad];
 	
 	self.myKeyChainWrapper = [[KeychainWrapper alloc] init];
+	
+	self.usernameTextField.delegate = self;
+	self.passwordTextField.delegate = self;
 	
 }
 
@@ -102,6 +105,16 @@
 		CDSignUpViewController *signUpController = segue.destinationViewController;
 		signUpController.myKeyChainWrapper = self.myKeyChainWrapper;
 	}
+	
+}
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	
+	[textField resignFirstResponder];
+	
+	return YES;
 	
 }
 
