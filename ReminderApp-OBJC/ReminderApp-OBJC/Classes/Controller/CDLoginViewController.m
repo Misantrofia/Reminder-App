@@ -8,6 +8,7 @@
 
 #import "CDLoginViewController.h"
 #import "KeychainWrapper.h"
+#import "CDSignUpViewController.h"
 
 @interface CDLoginViewController ()
 
@@ -16,8 +17,6 @@
 @property (nonatomic, strong) KeychainWrapper *myKeyChainWrapper;
 @property (nonatomic, assign) NSInteger createLoginButtonTag;
 @property (nonatomic, assign) NSInteger loginButtonTag;
-@property (weak, nonatomic) IBOutlet UIButton *loginButton;
-@property (weak, nonatomic) IBOutlet UIButton *signUpButton;
 
 @end
 
@@ -27,9 +26,19 @@
 
 	[super viewDidLoad];
 	
-	self.createLoginButtonTag = 0;
-	self.loginButtonTag = 1;
 	self.myKeyChainWrapper = [[KeychainWrapper alloc] init];
+	
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	
+	[super viewDidAppear:animated];
+	
+	if (self.myKeyChainWrapper) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"hasLogin"]) {
+			[self performSegueWithIdentifier:@"loginToTopicController" sender:self];
+		}
+	}
 	
 }
 
@@ -55,50 +64,30 @@
 	[self.usernameTextField resignFirstResponder];
 	[self.passwordTextField resignFirstResponder];
 	
-	if ([sender tag] == self.createLoginButtonTag) {
-		BOOL hasLoginKey = [[NSUserDefaults standardUserDefaults] boolForKey:@"hasLoginKey"];
-		
-		if (!hasLoginKey) {
-			[[NSUserDefaults standardUserDefaults]setValue:self.usernameTextField.text
-													forKey:@"username"];
-		}
-
-		[self.myKeyChainWrapper mySetObject:self.passwordTextField.text
-									 forKey:@"kSecValueData"];
-		
-		[self.myKeyChainWrapper writeToKeychain];
-		
-		[[NSUserDefaults standardUserDefaults] setBool:YES
-												forKey:@"hasLoginKey"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-		
-		self.loginButton.tag = self.loginButtonTag;
-		
+	if ([self checkLogin:self.usernameTextField.text password:self.passwordTextField.text]) {
 		[self performSegueWithIdentifier:@"loginToTopicController" sender:self];
-	} else if ([sender tag] == self.loginButtonTag) {
-		if ([self checkLogin:self.usernameTextField.text password:self.passwordTextField.text]) {
-			[self performSegueWithIdentifier:@"loginToTopicController" sender:self];
-		} else {
-			UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Login Problem"
-																		   message:@"Wrong username or password."
-																	preferredStyle:UIAlertControllerStyleAlert];
-			
-			UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Foiled again!"
-															 style:UIAlertActionStyleDefault
-														   handler:nil];
-			[alert addAction:okAction];
-			
-			[self presentViewController:alert animated:YES completion:nil];
-		}
+		[[NSUserDefaults standardUserDefaults] setBool:YES
+												forKey:@"hasLogin"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	} else {
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Login Problem"
+																	   message:@"Wrong username or password."
+																preferredStyle:UIAlertControllerStyleAlert];
+		
+		UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Failed again"
+														 style:UIAlertActionStyleDefault
+													   handler:nil];
+		[alert addAction:okAction];
+		
+		[self presentViewController:alert animated:YES completion:nil];
 	}
-	
 	
 }
 
 - (BOOL)checkLogin:(NSString *)username password:(NSString *)password {
 	
 	if ([password isEqualToString:[self.myKeyChainWrapper myObjectForKey:@"v_Data"]] &&
-		[username isEqualToString:[[NSUserDefaults standardUserDefaults] valueForKey:@"username"]]) {
+		[[NSUserDefaults standardUserDefaults] valueForKey:self.usernameTextField.text]) {
 		
 		return YES;
 	}
@@ -109,8 +98,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
+	if ([segue.identifier isEqualToString:@"loginToSignupScreen"]) {
+		CDSignUpViewController *signUpController = segue.destinationViewController;
+		signUpController.myKeyChainWrapper = self.myKeyChainWrapper;
+	}
 	
 }
-
 
 @end

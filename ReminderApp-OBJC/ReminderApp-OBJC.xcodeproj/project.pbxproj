@@ -11,6 +11,7 @@
 		B643A9431D37AE1E000E861F /* CDReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = B643A9411D37AE1E000E861F /* CDReminder.m */; };
 		B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */; };
 		B64B937E1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B64B937C1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld */; };
+		B64C033E1D4F538300E180D8 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64C033D1D4F538300E180D8 /* KeychainWrapper.m */; };
 		B65226571D3387B800588A87 /* CDTopic+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = B65226541D3387B800588A87 /* CDTopic+CoreDataProperties.m */; };
 		B65226581D3387B800588A87 /* CDTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = B65226561D3387B800588A87 /* CDTopic.m */; };
 		B655766F1D26B0940075805E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B655766E1D26B0940075805E /* main.m */; };
@@ -18,7 +19,6 @@
 		B65576781D26B0940075805E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B65576761D26B0940075805E /* Main.storyboard */; };
 		B655767D1D26B0940075805E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B655767C1D26B0940075805E /* Assets.xcassets */; };
 		B65576801D26B0940075805E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B655767E1D26B0940075805E /* LaunchScreen.storyboard */; };
-		B663401C1D4BAC1F00E6C067 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B663401B1D4BAC1F00E6C067 /* KeychainWrapper.m */; };
 		B663401F1D4BAED200E6C067 /* CDLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B663401E1D4BAED200E6C067 /* CDLoginViewController.m */; };
 		B66340221D4BAEE400E6C067 /* CDSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B66340211D4BAEE400E6C067 /* CDSignUpViewController.m */; };
 		B6639B3B1D4619690075542E /* CDChangeTopicForReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = B6639B3A1D4619690075542E /* CDChangeTopicForReminder.m */; };
@@ -40,6 +40,8 @@
 		B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDTopicTableViewController.h; path = Classes/Controller/CDTopicTableViewController.h; sourceTree = "<group>"; };
 		B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDTopicTableViewController.m; path = Classes/Controller/CDTopicTableViewController.m; sourceTree = "<group>"; };
 		B64B937D1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ReminderApp_OBJC.xcdatamodel; sourceTree = "<group>"; };
+		B64C033C1D4F538300E180D8 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainWrapper.h; path = Classes/Keychain/KeychainWrapper.h; sourceTree = "<group>"; };
+		B64C033D1D4F538300E180D8 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainWrapper.m; path = Classes/Keychain/KeychainWrapper.m; sourceTree = "<group>"; };
 		B65226531D3387B800588A87 /* CDTopic+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDTopic+CoreDataProperties.h"; path = "Classes/Model/CDTopic+CoreDataProperties.h"; sourceTree = "<group>"; };
 		B65226541D3387B800588A87 /* CDTopic+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDTopic+CoreDataProperties.m"; path = "Classes/Model/CDTopic+CoreDataProperties.m"; sourceTree = "<group>"; };
 		B65226551D3387B800588A87 /* CDTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDTopic.h; path = Classes/Model/CDTopic.h; sourceTree = "<group>"; };
@@ -52,8 +54,6 @@
 		B655767C1D26B0940075805E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B655767F1D26B0940075805E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B65576811D26B0940075805E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B663401A1D4BAC1F00E6C067 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainWrapper.h; path = Classes/Keychain/KeychainWrapper.h; sourceTree = "<group>"; };
-		B663401B1D4BAC1F00E6C067 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainWrapper.m; path = Classes/Keychain/KeychainWrapper.m; sourceTree = "<group>"; };
 		B663401D1D4BAED200E6C067 /* CDLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDLoginViewController.h; path = Classes/Controller/CDLoginViewController.h; sourceTree = "<group>"; };
 		B663401E1D4BAED200E6C067 /* CDLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDLoginViewController.m; path = Classes/Controller/CDLoginViewController.m; sourceTree = "<group>"; };
 		B66340201D4BAEE400E6C067 /* CDSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDSignUpViewController.h; path = Classes/Controller/CDSignUpViewController.h; sourceTree = "<group>"; };
@@ -186,8 +186,8 @@
 		B66340191D4BABEB00E6C067 /* Keychain */ = {
 			isa = PBXGroup;
 			children = (
-				B663401A1D4BAC1F00E6C067 /* KeychainWrapper.h */,
-				B663401B1D4BAC1F00E6C067 /* KeychainWrapper.m */,
+				B64C033C1D4F538300E180D8 /* KeychainWrapper.h */,
+				B64C033D1D4F538300E180D8 /* KeychainWrapper.m */,
 			);
 			name = Keychain;
 			sourceTree = "<group>";
@@ -291,9 +291,9 @@
 				B65226581D3387B800588A87 /* CDTopic.m in Sources */,
 				B66340221D4BAEE400E6C067 /* CDSignUpViewController.m in Sources */,
 				B6886A6B1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m in Sources */,
+				B64C033E1D4F538300E180D8 /* KeychainWrapper.m in Sources */,
 				B663401F1D4BAED200E6C067 /* CDLoginViewController.m in Sources */,
 				B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */,
-				B663401C1D4BAC1F00E6C067 /* KeychainWrapper.m in Sources */,
 				B6AAB4D31D34FA2900D76E5F /* CDReminderTableViewController.m in Sources */,
 				B6886A621D3E5EE400B5E8F4 /* CDEditRemindOnDayCell.m in Sources */,
 				B6886A5F1D3E5EAD00B5E8F4 /* CDEditReminderTextCell.m in Sources */,

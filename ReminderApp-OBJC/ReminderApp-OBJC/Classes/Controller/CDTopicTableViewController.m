@@ -11,6 +11,7 @@
 #import "CDTopic.h"
 #import "CDReminderTableViewController.h"
 #import "CDChangeTopicForReminder.h"
+#import "CDLoginViewController.h"
 
 #pragma mark - Class extension
 
@@ -32,6 +33,7 @@
 	
 	self.editButton.title = @"Edit";
 	self.title = @"Topics";
+	self.navigationController.toolbarHidden = NO;
 	
 	self.managedContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
 	
@@ -54,6 +56,12 @@
 	if ([segue.identifier isEqualToString:@"segueTopicControllerToReminderController"]) {
 		CDReminderTableViewController *destinationController = ((CDReminderTableViewController *)segue.destinationViewController);
 		destinationController.topic = ((CDTopic *) [self.fetchedResultsController objectAtIndexPath:self.tableView.indexPathForSelectedRow]);
+	}
+	
+	if ([segue.identifier isEqualToString:@"topicToLoginController"]) {
+		[[NSUserDefaults standardUserDefaults] setBool:NO
+												forKey:@"hasLogin"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 	
 }
