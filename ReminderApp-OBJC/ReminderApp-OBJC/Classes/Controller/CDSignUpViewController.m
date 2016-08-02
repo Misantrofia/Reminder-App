@@ -58,8 +58,8 @@
 	
 		[self.myKeyChainWrapper mySetObject:self.passwordTextField.text
 									 forKey:kSecValueData];
-		
-		[self.myKeyChainWrapper writeToKeychain];
+		[self.myKeyChainWrapper mySetObject:self.usernameTextField.text
+									 forKey:kSecAttrAccount];
 		
 		[[NSUserDefaults standardUserDefaults] setBool:YES
 												forKey:@"hasLogin"];

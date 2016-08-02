@@ -90,7 +90,7 @@
 - (BOOL)checkLogin:(NSString *)username password:(NSString *)password {
 	
 	if ([password isEqualToString:[self.myKeyChainWrapper myObjectForKey:@"v_Data"]] &&
-		[[NSUserDefaults standardUserDefaults] valueForKey:self.usernameTextField.text]) {
+		[username isEqualToString:[self.myKeyChainWrapper myObjectForKey:kSecAttrAccount]]) {
 		
 		return YES;
 	}
