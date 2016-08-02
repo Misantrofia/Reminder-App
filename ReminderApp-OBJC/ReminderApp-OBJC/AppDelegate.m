@@ -49,9 +49,9 @@
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
 	
-	if ([identifier isEqualToString:@"delete"]) {
+	if ([identifier isEqualToString:@"sv.ReminderApp-OBJC.deleteAction"]) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"deleteReminderNotification" object:nil];
-	} else if([identifier isEqualToString: @"snooze"]) {
+	} else if([identifier isEqualToString: @"sv.ReminderApp-OBJC.snoozeAction"]) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:@"snoozeReminderNotification" object:nil];
 	}
 	
