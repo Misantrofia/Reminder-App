@@ -33,7 +33,6 @@
 	
 	self.editButton.title = @"Edit";
 	self.title = @"Topics";
-	self.navigationController.toolbarHidden = NO;
 	
 	self.managedContext = ((AppDelegate*)[UIApplication sharedApplication].delegate).managedObjectContext;
 	
@@ -70,6 +69,14 @@
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+	self.navigationController.toolbarHidden = NO;
+	
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	
+	[super viewWillDisappear:animated];
+	self.navigationController.toolbarHidden = YES;
 	
 }
 
