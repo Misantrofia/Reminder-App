@@ -413,8 +413,6 @@ detailButtonWasPressed:(BOOL)detailButton{
 	dateComponents.second = 0;
 	dateComponents.minute += self.minutesToSnooze;
 	
-	self.minutesToSnooze = 0;
-	
 	NSDate *fixedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
 	
 	return fixedDate;
@@ -436,7 +434,9 @@ detailButtonWasPressed:(BOOL)detailButton{
 - (void)handleSnoozeReminderNotification {
 	
 	NSLog(@"Snooze notification has been handled.");
-	self.minutesToSnooze = 1;
+	self.minutesToSnooze += 1;
+	self.minutesToSnooze %= 60;
+	
 	[self scheduleNotification];
 	
 }
