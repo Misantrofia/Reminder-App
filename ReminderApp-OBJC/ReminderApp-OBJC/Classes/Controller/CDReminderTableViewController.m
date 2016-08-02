@@ -416,7 +416,6 @@ detailButtonWasPressed:(BOOL)detailButton{
 	self.minutesToSnooze = 0;
 	
 	NSDate *fixedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
-	self.reminderToEdit.taskDate = fixedDate;
 	
 	return fixedDate;
 	
@@ -424,6 +423,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 
 - (void)handleDeleteReminderNotification {
 	
+	NSLog(@"Delete notification has been handled.");
 	[self.managedContext deleteObject:self.reminderToEdit];
 	
 	NSError *error;
@@ -435,6 +435,7 @@ detailButtonWasPressed:(BOOL)detailButton{
 
 - (void)handleSnoozeReminderNotification {
 	
+	NSLog(@"Snooze notification has been handled.");
 	self.minutesToSnooze = 1;
 	[self scheduleNotification];
 	
