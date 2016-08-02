@@ -9,6 +9,7 @@
 #import "CDLoginViewController.h"
 #import "KeychainWrapper.h"
 #import "CDSignUpViewController.h"
+#import "CDTopicTableViewController.h"
 
 @interface CDLoginViewController () <UITextFieldDelegate>
 
@@ -42,6 +43,12 @@
 			[self performSegueWithIdentifier:@"loginToTopicController" sender:self];
 		}
 	}
+	
+}
+
+- (IBAction)signUpTapped:(id)sender {
+	
+	[self performSegueWithIdentifier:@"loginToSignupScreen" sender:self];
 	
 }
 
@@ -105,6 +112,18 @@
 		CDSignUpViewController *signUpController = segue.destinationViewController;
 		signUpController.myKeyChainWrapper = self.myKeyChainWrapper;
 	}
+	
+	if ([segue.identifier isEqualToString:@"loginToTopicController"]) {
+		UINavigationController *navController = segue.destinationViewController;
+		CDTopicTableViewController *topicController = navController.viewControllers.firstObject;
+		topicController.username = [self.myKeyChainWrapper myObjectForKey:kSecAttrAccount];
+	}
+	
+}
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+	
+	return NO;
 	
 }
 

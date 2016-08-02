@@ -126,6 +126,7 @@
 	
 	CDTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:@"Topic" inManagedObjectContext:self.managedContext];
 	topic.title = topicName;
+	topic.user = self.username;
 	
 	NSError *error;
 	if (![self.managedContext save:&error]) {
@@ -148,6 +149,10 @@
 																	   managedObjectContext:self.managedContext
 																		 sectionNameKeyPath:nil
 																				  cacheName:nil];
+		
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"user MATCHES %@", self.username];
+		fetch.predicate = pred;
+
 		_fetchedResultsController.delegate = self;
 	}
 	
@@ -221,7 +226,7 @@
 	CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	cell.textLabel.text = topic.title;
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu",topic.reminders.count];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",topic.reminders.count];
 	
 	return cell;
 	

@@ -99,7 +99,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
 	if ([segue.identifier isEqualToString:@"CDReminderCellDetailButtonToEditScreen"]) {
-		CDEditReminderTableViewController *editController = segue.destinationViewController;
+		CDEditReminderTableViewController *editController = segue.destinationViewController ;
 		editController.reminder = self.reminderToEdit;
 		[self.tableView resignFirstResponder];
 	}

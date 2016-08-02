@@ -620,7 +620,7 @@
                                 <state key="normal" title="Login" backgroundImage="Button"/>
                                 <connections>
                                     <action selector="loginTapped:" destination="mAm-7M-nkQ" eventType="touchUpInside" id="Ibk-ak-kD8"/>
-                                    <segue destination="zJX-HD-Lum" kind="show" identifier="loginToTopicController" id="scQ-W0-Aa5"/>
+                                    <segue destination="zJX-HD-Lum" kind="show" identifier="loginToTopicController" id="afo-zk-RDI"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ou4-LB-2cV">
@@ -633,7 +633,8 @@
                                     <color key="titleColor" red="0.1843137255" green="0.40000000000000002" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="3l3-Ou-Jsn" kind="show" identifier="loginToSignupScreen" id="Kgg-bq-Elb"/>
+                                    <action selector="signUpTapped:" destination="mAm-7M-nkQ" eventType="touchUpInside" id="gsB-Ir-Is5"/>
+                                    <segue destination="3l3-Ou-Jsn" kind="show" identifier="loginToSignupScreen" id="JVL-Rz-ult"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -700,7 +701,7 @@
         <image name="circle" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="scQ-W0-Aa5"/>
+        <segue reference="afo-zk-RDI"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.1843137255" green="0.40000000000000002" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>

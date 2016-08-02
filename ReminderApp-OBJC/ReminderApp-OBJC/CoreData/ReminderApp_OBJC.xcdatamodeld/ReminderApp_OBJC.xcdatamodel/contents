@@ -11,15 +11,11 @@
     <entity name="Topic" representedClassName="CDTopic" syncable="YES">
         <attribute name="numberOfItems" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="reminders" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Reminder" inverseName="topic" inverseEntity="Reminder" syncable="YES"/>
-    </entity>
-    <entity name="User" representedClassName="CDUser" syncable="YES">
-        <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="Reminder" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="Topic" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="User" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="Topic" positionX="0" positionY="0" width="128" height="105"/>
     </elements>
 </model>

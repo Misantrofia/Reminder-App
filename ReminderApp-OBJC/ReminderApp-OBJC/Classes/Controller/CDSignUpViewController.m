@@ -7,6 +7,7 @@
 //
 
 #import "CDSignUpViewController.h"
+#import "CDTopicTableViewController.h"
 
 @interface CDSignUpViewController ()  <UITextFieldDelegate>
 
@@ -24,6 +25,16 @@
 	
 	self.usernameTextField.delegate = self;
 	self.passwordTextField.delegate = self;
+	
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	
+	if ([segue.identifier isEqualToString:@"signUpToTopicController"]) {
+		UINavigationController *navController = segue.destinationViewController;
+		CDTopicTableViewController *topicController = navController.viewControllers.firstObject;
+		topicController.username = self.usernameTextField.text;
+	}
 	
 }
 

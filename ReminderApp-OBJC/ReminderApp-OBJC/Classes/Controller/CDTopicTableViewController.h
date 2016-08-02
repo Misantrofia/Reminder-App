@@ -19,6 +19,7 @@
 @interface CDTopicTableViewController : UITableViewController
 
 @property (nonatomic, strong) id<CDTopicTableViewControllerDelegate> delegate;
+@property (nonatomic, strong) NSString *username;
 
 - (void)readyToSendTopicList;
 
