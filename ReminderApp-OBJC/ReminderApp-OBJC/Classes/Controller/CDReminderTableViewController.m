@@ -352,21 +352,21 @@ detailButtonWasPressed:(BOOL)detailButton{
 												  UIUserNotificationTypeSound;
 		
 		UIMutableUserNotificationAction *informAction = [[UIMutableUserNotificationAction alloc] init];
-		informAction.identifier = @"informUser";
+		informAction.identifier = @"sv.ReminderApp-OBJC.informAction";
 		informAction.title = @"OK";
 		informAction.activationMode = UIUserNotificationActivationModeBackground;
 		informAction.destructive = NO;
 		informAction.authenticationRequired = NO;
 		
 		UIMutableUserNotificationAction *snoozeAction = [[UIMutableUserNotificationAction alloc] init];
-		snoozeAction.identifier = @"snooze";
+		snoozeAction.identifier = @"sv.ReminderApp-OBJC.snoozeAction";
 		snoozeAction.title = @"Snooze";
 		snoozeAction.activationMode = UIUserNotificationActivationModeBackground;
 		snoozeAction.destructive = NO;
 		snoozeAction.authenticationRequired = NO;
 		
 		UIMutableUserNotificationAction *deleteAction = [[UIMutableUserNotificationAction alloc] init];
-		deleteAction.identifier = @"deleteReminder";
+		deleteAction.identifier = @"sv.ReminderApp-OBJC.deleteAction";
 		deleteAction.title = @"Delete reminder";
 		deleteAction.activationMode = UIUserNotificationActivationModeBackground;
 		deleteAction.destructive = YES;
