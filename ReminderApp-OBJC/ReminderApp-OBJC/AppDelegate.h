@@ -15,10 +15,18 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+@class AppDelegate;
+
+@protocol CDAppDelegateNotificationHandlerDelegate <NSObject>
+
+- (void)appDelegate:(AppDelegate *)appDelegate wantsToHandleNotificationActionWithIdentifier:(NSString *)identifier;
+
+@end
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+@property (nonatomic, weak) id<CDAppDelegateNotificationHandlerDelegate> delegate;
 @property (strong, nonatomic) UIWindow *window;
-
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;

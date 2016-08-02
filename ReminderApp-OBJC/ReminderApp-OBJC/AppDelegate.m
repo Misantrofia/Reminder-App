@@ -16,6 +16,49 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+	UIUserNotificationSettings *notificationSettings = [UIApplication sharedApplication].currentUserNotificationSettings;
+	
+	if (notificationSettings.types == UIUserNotificationTypeNone) {
+		UIUserNotificationType notificationType = UIUserNotificationTypeAlert |
+		UIUserNotificationTypeBadge |
+		UIUserNotificationTypeSound;
+		
+		UIMutableUserNotificationAction *informAction = [[UIMutableUserNotificationAction alloc] init];
+		informAction.identifier = @"sv.ReminderApp-OBJC.informAction";
+		informAction.title = @"OK";
+		informAction.activationMode = UIUserNotificationActivationModeBackground;
+		informAction.destructive = NO;
+		informAction.authenticationRequired = NO;
+		
+		UIMutableUserNotificationAction *snoozeAction = [[UIMutableUserNotificationAction alloc] init];
+		snoozeAction.identifier = @"sv.ReminderApp-OBJC.snoozeAction";
+		snoozeAction.title = @"Snooze";
+		snoozeAction.activationMode = UIUserNotificationActivationModeBackground;
+		snoozeAction.destructive = NO;
+		snoozeAction.authenticationRequired = NO;
+		
+		UIMutableUserNotificationAction *deleteAction = [[UIMutableUserNotificationAction alloc] init];
+		deleteAction.identifier = @"sv.ReminderApp-OBJC.deleteAction";
+		deleteAction.title = @"Delete reminder";
+		deleteAction.activationMode = UIUserNotificationActivationModeBackground;
+		deleteAction.destructive = YES;
+		deleteAction.authenticationRequired = YES;
+		
+		NSArray *actions = @[informAction, snoozeAction, deleteAction];
+		NSArray *actionsMinimal = @[informAction, snoozeAction];
+		
+		UIMutableUserNotificationCategory *reminderCategory = [[UIMutableUserNotificationCategory alloc] init];
+		reminderCategory.identifier = @"reminderCategory";
+		[reminderCategory setActions:actions forContext:UIUserNotificationActionContextDefault];
+		[reminderCategory setActions:actionsMinimal forContext:UIUserNotificationActionContextMinimal];
+		
+		NSSet *categoriesForSettings = [[NSSet alloc] initWithObjects:reminderCategory, nil];
+		
+		UIUserNotificationSettings *newNotificationSettings = [UIUserNotificationSettings settingsForTypes:notificationType
+																								categories:categoriesForSettings];
+		[[UIApplication sharedApplication] registerUserNotificationSettings:newNotificationSettings];
+	}
+	
 	return YES;
 	
 }
@@ -49,12 +92,7 @@
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
 	
-	if ([identifier isEqualToString:@"sv.ReminderApp-OBJC.deleteAction"]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"deleteReminderNotification" object:nil];
-	} else if([identifier isEqualToString: @"sv.ReminderApp-OBJC.snoozeAction"]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"snoozeReminderNotification" object:nil];
-	}
-	
+	[self.delegate appDelegate:self wantsToHandleNotificationActionWithIdentifier:identifier];
 	completionHandler();
 	
 }

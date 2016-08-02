@@ -97,7 +97,7 @@
 - (BOOL)checkLogin:(NSString *)username password:(NSString *)password {
 	
 	if ([password isEqualToString:[self.myKeyChainWrapper myObjectForKey:@"v_Data"]] &&
-		[username isEqualToString:[self.myKeyChainWrapper myObjectForKey:kSecAttrAccount]]) {
+		[username isEqualToString:[self.myKeyChainWrapper myObjectForKey:(NSString *)kSecAttrAccount]]) {
 		
 		return YES;
 	}
@@ -116,7 +116,7 @@
 	if ([segue.identifier isEqualToString:@"loginToTopicController"]) {
 		UINavigationController *navController = segue.destinationViewController;
 		CDTopicTableViewController *topicController = navController.viewControllers.firstObject;
-		topicController.username = [self.myKeyChainWrapper myObjectForKey:kSecAttrAccount];
+		topicController.username = [self.myKeyChainWrapper myObjectForKey:(NSString *)kSecAttrAccount];
 	}
 	
 }
