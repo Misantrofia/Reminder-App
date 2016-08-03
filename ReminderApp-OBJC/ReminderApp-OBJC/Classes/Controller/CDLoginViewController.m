@@ -6,6 +6,7 @@
 //  Copyright © 2016 Catalin David. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "CDLoginViewController.h"
 #import "KeychainWrapper.h"
 #import "CDSignUpViewController.h"
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) KeychainWrapper *myKeyChainWrapper;
 @property (nonatomic, assign) NSInteger createLoginButtonTag;
 @property (nonatomic, assign) NSInteger loginButtonTag;
+@property (nonatomic, strong) SAMKeychain *keychainWrapper;
 
 @end
 
@@ -30,6 +32,9 @@
 	[super viewDidLoad];
 	
 	self.myKeyChainWrapper = [[KeychainWrapper alloc] init];
+	
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+	self.keychainWrapper = appDelegate.keychain;
 	
 	self.usernameTextField.delegate = self;
 	self.passwordTextField.delegate = self;

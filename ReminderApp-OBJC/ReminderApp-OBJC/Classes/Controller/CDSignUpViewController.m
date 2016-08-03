@@ -6,6 +6,7 @@
 //  Copyright © 2016 Catalin David. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "CDSignUpViewController.h"
 #import "CDTopicTableViewController.h"
 #import "SAMKeychain.h"
@@ -15,6 +16,7 @@
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
+@property (nonatomic, strong) SAMKeychain *keychainWrapper;
 
 @end
 
@@ -25,6 +27,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 	
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;	
+	self.keychainWrapper = appDelegate.keychain;
+
 	self.usernameTextField.delegate = self;
 	self.passwordTextField.delegate = self;
 	
