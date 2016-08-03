@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UIButton *detailButton;
-@property (nonatomic, assign) NSInteger minutesToSnooze;
+@property (nonatomic, strong) NSDate *snoozedDate;
 
 @end
 
@@ -34,7 +34,6 @@
 	
 	self.placeholder = YES;
 	self.title = self.topic.title;
-	self.minutesToSnooze = 0;
 	
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.estimatedRowHeight = 44;
@@ -63,7 +62,7 @@
 			NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", self.reminderToEdit, error);
 		}
 		
-		[self scheduleNotification];
+		[self scheduleNotification:0];
 	}
 	
 }
@@ -76,7 +75,7 @@
 			NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", self.reminderToEdit, error);
 		}
 		
-		[self scheduleNotification];
+		[self scheduleNotification:0];
 	}
 	
 }
@@ -339,20 +338,19 @@ detailButtonWasPressed:(BOOL)detailButton{
 		}
 	} else if([identifier isEqualToString:@"sv.ReminderApp-OBJC.snoozeAction"]) {
 		NSLog(@"Snooze notification has been handled.");
-		self.minutesToSnooze += 1;
-		self.minutesToSnooze %= 60;
+		NSInteger minutesToSnooze = 1;
 		
-		[self scheduleNotification];
+		[self scheduleNotification:minutesToSnooze];
 	}
 	
 }
 
 #pragma mark - Local notification
 
-- (void)scheduleNotification {
+- (void)scheduleNotification:(NSInteger)minutesToSnooze {
 	
 	UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-	localNotification.fireDate = [self fixedNotificationDate];
+	localNotification.fireDate = [self fixedNotificationDate:minutesToSnooze];
 	localNotification.alertBody = @"Hey, you have a reminder scheduled, remember?";
 	localNotification.alertAction = @"Open reminder app";
 	localNotification.category = @"reminderCategory";
@@ -361,19 +359,33 @@ detailButtonWasPressed:(BOOL)detailButton{
 	
 }
 
-- (NSDate *)fixedNotificationDate {
+- (NSDate *)fixedNotificationDate:(NSInteger)minutesToSnooze {
 	
-	NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay |
-																				NSCalendarUnitMonth |
-																			    NSCalendarUnitYear |
-																				NSCalendarUnitHour |
-																				NSCalendarUnitMinute
-																	   fromDate:self.reminderToEdit.taskDate];
+	NSDateComponents *dateComponents;
+	NSDate *fixedDate;
 	
-	dateComponents.second = 0;
-	dateComponents.minute += self.minutesToSnooze;
+	if (minutesToSnooze == 0) {
+		dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay |
+																  NSCalendarUnitMonth |
+																  NSCalendarUnitYear |
+																  NSCalendarUnitHour |
+																  NSCalendarUnitMinute
+														 fromDate:self.reminderToEdit.taskDate];
+		dateComponents.second = 0;
+		self.snoozedDate = self.reminderToEdit.taskDate;
+	} else {
+		dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay |
+									 							  NSCalendarUnitMonth |
+																  NSCalendarUnitYear |
+															      NSCalendarUnitHour |
+															      NSCalendarUnitMinute
+														 fromDate:self.snoozedDate];
+		dateComponents.second = 0;
+		dateComponents.minute += minutesToSnooze;
+		self.snoozedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
+	}
 	
-	NSDate *fixedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
+	fixedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
 	
 	return fixedDate;
 	
