@@ -10,6 +10,8 @@
 #import "KeychainWrapper.h"
 #import "CDSignUpViewController.h"
 #import "CDTopicTableViewController.h"
+#import "SAMKeychain.h"
+#import "SAMKeychainQuery.h"
 
 @interface CDLoginViewController () <UITextFieldDelegate>
 

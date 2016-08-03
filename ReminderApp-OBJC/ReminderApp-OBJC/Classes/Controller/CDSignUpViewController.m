@@ -8,6 +8,8 @@
 
 #import "CDSignUpViewController.h"
 #import "CDTopicTableViewController.h"
+#import "SAMKeychain.h"
+#import "SAMKeychainQuery.h"
 
 @interface CDSignUpViewController ()  <UITextFieldDelegate>
 
