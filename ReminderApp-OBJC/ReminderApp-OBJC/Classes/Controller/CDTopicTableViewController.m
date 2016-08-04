@@ -58,9 +58,9 @@
 	}
 	
 	if ([segue.identifier isEqualToString:@"topicToLoginController"]) {
-		[[NSUserDefaults standardUserDefaults] setBool:NO
-												forKey:@"hasLogin"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[SAMKeychain setPassword:@""
+					  forService:kSAMKeychainLastModifiedKey
+						 account:@""];
 	}
 	
 }

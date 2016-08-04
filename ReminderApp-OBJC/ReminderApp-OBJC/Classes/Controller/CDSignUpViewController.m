@@ -10,13 +10,11 @@
 #import "CDSignUpViewController.h"
 #import "CDTopicTableViewController.h"
 #import "SAMKeychain.h"
-#import "SAMKeychainQuery.h"
 
 @interface CDSignUpViewController ()  <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UITextField *usernameTextField;
 @property (nonatomic, weak) IBOutlet UITextField *passwordTextField;
-@property (nonatomic, strong) SAMKeychain *keychainWrapper;
 
 @end
 
@@ -26,9 +24,6 @@
 	
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-	
-	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;	
-	self.keychainWrapper = appDelegate.keychain;
 
 	self.usernameTextField.delegate = self;
 	self.passwordTextField.delegate = self;
@@ -67,21 +62,13 @@
 	[self.usernameTextField resignFirstResponder];
 	[self.passwordTextField resignFirstResponder];
 	
-	
-	BOOL hasLoginKey = [[NSUserDefaults standardUserDefaults] boolForKey:[NSString stringWithFormat:@"%@",self.usernameTextField.text]];
-	
-	if (!hasLoginKey) {
-		[[NSUserDefaults standardUserDefaults]setValue:self.usernameTextField.text
-												forKey:self.usernameTextField.text];
-	
-		[self.myKeyChainWrapper mySetObject:self.passwordTextField.text
-									 forKey:(NSString *)kSecValueData];
-		[self.myKeyChainWrapper mySetObject:self.usernameTextField.text
-									 forKey:(NSString *)kSecAttrAccount];
-		
-		[[NSUserDefaults standardUserDefaults] setBool:YES
-												forKey:@"hasLogin"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	if (![SAMKeychain accountsForService:self.usernameTextField.text]) {
+		[SAMKeychain setPassword:self.passwordTextField.text
+					  forService:self.usernameTextField.text
+						 account:self.usernameTextField.text];
+		[SAMKeychain setPassword:self.passwordTextField.text
+					  forService:kSAMKeychainLastModifiedKey
+						 account:self.usernameTextField.text];
 		
 		[self performSegueWithIdentifier:@"signUpToTopicController" sender:self];
 	} else {

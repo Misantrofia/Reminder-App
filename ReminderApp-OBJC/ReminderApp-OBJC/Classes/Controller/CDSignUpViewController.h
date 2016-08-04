@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KeychainWrapper.h"
 
 @interface CDSignUpViewController : UIViewController
-
-@property (nonatomic, strong) KeychainWrapper *myKeyChainWrapper;
 
 @end

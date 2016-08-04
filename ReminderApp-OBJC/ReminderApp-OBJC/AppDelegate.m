@@ -16,8 +16,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
-	self.keychain = [[SAMKeychain alloc] init];
-	
 	UIUserNotificationSettings *notificationSettings = [UIApplication sharedApplication].currentUserNotificationSettings;
 	
 	if (notificationSettings.types == UIUserNotificationTypeNone) {

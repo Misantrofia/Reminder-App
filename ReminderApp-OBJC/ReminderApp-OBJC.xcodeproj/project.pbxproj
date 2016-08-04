@@ -11,7 +11,6 @@
 		B643A9431D37AE1E000E861F /* CDReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = B643A9411D37AE1E000E861F /* CDReminder.m */; };
 		B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */; };
 		B64B937E1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B64B937C1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodeld */; };
-		B64C033E1D4F538300E180D8 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = B64C033D1D4F538300E180D8 /* KeychainWrapper.m */; };
 		B655766F1D26B0940075805E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B655766E1D26B0940075805E /* main.m */; };
 		B65576721D26B0940075805E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B65576711D26B0940075805E /* AppDelegate.m */; };
 		B65576781D26B0940075805E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B65576761D26B0940075805E /* Main.storyboard */; };
@@ -43,8 +42,6 @@
 		B64B93781D2D47FD00CA5138 /* CDTopicTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDTopicTableViewController.h; path = Classes/Controller/CDTopicTableViewController.h; sourceTree = "<group>"; };
 		B64B93791D2D47FD00CA5138 /* CDTopicTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDTopicTableViewController.m; path = Classes/Controller/CDTopicTableViewController.m; sourceTree = "<group>"; };
 		B64B937D1D2D48C200CA5138 /* ReminderApp_OBJC.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ReminderApp_OBJC.xcdatamodel; sourceTree = "<group>"; };
-		B64C033C1D4F538300E180D8 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeychainWrapper.h; path = Classes/Keychain/KeychainWrapper.h; sourceTree = "<group>"; };
-		B64C033D1D4F538300E180D8 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KeychainWrapper.m; path = Classes/Keychain/KeychainWrapper.m; sourceTree = "<group>"; };
 		B655766A1D26B0940075805E /* ReminderApp-OBJC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ReminderApp-OBJC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B655766E1D26B0940075805E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B65576701D26B0940075805E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -200,8 +197,6 @@
 				B658157A1D5217A70022349D /* SAMKeychain.m */,
 				B658157B1D5217A70022349D /* SAMKeychainQuery.h */,
 				B658157C1D5217A70022349D /* SAMKeychainQuery.m */,
-				B64C033C1D4F538300E180D8 /* KeychainWrapper.h */,
-				B64C033D1D4F538300E180D8 /* KeychainWrapper.m */,
 			);
 			name = Keychain;
 			sourceTree = "<group>";
@@ -303,7 +298,6 @@
 				B655766F1D26B0940075805E /* main.m in Sources */,
 				B66340221D4BAEE400E6C067 /* CDSignUpViewController.m in Sources */,
 				B6886A6B1D3E5F4700B5E8F4 /* CDEditDatePickerCell.m in Sources */,
-				B64C033E1D4F538300E180D8 /* KeychainWrapper.m in Sources */,
 				B663401F1D4BAED200E6C067 /* CDLoginViewController.m in Sources */,
 				B64B937A1D2D47FD00CA5138 /* CDTopicTableViewController.m in Sources */,
 				B6AAB4D31D34FA2900D76E5F /* CDReminderTableViewController.m in Sources */,

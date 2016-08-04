@@ -8,20 +8,19 @@
 
 #import "AppDelegate.h"
 #import "CDLoginViewController.h"
-#import "KeychainWrapper.h"
 #import "CDSignUpViewController.h"
 #import "CDTopicTableViewController.h"
 #import "SAMKeychain.h"
-#import "SAMKeychainQuery.h"
 
 @interface CDLoginViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (nonatomic, strong) KeychainWrapper *myKeyChainWrapper;
 @property (nonatomic, assign) NSInteger createLoginButtonTag;
 @property (nonatomic, assign) NSInteger loginButtonTag;
-@property (nonatomic, strong) SAMKeychain *keychainWrapper;
+@property (nonatomic, strong) NSString *userLoggedIn;
+@property (nonatomic, strong) SAMKeychainQuery *queryToDelete;
+@property (nonatomic, strong) SAMKeychainQuery *queryToDeleteLastLogin;
 
 @end
 
@@ -30,11 +29,6 @@
 - (void)viewDidLoad {
 
 	[super viewDidLoad];
-	
-	self.myKeyChainWrapper = [[KeychainWrapper alloc] init];
-	
-	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-	self.keychainWrapper = appDelegate.keychain;
 	
 	self.usernameTextField.delegate = self;
 	self.passwordTextField.delegate = self;
@@ -45,8 +39,41 @@
 	
 	[super viewDidAppear:animated];
 	
-	if (self.myKeyChainWrapper) {
-		if ([[NSUserDefaults standardUserDefaults] boolForKey:@"hasLogin"]) {
+	BOOL hasLogout = NO;
+	
+	if ([SAMKeychain allAccounts]){
+		SAMKeychainQuery *query = [[SAMKeychainQuery alloc] init];
+		query.service =	kSAMKeychainLastModifiedKey;
+		NSArray *array = [SAMKeychain accountsForService:kSAMKeychainLastModifiedKey];
+		if (array) {
+			for (NSDictionary *dictionary in array) {
+				query.account = dictionary[@"acct"];
+				query.password = [SAMKeychain passwordForService:kSAMKeychainLastModifiedKey account:query.account];
+				
+				NSError *error;
+				if ([query fetch:&error]) {
+					self.userLoggedIn = query.account;
+					if ([query.account isEqualToString:@""] || !query.account) {
+						hasLogout = YES;
+						self.queryToDelete = query;
+						return;
+					}
+				}
+			}
+		}
+		if (!hasLogout) {
+			self.queryToDeleteLastLogin = [[SAMKeychainQuery alloc] init];
+			self.queryToDeleteLastLogin.service =	@"lastLogin";
+			NSArray *array = [SAMKeychain accountsForService:@"lastLogin"];
+			if (array) {
+				NSDictionary *dict = array[0];
+				self.queryToDeleteLastLogin.account = dict[@"acct"];
+				self.queryToDeleteLastLogin.password = [SAMKeychain passwordForService:@"lastLogin" account:query.account];
+				NSError *error;
+				if ([query fetch:&error]) {
+					self.userLoggedIn = query.account;
+				}
+			}
 			[self performSegueWithIdentifier:@"loginToTopicController" sender:self];
 		}
 	}
@@ -82,10 +109,16 @@
 	[self.passwordTextField resignFirstResponder];
 	
 	if ([self checkLogin:self.usernameTextField.text password:self.passwordTextField.text]) {
+		self.userLoggedIn = self.usernameTextField.text;
 		[self performSegueWithIdentifier:@"loginToTopicController" sender:self];
-		[[NSUserDefaults standardUserDefaults] setBool:YES
-												forKey:@"hasLogin"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[SAMKeychain setPassword:self.passwordTextField.text
+					  forService:kSAMKeychainLastModifiedKey
+						 account:self.usernameTextField.text];
+		
+		[SAMKeychain setPassword:self.passwordTextField.text
+					  forService:@"lastLogin"
+						 account:self.usernameTextField.text];
+
 	} else {
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Login Problem"
 																	   message:@"Wrong username or password."
@@ -103,27 +136,29 @@
 
 - (BOOL)checkLogin:(NSString *)username password:(NSString *)password {
 	
-	if ([password isEqualToString:[self.myKeyChainWrapper myObjectForKey:@"v_Data"]] &&
-		[username isEqualToString:[self.myKeyChainWrapper myObjectForKey:(NSString *)kSecAttrAccount]]) {
-		
+	if ([password isEqualToString:[SAMKeychain passwordForService:username
+														  account:username]]) {
 		return YES;
 	}
-	
+
 	return NO;
 	
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
-	if ([segue.identifier isEqualToString:@"loginToSignupScreen"]) {
-		CDSignUpViewController *signUpController = segue.destinationViewController;
-		signUpController.myKeyChainWrapper = self.myKeyChainWrapper;
-	}
-	
 	if ([segue.identifier isEqualToString:@"loginToTopicController"]) {
 		UINavigationController *navController = segue.destinationViewController;
 		CDTopicTableViewController *topicController = navController.viewControllers.firstObject;
-		topicController.username = [self.myKeyChainWrapper myObjectForKey:(NSString *)kSecAttrAccount];
+		topicController.username = self.userLoggedIn;
+		
+		NSError *error;
+		if (self.queryToDelete) {
+			[self.queryToDelete deleteItem:&error];
+		}
+		if (self.queryToDeleteLastLogin) {
+			[self.queryToDeleteLastLogin deleteItem:&error];
+		}
 	}
 	
 }

@@ -701,7 +701,7 @@
         <image name="circle" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="afo-zk-RDI"/>
+        <segue reference="3qc-JP-hNi"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.1843137255" green="0.40000000000000002" blue="0.23137254900000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>
