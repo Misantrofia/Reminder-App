@@ -20,7 +20,6 @@
 @property (nonatomic, assign) NSInteger loginButtonTag;
 @property (nonatomic, strong) NSString *userLoggedIn;
 @property (nonatomic, strong) SAMKeychainQuery *queryToDelete;
-@property (nonatomic, strong) SAMKeychainQuery *queryToDeleteLastLogin;
 
 @end
 
@@ -62,13 +61,13 @@
 			}
 		}
 		if (!hasLogout) {
-			self.queryToDeleteLastLogin = [[SAMKeychainQuery alloc] init];
-			self.queryToDeleteLastLogin.service =	@"lastLogin";
+			SAMKeychainQuery *query = [[SAMKeychainQuery alloc] init];
+			query.service = @"lastLogin";
 			NSArray *array = [SAMKeychain accountsForService:@"lastLogin"];
 			if (array) {
 				NSDictionary *dict = array[0];
-				self.queryToDeleteLastLogin.account = dict[@"acct"];
-				self.queryToDeleteLastLogin.password = [SAMKeychain passwordForService:@"lastLogin" account:query.account];
+				query.account = dict[@"acct"];
+				query.password = [SAMKeychain passwordForService:@"lastLogin" account:query.account];
 				NSError *error;
 				if ([query fetch:&error]) {
 					self.userLoggedIn = query.account;
@@ -111,13 +110,26 @@
 	if ([self checkLogin:self.usernameTextField.text password:self.passwordTextField.text]) {
 		self.userLoggedIn = self.usernameTextField.text;
 		[self performSegueWithIdentifier:@"loginToTopicController" sender:self];
-		[SAMKeychain setPassword:self.passwordTextField.text
-					  forService:kSAMKeychainLastModifiedKey
-						 account:self.usernameTextField.text];
 		
-		[SAMKeychain setPassword:self.passwordTextField.text
-					  forService:@"lastLogin"
-						 account:self.usernameTextField.text];
+		if (![SAMKeychain accountsForService:@"lastLogin"]) {
+			[SAMKeychain setPassword:self.passwordTextField.text
+						  forService:@"lastLogin"
+							 account:self.usernameTextField.text];
+		} else {
+			SAMKeychainQuery *query = [[SAMKeychainQuery alloc] init];
+			query.service = @"lastLogin";
+			NSArray *array = [SAMKeychain accountsForService:@"lastLogin"];
+			if (array) {
+				NSDictionary *dict = array[0];
+				query.account = dict[@"acct"];
+				query.password = [SAMKeychain passwordForService:@"lastLogin" account:query.account];
+				NSError *error;
+				[query deleteItem:&error];
+			}
+			[SAMKeychain setPassword:self.passwordTextField.text
+						  forService:@"lastLogin"
+							 account:self.usernameTextField.text];
+		}
 
 	} else {
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Login Problem"
@@ -152,13 +164,12 @@
 		CDTopicTableViewController *topicController = navController.viewControllers.firstObject;
 		topicController.username = self.userLoggedIn;
 		
-		NSError *error;
-		if (self.queryToDelete) {
-			[self.queryToDelete deleteItem:&error];
-		}
-		if (self.queryToDeleteLastLogin) {
-			[self.queryToDeleteLastLogin deleteItem:&error];
-		}
+		
+	}
+	
+	NSError *error;
+	if (self.queryToDelete) {
+		[self.queryToDelete deleteItem:&error];
 	}
 	
 }

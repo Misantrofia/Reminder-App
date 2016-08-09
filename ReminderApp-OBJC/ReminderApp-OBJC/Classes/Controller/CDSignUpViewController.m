@@ -66,10 +66,27 @@
 		[SAMKeychain setPassword:self.passwordTextField.text
 					  forService:self.usernameTextField.text
 						 account:self.usernameTextField.text];
-		[SAMKeychain setPassword:self.passwordTextField.text
-					  forService:kSAMKeychainLastModifiedKey
-						 account:self.usernameTextField.text];
 		
+		if (![SAMKeychain accountsForService:@"lastLogin"]) {
+			[SAMKeychain setPassword:self.passwordTextField.text
+						  forService:@"lastLogin"
+							 account:self.usernameTextField.text];
+		} else {
+			SAMKeychainQuery *query = [[SAMKeychainQuery alloc] init];
+			query.service = @"lastLogin";
+			NSArray *array = [SAMKeychain accountsForService:@"lastLogin"];
+			if (array) {
+				NSDictionary *dict = array[0];
+				query.account = dict[@"acct"];
+				query.password = [SAMKeychain passwordForService:@"lastLogin" account:query.account];
+				NSError *error;
+				[query deleteItem:&error];
+			}
+			[SAMKeychain setPassword:self.passwordTextField.text
+						  forService:@"lastLogin"
+							 account:self.usernameTextField.text];
+		}
+
 		[self performSegueWithIdentifier:@"signUpToTopicController" sender:self];
 	} else {
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Sign Up Problem!"
