@@ -31,6 +31,9 @@
 		NSLog(@"Could not perform a fetch for Topic entity, an error occured: %@", error);
 	}
 	
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1"]]];
+	self.tableView.backgroundColor = [UIColor clearColor];
+
 }
 
 #pragma mark - FetchedResultsController
@@ -74,6 +77,7 @@
 	
 	CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	topicCell.textLabel.text = topic.title;
+	topicCell.backgroundColor = [UIColor clearColor];
 	
     return topicCell;
 	
