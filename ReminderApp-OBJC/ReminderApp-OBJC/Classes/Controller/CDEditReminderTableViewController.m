@@ -39,8 +39,8 @@
 	self.alarmCellDropDown = NO;
 	self.indexPathForAlarmCell = [NSIndexPath indexPathForRow:1 inSection:1];
 	self.indexPathForRepeatCell = [NSIndexPath indexPathForRow:2 inSection:1];
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background2"]]];
-	self.tableView.backgroundColor= [UIColor clearColor];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1"]]];
+	self.tableView.backgroundColor = [UIColor clearColor];
 	
 }
 

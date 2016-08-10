@@ -41,8 +41,8 @@
 		NSLog(@"Could not perform a fetch for Topic entity, an error occured: %@", error);
 	}
 	
-	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background2"]]];
-	self.tableView.backgroundColor= [UIColor clearColor];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1"]]];
+	self.tableView.backgroundColor = [UIColor clearColor];
 	
 }
 
