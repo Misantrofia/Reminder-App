@@ -8,7 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@class CDTopicTableViewController;
+
+@protocol CDTopicTableViewControllerDelegate
+
+- (void)topicController:(CDTopicTableViewController *)topicController wantsToSendTopicList:(NSArray *)topicList;
+
+@end
+
 @interface CDTopicTableViewController : UITableViewController
+
+@property (nonatomic, strong) id<CDTopicTableViewControllerDelegate> delegate;
+
+- (void)readyToSendTopicList;
 
 @end
 

@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "CDTopic.h"
 #import "CDReminderTableViewController.h"
+#import "CDChangeTopicForReminder.h"
 
 #pragma mark - Class extension
 
@@ -41,6 +42,13 @@
 	
 }
 
+-(void)readyToSendTopicList {
+	
+	self.delegate = ((CDChangeTopicForReminder *)self.navigationController.viewControllers.lastObject);
+	[self.delegate topicController:self wantsToSendTopicList:self.fetchedResultsController.fetchedObjects];
+	
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
 	if ([segue.identifier isEqualToString:@"segueTopicControllerToReminderController"]) {
@@ -52,6 +60,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	
+	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 	
 }
@@ -192,14 +201,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TopicCell"];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TopicCell" forIndexPath:indexPath];
 	
-	if (cell) {
-		CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	
-		cell.textLabel.text = topic.title;
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",topic.reminders.count];
-	}
+	CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+	cell.textLabel.text = topic.title;
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu",topic.reminders.count];
 	
 	return cell;
 	

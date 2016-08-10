@@ -7,7 +7,6 @@
 //
 
 #import "CDReminderCell.h"
-#import "CDAddReminderCell.h"
 
 @interface CDReminderCell () <UITextViewDelegate>
 
@@ -17,11 +16,14 @@
 
 @implementation CDReminderCell
 
--(void)awakeFromNib {
+- (void)awakeFromNib {
 	
 	[super awakeFromNib];
 	
 	self.textView.delegate = self;
+	self.textView.textContainerInset = UIEdgeInsetsZero;
+	self.textView.textContainer.lineFragmentPadding = 0;
+	[self setConstraintPriorityForSimpleCell];
 	
 }
 
@@ -30,21 +32,32 @@
 	self.reminder = reminder;
 	self.textView.text = self.reminder.taskName;
 	self.noteLabel.text = self.reminder.note;
+	self.noteLabel.textColor = [UIColor colorWithRed:0.25 green:0.50 blue:0.25 alpha:1.0];
 	self.priorityLabel.text = CDPriorityStringRepresentationForPriority(self.reminder.priority.integerValue);
+	self.priorityLabel.textColor = [UIColor orangeColor];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	[dateFormatter setTimeZone:[NSTimeZone defaultTimeZone]];
 	self.dateLabel.text = [dateFormatter stringFromDate:self.reminder.taskDate];
+	self.dateLabel.textColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.80];
 	
 	[self changePrioritiesForReminder:self.reminder];
 	
 }
 
-#pragma mark Change Outlet Priorities Methods
+#pragma mark - Action Button Methods
 
--(void)changePrioritiesForReminder:(CDReminder *)reminder {
+- (IBAction)detailButtonTapped:(id)sender {
+	
+	[self.delegate reminderCell:self wantsToEditReminder:self.reminder];
+	
+}
+
+#pragma mark - Change Outlet Priorities Methods
+
+- (void)changePrioritiesForReminder:(CDReminder *)reminder {
 	
 	if (!reminder.taskDate && !reminder.note &&
 		reminder.priority.integerValue == CDPriorityLow) {
@@ -110,7 +123,7 @@
 	self.textViewToNoteBottomConstraint.priority = 999;
 	self.textViewToNoteBottomConstraint.constant = 2;
 	self.noteToBottomCell.priority = 999;
-	self.noteToBottomCell.constant = 2;
+
 	self.noteLabel.alpha = 100;
 	self.dateLabel.alpha = 0;
 	
@@ -128,14 +141,15 @@
 	self.textViewToDateBottomConstraint.priority = 999;
 	self.dateToNote.priority = 999;
 	self.noteToBottomCell.priority = 999;
-	self.noteToBottomCell.constant = 2;
 	
 	self.noteLabel.alpha = 100;
 	self.dateLabel.alpha = 100;
 	
+	self.textViewToNoteBottomConstraint.constant = 20;
 	self.textViewToNoteBottomConstraint.priority = 800;
 	self.textViewToCellBottom.priority = 800;
 	self.dateToCellBottom.priority = 800;
+	self.dateToCellBottom.constant = 20;
 	
 	[self.contentView layoutIfNeeded];
 	
@@ -189,9 +203,7 @@ NSString *CDPriorityStringRepresentationForPriority(CDPriority priority) {
 	if ([text isEqualToString:@"\n"]) {
 		[textView resignFirstResponder];
 		self.reminder.taskName = self.textView.text;
-		/*
-		 Here we will have the other attributes to be saved to self.reminder (date, note, priority) - comming from the edit screen
-		 */
+		
 		[self.delegate reminderCell:self wantsToSaveReminder:self.reminder];
 		
 		return NO;
