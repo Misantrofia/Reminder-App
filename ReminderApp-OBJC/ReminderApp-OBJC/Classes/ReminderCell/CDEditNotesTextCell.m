@@ -23,6 +23,7 @@
 	self.noteTextView.delegate = self;
 	self.noteTextView.textContainerInset = UIEdgeInsetsZero;
 	self.noteTextView.textContainer.lineFragmentPadding = 0;
+	self.noteTextView.backgroundColor = [UIColor clearColor];
 
 }
 

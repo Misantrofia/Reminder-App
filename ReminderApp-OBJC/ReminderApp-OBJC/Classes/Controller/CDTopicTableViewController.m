@@ -41,6 +41,9 @@
 		NSLog(@"Could not perform a fetch for Topic entity, an error occured: %@", error);
 	}
 	
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background2"]]];
+	self.tableView.backgroundColor= [UIColor clearColor];
+	
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -220,6 +223,7 @@
 
 	cell.textLabel.text = topic.title;
 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",topic.reminders.count];
+	cell.backgroundColor = [UIColor clearColor];
 	
 	return cell;
 	

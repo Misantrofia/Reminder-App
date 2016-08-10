@@ -48,6 +48,9 @@
 		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
 	
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background2"]]];
+	self.tableView.backgroundColor= [UIColor clearColor];
+	
 }
 
 /* This code, was meant to be executed in prepare for unwind, for some reason

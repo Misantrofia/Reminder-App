@@ -39,6 +39,8 @@
 	self.alarmCellDropDown = NO;
 	self.indexPathForAlarmCell = [NSIndexPath indexPathForRow:1 inSection:1];
 	self.indexPathForRepeatCell = [NSIndexPath indexPathForRow:2 inSection:1];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background2"]]];
+	self.tableView.backgroundColor= [UIColor clearColor];
 	
 }
 
@@ -179,51 +181,58 @@
 																				   forIndexPath:indexPath];
 		[reminderTextCell setupCellWithReminder:self.reminder];
 		reminderTextCell.delegate = self;
+		reminderTextCell.backgroundColor = [UIColor clearColor];
 		return reminderTextCell;
 	} else if (indexPath.section == 1 && indexPath.row == 0) {
 		CDEditRemindOnDayCell *remindOnDayCell = [tableView dequeueReusableCellWithIdentifier:@"remindOnDayCell"
 																				 forIndexPath:indexPath];
+		remindOnDayCell.backgroundColor = [UIColor clearColor];
 		return remindOnDayCell;
 	} else if (indexPath.section == 1 && indexPath.row == 1 &&
 			   self.switchState == YES) {
 		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"
 																				forIndexPath:indexPath];
+		alertAndReminderCell.backgroundColor = [UIColor clearColor];
 		[self updateContentForCell:alertAndReminderCell isAlert:YES];
 		return alertAndReminderCell;
 	} else if (indexPath.section == 1 && indexPath.row == 2 &&
 			   self.switchState == YES && self.alarmCellDropDown == NO) {
 		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"
 																				forIndexPath:indexPath];
+		alertAndReminderCell.backgroundColor = [UIColor clearColor];
 		[self updateContentForCell:alertAndReminderCell isAlert:NO];
 		return alertAndReminderCell;
 	}  else if (indexPath.section == 1 && indexPath.row == 2 &&
 				self.switchState == YES && self.alarmCellDropDown == YES) {
 		CDEditDatePickerCell *datePickerCell = [tableView dequeueReusableCellWithIdentifier:@"datePickerCell"
 																			   forIndexPath:indexPath];
-		
+		datePickerCell.backgroundColor = [UIColor clearColor];
 		[datePickerCell setupReminderWithReminder:self.reminder];
 		return datePickerCell;
 	} else if (indexPath.section == 1 && indexPath.row == 3 &&
 			   self.switchState == YES && self.alarmCellDropDown == YES) {
 		UITableViewCell *alertAndReminderCell = [tableView dequeueReusableCellWithIdentifier:@"alarmAndRepeatCell"
 																				forIndexPath:indexPath];
-		
+		alertAndReminderCell.backgroundColor = [UIColor clearColor];
 		[self updateContentForCell:alertAndReminderCell isAlert:NO];
 		return alertAndReminderCell;
 	} else if (indexPath.section == 2 && indexPath.row == 0) {
 		CDEditPriorityCell *priorityCell = [tableView dequeueReusableCellWithIdentifier:@"priorityCell"
 																		   forIndexPath:indexPath];
+		priorityCell.backgroundColor = [UIColor clearColor];
 		[priorityCell setupCellWithReminder:self.reminder];
 		return  priorityCell;
 	} else if (indexPath.section == 2 && indexPath.row == 1) {
 		UITableViewCell *listCell = [tableView dequeueReusableCellWithIdentifier:@"topicListCell"
 																	forIndexPath:indexPath];
 		listCell.detailTextLabel.text = self.reminder.topic.title;
+		listCell.backgroundColor = [UIColor clearColor];
 		return listCell;
 	} else if (indexPath.section == 2 && indexPath.row == 2) {
 		CDEditNotesTextCell *notesCell = [tableView dequeueReusableCellWithIdentifier:@"notesCell"
 																		 forIndexPath:indexPath];
 		notesCell.delegate = self;
+		notesCell.backgroundColor = [UIColor clearColor];
 		[notesCell setupCellWithReminder:self.reminder];
 		return notesCell;
 	}
