@@ -7,10 +7,13 @@
 //
 
 #import "CDChangeTopicForReminder.h"
+#import "AppDelegate.h"
 
 @interface CDChangeTopicForReminder ()
 
 @property (nonatomic, strong) NSArray *topicList;
+@property (nonatomic, strong) NSManagedObjectContext *managedContext;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
@@ -20,8 +23,36 @@
 	
 	[super viewDidLoad];
 
-	CDTopicTableViewController *topicController = ((CDTopicTableViewController *)self.navigationController.viewControllers.firstObject);
-	[topicController readyToSendTopicList];
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+	self.managedContext = appDelegate.managedObjectContext;
+	
+	NSError *error;
+	if (![self.fetchedResultsController performFetch:&error]) {
+		NSLog(@"Could not perform a fetch for Topic entity, an error occured: %@", error);
+	}
+	
+}
+
+#pragma mark - FetchedResultsController
+
+- (NSFetchedResultsController *)fetchedResultsController {
+	
+	if (_fetchedResultsController == nil) {
+		NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"Topic"];
+		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"title"
+															   ascending:YES];
+		
+		fetch.sortDescriptors = @[sort];
+		_fetchedResultsController = [[NSFetchedResultsController alloc]initWithFetchRequest:fetch
+																	   managedObjectContext:self.managedContext
+																		 sectionNameKeyPath:nil
+																				  cacheName:nil];
+		
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"user MATCHES %@", self.topic.user];
+		fetch.predicate = pred;
+	}
+	
+	return _fetchedResultsController;
 	
 }
 
@@ -29,7 +60,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return self.topicList.count;
+    return self.fetchedResultsController.sections[section].numberOfObjects;
 	
 }
 
@@ -37,11 +68,12 @@
 	
 	UITableViewCell *topicCell = [tableView dequeueReusableCellWithIdentifier:@"topicCell" forIndexPath:indexPath];
 	
-	if (self.topicList[indexPath.row] == self.topic) {
+	if ([self.fetchedResultsController objectAtIndexPath:indexPath] == self.topic) {
 		topicCell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
 	
-	topicCell.textLabel.text = ((CDTopic *)self.topicList[indexPath.row]).title;
+	CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	topicCell.textLabel.text = topic.title;
 	
     return topicCell;
 	
@@ -49,16 +81,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	self.changedTopic((CDTopic *)self.topicList[indexPath.row]);
+	self.changedTopic([self.fetchedResultsController objectAtIndexPath:indexPath]);
 	[self.navigationController popViewControllerAnimated:YES];
-	
-}
-
-#pragma mark - CDTopicTableViewControllerDelegate
-
-- (void)topicController:(CDTopicTableViewController *)topicController wantsToSendTopicList:(NSArray *)topicList {
-	
-	self.topicList = topicList;
 	
 }
 

@@ -163,8 +163,6 @@
 		UINavigationController *navController = segue.destinationViewController;
 		CDTopicTableViewController *topicController = navController.viewControllers.firstObject;
 		topicController.username = self.userLoggedIn;
-		
-		
 	}
 	
 	NSError *error;

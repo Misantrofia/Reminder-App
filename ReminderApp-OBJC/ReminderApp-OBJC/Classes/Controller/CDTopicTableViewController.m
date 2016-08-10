@@ -43,13 +43,6 @@
 	
 }
 
--(void)readyToSendTopicList {
-	
-	self.delegate = ((CDChangeTopicForReminder *)self.navigationController.viewControllers.lastObject);
-	[self.delegate topicController:self wantsToSendTopicList:self.fetchedResultsController.fetchedObjects];
-	
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
 	if ([segue.identifier isEqualToString:@"segueTopicControllerToReminderController"]) {
