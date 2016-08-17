@@ -12,7 +12,7 @@
 #import "CDReminder.h"
 #import "CDEditReminderTableViewController.h"
 
-@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDReminderCellDelegate, UITextViewDelegate>
+@interface CDReminderTableViewController () <NSFetchedResultsControllerDelegate, CDReminderCellDelegate, UITextViewDelegate, CDAppDelegateNotificationHandlerDelegate>
 
 @property (nonatomic, assign) NSInteger count;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UIButton *detailButton;
-@property (nonatomic, assign) NSInteger minutesToSnooze;
+@property (nonatomic, strong) NSDate *snoozedDate;
 
 @end
 
@@ -34,35 +34,22 @@
 	
 	self.placeholder = YES;
 	self.title = self.topic.title;
-	self.minutesToSnooze = 0;
 	
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	self.tableView.estimatedRowHeight = 44;
 	
-	self.managedContext = ((AppDelegate *)[UIApplication sharedApplication].delegate).managedObjectContext;
+	AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+	self.managedContext = appDelegate.managedObjectContext;
+	
+	appDelegate.delegate = self;
 	
 	NSError *error;
 	if (![self.fetchedResultsController performFetch:&error]) {
 		NSLog(@"Could not perform a fetch for Reminder entity, an error occured: %@", error);
 	}
 	
-	[self setupLocalNotification];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(handleDeleteReminderNotification)
-												 name:@"deleteReminderNotification"
-											   object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(handleSnoozeReminderNotification)
-												 name:@"snoozeReminderNotification"
-											   object:nil];
-}
-
-- (void)dealloc {
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"deleteReminderNotification" object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:@"snoozeReminderNotification" object:nil];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1"]]];
+	self.tableView.backgroundColor = [UIColor clearColor];
 	
 }
 
@@ -78,7 +65,7 @@
 			NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", self.reminderToEdit, error);
 		}
 		
-		[self scheduleNotification];
+		[self scheduleNotification:0];
 	}
 	
 }
@@ -91,7 +78,7 @@
 			NSLog(@"Could not update a Reminder obj:%@ \n An error occured: %@", self.reminderToEdit, error);
 		}
 		
-		[self scheduleNotification];
+		[self scheduleNotification:0];
 	}
 	
 }
@@ -99,7 +86,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	
 	if ([segue.identifier isEqualToString:@"CDReminderCellDetailButtonToEditScreen"]) {
-		CDEditReminderTableViewController *editController = segue.destinationViewController;
+		CDEditReminderTableViewController *editController = segue.destinationViewController ;
 		editController.reminder = self.reminderToEdit;
 		[self.tableView resignFirstResponder];
 	}
@@ -340,59 +327,33 @@ detailButtonWasPressed:(BOOL)detailButton{
 	
 }
 
-#pragma mark - Local notification
+#pragma mark - CDAppDelegateNotificationHandlerDelegate
 
-- (void)setupLocalNotification {
+- (void)appDelegate:(AppDelegate *)appDelegate wantsToHandleNotificationActionWithIdentifier:(NSString *)identifier {
 	
-	UIUserNotificationSettings *notificationSettings = [UIApplication sharedApplication].currentUserNotificationSettings;
-	
-	if (notificationSettings.types == UIUserNotificationTypeNone) {
-		UIUserNotificationType notificationType = UIUserNotificationTypeAlert |
-												  UIUserNotificationTypeBadge |
-												  UIUserNotificationTypeSound;
+	if ([identifier isEqualToString:@"sv.ReminderApp-OBJC.deleteAction"]) {
+		NSLog(@"Delete notification has been handled.");
+		[self.managedContext deleteObject:self.reminderToEdit];
 		
-		UIMutableUserNotificationAction *informAction = [[UIMutableUserNotificationAction alloc] init];
-		informAction.identifier = @"sv.ReminderApp-OBJC.informAction";
-		informAction.title = @"OK";
-		informAction.activationMode = UIUserNotificationActivationModeBackground;
-		informAction.destructive = NO;
-		informAction.authenticationRequired = NO;
+		NSError *error;
+		if (![self.managedContext save:&error]) {
+			NSLog(@"Could not delete a Reminder object:%@. \n An error occured: %@", self.reminderToEdit, error);
+		}
+	} else if([identifier isEqualToString:@"sv.ReminderApp-OBJC.snoozeAction"]) {
+		NSLog(@"Snooze notification has been handled.");
+		NSInteger minutesToSnooze = 1;
 		
-		UIMutableUserNotificationAction *snoozeAction = [[UIMutableUserNotificationAction alloc] init];
-		snoozeAction.identifier = @"sv.ReminderApp-OBJC.snoozeAction";
-		snoozeAction.title = @"Snooze";
-		snoozeAction.activationMode = UIUserNotificationActivationModeBackground;
-		snoozeAction.destructive = NO;
-		snoozeAction.authenticationRequired = NO;
-		
-		UIMutableUserNotificationAction *deleteAction = [[UIMutableUserNotificationAction alloc] init];
-		deleteAction.identifier = @"sv.ReminderApp-OBJC.deleteAction";
-		deleteAction.title = @"Delete reminder";
-		deleteAction.activationMode = UIUserNotificationActivationModeBackground;
-		deleteAction.destructive = YES;
-		deleteAction.authenticationRequired = YES;
-		
-		NSArray *actions = @[informAction, snoozeAction, deleteAction];
-		NSArray *actionsMinimal = @[informAction, snoozeAction];
-		
-		UIMutableUserNotificationCategory *reminderCategory = [[UIMutableUserNotificationCategory alloc] init];
-		reminderCategory.identifier = @"reminderCategory";
-		[reminderCategory setActions:actions forContext:UIUserNotificationActionContextDefault];
-		[reminderCategory setActions:actionsMinimal forContext:UIUserNotificationActionContextMinimal];
-		
-		NSSet *categoriesForSettings = [[NSSet alloc] initWithObjects:reminderCategory, nil];
-		
-		UIUserNotificationSettings *newNotificationSettings = [UIUserNotificationSettings settingsForTypes:notificationType
-																								categories:categoriesForSettings];
-		[[UIApplication sharedApplication] registerUserNotificationSettings:newNotificationSettings];
+		[self scheduleNotification:minutesToSnooze];
 	}
 	
 }
 
-- (void)scheduleNotification {
+#pragma mark - Local notification
+
+- (void)scheduleNotification:(NSInteger)minutesToSnooze {
 	
 	UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-	localNotification.fireDate = [self fixedNotificationDate];
+	localNotification.fireDate = [self fixedNotificationDate:minutesToSnooze];
 	localNotification.alertBody = @"Hey, you have a reminder scheduled, remember?";
 	localNotification.alertAction = @"Open reminder app";
 	localNotification.category = @"reminderCategory";
@@ -401,43 +362,35 @@ detailButtonWasPressed:(BOOL)detailButton{
 	
 }
 
-- (NSDate *)fixedNotificationDate {
+- (NSDate *)fixedNotificationDate:(NSInteger)minutesToSnooze {
 	
-	NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay |
-																				NSCalendarUnitMonth |
-																			    NSCalendarUnitYear |
-																				NSCalendarUnitHour |
-																				NSCalendarUnitMinute
-																	   fromDate:self.reminderToEdit.taskDate];
+	NSDateComponents *dateComponents;
+	NSDate *fixedDate;
 	
-	dateComponents.second = 0;
-	dateComponents.minute += self.minutesToSnooze;
-	
-	NSDate *fixedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
-	
-	return fixedDate;
-	
-}
-
-- (void)handleDeleteReminderNotification {
-	
-	NSLog(@"Delete notification has been handled.");
-	[self.managedContext deleteObject:self.reminderToEdit];
-	
-	NSError *error;
-	if (![self.managedContext save:&error]) {
-		NSLog(@"Could not delete a Reminder object:%@. \n An error occured: %@", self.reminderToEdit, error);
+	if (minutesToSnooze == 0) {
+		dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay |
+																  NSCalendarUnitMonth |
+																  NSCalendarUnitYear |
+																  NSCalendarUnitHour |
+																  NSCalendarUnitMinute
+														 fromDate:self.reminderToEdit.taskDate];
+		dateComponents.second = 0;
+		self.snoozedDate = self.reminderToEdit.taskDate;
+	} else {
+		dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay |
+									 							  NSCalendarUnitMonth |
+																  NSCalendarUnitYear |
+															      NSCalendarUnitHour |
+															      NSCalendarUnitMinute
+														 fromDate:self.snoozedDate];
+		dateComponents.second = 0;
+		dateComponents.minute += minutesToSnooze;
+		self.snoozedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
 	}
 	
-}
-
-- (void)handleSnoozeReminderNotification {
+	fixedDate = [[NSCalendar currentCalendar]dateFromComponents:dateComponents];
 	
-	NSLog(@"Snooze notification has been handled.");
-	self.minutesToSnooze += 1;
-	self.minutesToSnooze %= 60;
-	
-	[self scheduleNotification];
+	return fixedDate;
 	
 }
 

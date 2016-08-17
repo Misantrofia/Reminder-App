@@ -12,7 +12,7 @@
 
 typedef void (^ChangedTopicForReminder)(CDTopic *);
 
-@interface CDChangeTopicForReminder : UITableViewController <CDTopicTableViewControllerDelegate>
+@interface CDChangeTopicForReminder : UITableViewController
 
 @property (nonatomic, copy) ChangedTopicForReminder changedTopic;
 @property (nonatomic, strong) CDTopic *topic;

@@ -11,6 +11,7 @@
 #import "CDTopic.h"
 #import "CDReminderTableViewController.h"
 #import "CDChangeTopicForReminder.h"
+#import "CDLoginViewController.h"
 
 #pragma mark - Class extension
 
@@ -40,12 +41,8 @@
 		NSLog(@"Could not perform a fetch for Topic entity, an error occured: %@", error);
 	}
 	
-}
-
--(void)readyToSendTopicList {
-	
-	self.delegate = ((CDChangeTopicForReminder *)self.navigationController.viewControllers.lastObject);
-	[self.delegate topicController:self wantsToSendTopicList:self.fetchedResultsController.fetchedObjects];
+	[self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background1"]]];
+	self.tableView.backgroundColor = [UIColor clearColor];
 	
 }
 
@@ -56,12 +53,26 @@
 		destinationController.topic = ((CDTopic *) [self.fetchedResultsController objectAtIndexPath:self.tableView.indexPathForSelectedRow]);
 	}
 	
+	if ([segue.identifier isEqualToString:@"topicToLoginController"]) {
+		[SAMKeychain setPassword:@""
+					  forService:kSAMKeychainLastModifiedKey
+						 account:@""];
+	}
+	
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+	self.navigationController.toolbarHidden = NO;
+	
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	
+	[super viewWillDisappear:animated];
+	self.navigationController.toolbarHidden = YES;
 	
 }
 
@@ -111,6 +122,7 @@
 	
 	CDTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:@"Topic" inManagedObjectContext:self.managedContext];
 	topic.title = topicName;
+	topic.user = self.username;
 	
 	NSError *error;
 	if (![self.managedContext save:&error]) {
@@ -133,6 +145,10 @@
 																	   managedObjectContext:self.managedContext
 																		 sectionNameKeyPath:nil
 																				  cacheName:nil];
+		
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"user MATCHES %@", self.username];
+		fetch.predicate = pred;
+
 		_fetchedResultsController.delegate = self;
 	}
 	
@@ -206,7 +222,8 @@
 	CDTopic *topic = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	cell.textLabel.text = topic.title;
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu",topic.reminders.count];
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%u",topic.reminders.count];
+	cell.backgroundColor = [UIColor clearColor];
 	
 	return cell;
 	

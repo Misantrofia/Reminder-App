@@ -23,6 +23,7 @@
 	self.textView.delegate = self;
 	self.textView.textContainerInset = UIEdgeInsetsZero;
 	self.textView.textContainer.lineFragmentPadding = 0;
+	self.textView.backgroundColor = [UIColor clearColor];
 
 }
 

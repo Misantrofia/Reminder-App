@@ -28,11 +28,13 @@
 }
 
 - (void)updateWithReminder:(CDReminder *)reminder {
-
+	
+	self.backgroundColor = [UIColor clearColor];
 	self.reminder = reminder;
+	self.textView.backgroundColor = [UIColor clearColor];
 	self.textView.text = self.reminder.taskName;
 	self.noteLabel.text = self.reminder.note;
-	self.noteLabel.textColor = [UIColor colorWithRed:0.25 green:0.50 blue:0.25 alpha:1.0];
+	self.noteLabel.textColor = [UIColor colorWithRed:0.25 green:0.20 blue:0.25 alpha:1.0];
 	self.priorityLabel.text = CDPriorityStringRepresentationForPriority(self.reminder.priority.integerValue);
 	self.priorityLabel.textColor = [UIColor orangeColor];
 	
